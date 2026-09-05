@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>モチーフのお話｜運命リズム診断</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Pinyon+Script&family=Shippori+Mincho:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf8f5; --navy:#1f2d47; --gold:#c8b58a; --gold-line:#e3d9c2;
+    --gold-deep:#8a6f35; --mocha:#706057; --ink:#2f2b25;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    color:var(--ink);
+    display:flex;justify-content:center;padding:0 0 70px;
+  }
+  .hero .jp, .group .g-jp, .motif .nm{ font-family:"Shippori Mincho","Yu Mincho",serif; }
+  .lead,.motif .tx,.motif .nm{ word-break:auto-phrase;text-wrap:pretty; }
+  .page{width:100%;max-width:440px;}
+  .hero{
+    height:190px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(ellipse 70% 80% at 72% 6%, rgba(255,243,214,.95) 0%, rgba(255,243,214,0) 55%),
+      linear-gradient(160deg, #f6ead3 0%, #efe3d2 38%, #e5d8c6 100%);
+  }
+  .hero::after{ content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(251,248,245,0) 62%, var(--paper) 100%); }
+  .hero .script{
+    position:absolute;bottom:56px;left:0;right:0;text-align:center;
+    font-family:"Pinyon Script",cursive;font-size:38px;color:var(--navy);
+  }
+  .hero .jp{
+    position:absolute;bottom:30px;left:0;right:0;text-align:center;
+    font-size:13px;letter-spacing:.3em;color:#6f6357;
+  }
+  .inner{ padding:6px 26px 0; }
+  .lead{
+    text-align:center;font-size:13.5px;line-height:2.2;letter-spacing:.05em;color:#5f5546;
+    margin-top:14px;
+  }
+  .group{
+    margin-top:72px;margin-bottom:6px;text-align:center;
+  }
+  .group:first-child{ margin-top:44px; }
+  .group .g-en{ font-family:"Cormorant Garamond",serif;font-size:12.5px;font-weight:600;letter-spacing:.34em;color:var(--gold-deep); }
+  .group .g-jp{ margin-top:5px;font-size:15px;letter-spacing:.2em;color:var(--navy);font-weight:500; }
+  .group .g-rule{ width:44px;height:1px;background:var(--gold);margin:14px auto 8px; }
+  .motif{
+    display:flex;gap:16px;align-items:center;
+    margin-top:20px;padding-top:20px;text-align:left;
+    border-top:1px solid var(--gold-line);
+  }
+  .group + .motif{ border-top:none;padding-top:0; }
+  .motif img{ width:84px;height:84px;border-radius:50%;flex:none;border:1px solid var(--gold-line);background:#fffefb; }
+  .motif .nm{ font-size:15px;letter-spacing:.12em;color:var(--navy);font-weight:600; }
+  .motif .tx{ margin-top:5px;font-size:13px;line-height:1.95;letter-spacing:.03em;color:#443f37; }
+  .backline{ margin-top:48px;text-align:center; }
+  .backline a{
+    display:inline-block;text-decoration:none;
+    font-size:12.5px;letter-spacing:.2em;color:#fbf8f2;background:var(--navy);padding:14px 34px;
+  }
+  .foot{ margin-top:18px;text-align:center;font-family:"Cormorant Garamond",serif;font-size:10px;letter-spacing:.3em;color:#cfc4b4; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="script">Lucky Motifs</div>
+      <div class="jp">モチーフのお話</div>
+    </div>
+    <div class="inner">
+      <div class="lead">毎日のカードに添えられる小さな絵には、<br>それぞれ昔から伝わる意味があります。<br>今日の絵柄を見つけたら、そっと意味を重ねてみて。</div>
+      <div id="list"></div>
+      <div class="backline"><a href="index.html">今日のリズムへ戻る</a></div>
+      <div class="foot">UNMEI RHYTHM</div>
+    </div>
+  </div>
+<script src="js/vendor/budoux-ja.min.js"></script>
+<script>
+const GROUPS = [
+ ['LUCKY SIGNS','幸運のしるし',[
+  ['icon_nurture2','四つ葉のクローバー','葉の1枚ずつに「金運・幸運・健康運・愛情運」の意味があるといわれます。花言葉は「私のものになってください」。見つけた日は、いいことのはじまり。'],
+  ['icon_receive2','馬蹄（ホースシュー）','ヨーロッパでは「幸せを受け止めて逃がさない」お守り。開いた側を上に向けて飾ると、幸運がたまっていくのだとか。'],
+  ['icon_shine2','星','星に願いをかけるように、「願いが叶う」しるし。スターという言葉どおり、人気運の意味もあります。'],
+  ['icon_center','三日月','満ちていく途中の月は「これから育つ」しるし。心を落ち着かせてくれる、やさしい夜の明かりです。'],
+  ['icon_crown','王冠','栄光・富・名声のシンボル。自分の価値を認めて、堂々と主役の席に座る日のお守りに。'],
+  ['icon_start','鍵','「希望の扉を開く」モチーフ。新しいことが始まる予感の日に。'],
+  ['icon_heart','ハート','恋をすると高鳴る心臓のかたち。愛の象徴で、恋愛運・愛情運のしるしです。'],
+  ['icon_ribbon','リボン','結び目は「人との絆・約束・縁結び」。ほどけないご縁を結ぶ、小さなおまじない。'],
+  ['icon_angelwing','天使の羽','愛と加護のしるし。「ちゃんと見守られている」と思い出させてくれます。'],
+  ['icon_seed2','どんぐり','「大きなカシの木も、小さなどんぐりから」——英語のことわざにもなっている、発展・成功運のしるしです。']
+ ]],
+ ['LUCKY FRIENDS','しあわせを運ぶ生きものたち',[
+  ['icon_ladybug','てんとう虫','漢字で書くと「天道虫」。上へ上へと登り、太陽に向かって飛び立つ姿から、ヨーロッパでは「体にとまると幸せがやって来る」といわれています。'],
+  ['icon_manekineko','招き猫','左手を上げた猫は「人が集まる・商売繁盛」、右手なら「家庭円満」。両手を上げると願いが叶うのだとか。この子には、実はモデルがいます♡'],
+  ['icon_owl','ふくろう','ギリシャ神話では知恵の女神のお使いで「森の賢者」。日本でも「不苦労」の語呂合わせで、苦労知らずの縁起物です。'],
+  ['icon_rabbit','うさぎ','ぴょんと跳ねる姿から「飛躍・繁栄」。次のステージへ軽やかに進む日のしるし。'],
+  ['icon_turtle','亀','「鶴は千年、亀は万年」。ハワイではホヌと呼ばれ、「幸運を運んでくる海の守り神」として大切にされています。'],
+  ['icon_elevate','馬','日本では「万事馬九行久（ばんじうまくいく）」の語呂合わせで、9頭の馬の絵が縁起物に。ヨーロッパでは馬の数が豊かさをあらわしたそうです。'],
+  ['icon_dove','鳩','平和と、よい知らせの使い。大切な人からの便りが届く日に。'],
+  ['icon_release','蝶','さなぎの殻を破って、より美しく生まれ変わる——変容のシンボル。「新しい私」の日のしるしです。'],
+  ['icon_pig','ぶたの貯金箱','ぶたは多産なことから、お金をたくさん産む金運のしるし。ドイツでは幸運なとき「ぶたを手に入れた！」と言うそうです。']
+ ]],
+ ['PETITE LUXE','上質な毎日の小物たち',[
+  ['icon_receive','ギフトボックス','受け取る喜びのかたち。今日届く、うれしいことの予告状です。'],
+  ['icon_shine','シャンパングラス','祝福と乾杯のしるし。がんばった自分を祝う日に。'],
+  ['icon_nurture','ティーカップ','湯気の向こうでひと息つく、自分をいたわる時間。'],
+  ['icon_perfume','香水瓶','まとう空気を自分で選ぶ、上質なひととき。'],
+  ['icon_rouge','ルージュ','ひと塗りで背筋が伸びる、小さな魔法。'],
+  ['icon_comb','コーム','身だしなみを整えることは、自分を大切に扱うこと。'],
+  ['icon_nail','ネイル','指先が整うと、目に入るたびに気分が上がります。'],
+  ['icon_seed','ノート','書きとめた言葉は、未来のあなたへの手紙になります。'],
+  ['icon_pen','万年筆','想いを言葉にする道具。書くほどに手になじみます。'],
+  ['icon_stationery','インクとペン先','手紙をしたためる、静かで豊かな時間そのもの。'],
+  ['icon_connect','手紙','ご縁を運ぶ風。封蝋は、ヨーロッパの「約束」のしるしです。'],
+  ['icon_plane','飛行機','まだ見ぬ景色へ。旅は世界とご縁を広げてくれます。'],
+  ['icon_trunk','トランク','旅支度は、ときめきの始まり。'],
+  ['icon_candle','キャンドル','静かな灯りを見つめる時間は、自分の真ん中に戻る時間。'],
+  ['icon_feather','羽根','ふわりと軽く。手放すほど身軽になれるしるし。'],
+  ['icon_shell','シェル','貝がひらくと真珠が見つかるように、「受け取る準備ができた」日のしるし。'],
+  ['icon_rose','ローズ','愛と美と幸福。凛と咲く一輪は、今日のあなたに。']
+ ]]
+];
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+let html = '';
+for (const [en, jp, items] of GROUPS) {
+  html += '<div class="group"><div class="g-en">' + esc(en) + '</div><div class="g-jp">' + esc(jp) + '</div><div class="g-rule"></div></div>';
+  for (const [icon, nm, tx] of items) {
+    html += '<div class="motif"><img src="assets/icons/trimmed/' + icon + '.png" alt="" loading="lazy">' +
+      '<div><div class="nm">' + esc(nm) + '</div><div class="tx"><budoux-ja>' + esc(tx) + '</budoux-ja></div></div></div>';
+  }
+}
+document.getElementById('list').innerHTML = html;
+</script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>運命リズム診断</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&family=Shippori+Mincho:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Morning Light（案C・2026-08-25せいこさん採用）*/
+  :root{
+    --paper:#fbf8f5; --navy:#1f2d47; --greige:#cfc4b4;
+    --gold:#c8b58a; --gold-line:#e3d9c2; --gold-deep:#8a6f35;
+    --mocha:#706057; --ink:#2f2b25;
+    --mincho:"Shippori Mincho","Yu Mincho",serif;
+    --gothic:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  /* 日本語の自然な改行:
+     文節折り返しは「中央揃えの短文」だけに使う（テーマ・キャッチ・言葉・見出し類）。
+     両端揃えの本文に使うと行ごとの字間が不揃いになるため、本文は本の組版と同じ
+     「両端揃え＋通常改行」にする（2026-08-26 読みやすさ調整） */
+  .theme,.catch,.subcopy,.word p,.persona .season,.persona .jp,
+  .copy1,.copy2,.form-note,.month-sub,.sub,.pending{
+    word-break:auto-phrase;
+    text-wrap:pretty;
+  }
+  .theme,.catch,.word p{ text-wrap:balance; }
+  body{
+    background:var(--paper);
+    font-family:var(--gothic);
+    color:var(--ink);
+    display:flex;justify-content:center;
+  }
+  .app{width:100%;max-width:440px;padding-bottom:70px;}
+  .view{display:none;}
+  .view.active{display:block;}
+  .inner{ padding:8px 30px 0; }
+
+  /* 朝の光ヒーロー帯（将来ここに実写が入る） */
+  .hero{
+    height:230px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(ellipse 70% 80% at 72% 6%, rgba(255,243,214,.95) 0%, rgba(255,243,214,0) 55%),
+      radial-gradient(ellipse 120% 90% at 30% 110%, #e8ddcc 0%, rgba(232,221,204,0) 60%),
+      linear-gradient(160deg, #f6ead3 0%, #efe3d2 38%, #e5d8c6 100%);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(251,248,245,0) 62%, var(--paper) 100%);
+  }
+  .hero .greet{
+    position:absolute;bottom:58px;left:0;right:0;text-align:center;
+    font-family:"Pinyon Script",cursive;font-size:44px;color:var(--navy);
+    text-shadow:0 1px 0 rgba(255,255,255,.6);
+  }
+  .hero .date{
+    position:absolute;bottom:26px;left:0;right:0;text-align:center;
+    font-family:"Cormorant Garamond",serif;font-size:14.5px;font-weight:700;letter-spacing:.28em;color:#332609;
+  }
+
+  /* 名乗り */
+  .persona{ text-align:center;margin-top:20px; }
+  .persona .en{ font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:600;letter-spacing:.24em;color:var(--navy); }
+  .persona .jp{ margin-top:6px;font-family:var(--mincho);font-size:15.5px;letter-spacing:.22em;color:#3c362e;font-weight:500; }
+  .persona .season{ margin-top:13px;font-size:14px;line-height:2;letter-spacing:.1em;color:#5f5546; }
+  .rule{ width:44px;height:1px;background:var(--gold);margin:30px auto 0; }
+
+  /* セクションと区切り */
+  .sec{ margin-top:28px;text-align:center; }
+  .sep{ display:flex;align-items:center;gap:12px;width:78%;margin:56px auto 0; }
+  .sep::before,.sep::after{ content:"";flex:1;height:1px;background:var(--gold-line); }
+  .sep .dia{ width:7px;height:7px;background:var(--gold);transform:rotate(45deg);opacity:.7; }
+
+  .lab{ display:flex;align-items:baseline;justify-content:center;gap:10px;color:var(--gold-deep);line-height:1.2; }
+  .lab .pre{ font-family:"Cormorant Garamond",serif;font-size:12.5px;font-weight:600;letter-spacing:.32em;position:relative;top:-4px; }
+  .lab .num{ font-family:"Pinyon Script",cursive;font-size:40px;font-weight:400;letter-spacing:.02em; }
+  .lab .blk{ font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:600;letter-spacing:.3em;position:relative;top:-5px; }
+  .lab .script{ font-family:"Pinyon Script",cursive;font-size:31px;font-weight:400;letter-spacing:.02em; }
+  .lab-jp{ margin-top:8px;font-size:15px;letter-spacing:.24em;color:#5f5546; }
+
+  .theme{ margin-top:14px;font-family:var(--mincho);font-size:29px;letter-spacing:.16em;color:var(--navy);font-weight:600; }
+  .theme-art{ margin:16px auto 0; }
+  .theme-art img{ width:132px;height:132px;border-radius:50%; }
+  .prose p{ margin-top:14px;text-align:justify;font-size:15.5px;line-height:2;letter-spacing:.02em;font-weight:400; }
+  .action p{ margin-top:13px;font-size:15.5px;line-height:2;letter-spacing:.02em; }
+  .action p::before{ content:"— ";color:var(--gold); }
+
+  .word{
+    margin-top:52px;padding:34px 22px;text-align:center;
+    background:linear-gradient(180deg,#f6f1e7 0%, #f1eadc 100%);
+  }
+  .word p{ font-family:var(--mincho);font-size:16px;line-height:2.15;letter-spacing:.07em;color:var(--navy); }
+
+  .pending{ color:#a39d8d;font-size:12.5px;line-height:1.9;letter-spacing:.05em;text-align:center;margin-top:12px; }
+
+  /* 今月のリズム（5パート＋IMAGINE） */
+  .month-sub{ margin-top:16px;margin-bottom:5px;font-size:12px;letter-spacing:.16em;color:var(--gold-deep);text-align:center; }
+  .month-sub::before{ content:"― "; }
+  .subcopy{ margin-top:8px;font-size:12.5px;line-height:1.9;letter-spacing:.06em;color:#8a7d6a;text-align:center; }
+  .imagine{
+    margin-top:22px;padding:20px 18px 18px;text-align:left;
+    background:linear-gradient(180deg,#fffdf8 0%,#faf5ea 100%);
+    border:1px solid var(--gold-line);border-radius:14px;
+  }
+  .imagine-label{ font-family:"Cormorant Garamond","Yu Mincho",serif;font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--gold-deep);margin-bottom:8px;text-align:center; }
+  .imagine p{ font-size:14.5px;line-height:2.05;letter-spacing:.02em;text-align:justify; }
+
+  /* 鍵ティザー（無料版・気配カード＝B案採用 2026-08-27。まとまりごとに1枚だけ置く） */
+  .tease{
+    margin-top:14px;
+    border:1px solid var(--gold-line); border-radius:12px; padding:24px 18px 21px;
+    text-align:center; background:linear-gradient(180deg,#fffefb 0%,#fbf7ee 100%);
+  }
+  .tease svg{ display:block; margin:0 auto 10px; opacity:.85; }
+  .tease .tease-items{
+    font-size:11px; letter-spacing:.2em; color:var(--gold-deep); margin-bottom:7px;
+  }
+  .tease .tease-line{
+    font-family:var(--mincho); font-size:13.5px; letter-spacing:.08em; color:var(--navy); line-height:2;
+  }
+
+  /* プレミアム案内カード（無料版のみ・枠＝仮文言。正式文言はフェーズ2でbrand-check） */
+  .premium-cta{
+    margin-top:44px; padding:26px 20px 24px; text-align:center;
+    border:1px solid var(--gold); border-radius:14px;
+    background:linear-gradient(180deg,#fffdf8 0%,#faf3e3 100%);
+  }
+  .premium-cta .pc-lab{
+    font-family:"Cormorant Garamond",serif; font-size:12px; font-weight:600;
+    letter-spacing:.32em; color:var(--gold-deep);
+  }
+  .premium-cta .pc-title{
+    margin-top:8px; font-family:var(--mincho); font-size:16.5px; font-weight:600;
+    letter-spacing:.1em; color:var(--navy); line-height:1.9;
+  }
+  .premium-cta .pc-copy{
+    margin-top:10px; font-size:13px; line-height:2; letter-spacing:.03em; color:#6f6357; text-align:center;
+  }
+  .premium-cta .pc-price{
+    margin-top:12px; font-family:var(--mincho); font-size:14px; letter-spacing:.12em; color:var(--navy);
+  }
+  .premium-cta .pc-btn{
+    display:inline-block; margin-top:14px; padding:12px 34px;
+    font-family:inherit; font-size:13.5px; letter-spacing:.18em;
+    color:#fffdf8; background:var(--navy); border-radius:99px; text-decoration:none;
+  }
+  .premium-cta .pc-note{
+    margin-top:12px; font-size:11.5px; line-height:1.9; letter-spacing:.04em; color:#a39d8d;
+  }
+
+  /* くわしい診断（9タイプ別読み物・2026-08-26追加） */
+  .deep-aru{ margin-top:6px;text-align:left; }
+  .deep-aru li{ list-style:none;position:relative;padding:10px 2px 10px 25px;font-size:14px;line-height:1.95;letter-spacing:.02em;color:var(--navy);border-bottom:1px solid rgba(184,155,94,.18); }
+  .deep-aru li:last-child{ border-bottom:none; }
+  .deep-aru li::before{ content:"◆";position:absolute;left:5px;top:14px;font-size:8px;color:var(--gold);opacity:.8; }
+
+  /* あなたのカード：フルアートカード（2026-08-26 せいこさん制作画像） */
+  .types-grid{
+    margin-top:16px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  }
+  .types-grid img{
+    display:block;width:100%;
+    aspect-ratio:4/5;object-fit:cover;object-position:top;
+    border-radius:10px;border:1px solid var(--gold-line);
+  }
+  .tcard-photo{
+    margin-top:22px;
+    padding:7px;
+    background:#fffefb;
+    border:1px solid var(--gold);
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(31,45,71,.10);
+  }
+  .tcard-photo img{
+    display:block;width:100%;border-radius:12px;
+  }
+
+  /* あなたのカード：タロット風タイプカード（案D・2026-08-25採用） */
+  .tcard{
+    position:relative;
+    background:#fffefb;
+    border:1px solid var(--gold);
+    border-radius:14px;
+    padding:26px 22px 28px;
+    margin-top:30px;
+    text-align:center;
+  }
+  .tcard::before{
+    content:"";position:absolute;inset:6px;
+    border:1px solid var(--gold-line);border-radius:10px;
+    pointer-events:none;
+  }
+  .tcard .num{
+    font-family:"Cormorant Garamond",serif;font-size:15px;font-weight:600;
+    letter-spacing:.3em;color:var(--gold-deep);
+  }
+  .tcard .t-emblem{
+    width:150px;height:150px;margin:14px auto 0;border-radius:50%;
+    border:1px solid var(--gold-line);
+    display:flex;align-items:center;justify-content:center;
+    background:#fdfcf8;
+  }
+  .tcard .t-emblem img{ width:132px;height:132px;border-radius:50%; }
+  .tcard .t-title{
+    margin-top:16px;
+    font-family:var(--mincho);font-size:26px;font-weight:600;
+    letter-spacing:.14em;color:var(--navy);
+  }
+  .t-sub{
+    margin-top:6px;
+    font-family:"Cormorant Garamond",serif;font-size:11.5px;font-weight:600;
+    letter-spacing:.3em;color:#a39d8d;
+  }
+  .tcard .color-band{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    margin-top:16px;
+  }
+  .tcard .color-band .sw{ width:38px;height:14px;border-radius:99px;border:1px solid rgba(0,0,0,.06); }
+  .tcard .color-band .cname{ font-family:var(--mincho);font-size:15px;font-weight:600;letter-spacing:.14em; }
+  .tcard .catch{ margin-top:16px; }
+  .tcard .prose p{ text-align:justify; }
+
+  /* あなたのカード：カラーメダリオン */
+  .color-duo{
+    position:relative;width:132px;height:84px;margin:18px auto 0;
+  }
+  .color-duo .c{
+    position:absolute;top:6px;width:70px;height:70px;border-radius:50%;
+    border:3px solid var(--paper);
+    box-shadow:0 0 0 1px var(--gold-line);
+  }
+  .color-duo .c1{ left:0; }
+  .color-duo .c2{ right:0; }
+  .color-duo .spark{
+    position:absolute;top:-6px;right:14px;color:var(--gold);font-size:14px;
+  }
+  .cnames{
+    margin-top:10px;text-align:center;
+    font-family:"Cormorant Garamond",serif;font-size:11.5px;font-weight:600;
+    letter-spacing:.22em;color:var(--gold-deep);
+  }
+  .clabel-jp{ margin-top:3px;text-align:center;font-size:10.5px;letter-spacing:.24em;color:#a39d8d; }
+  .catch{ margin-top:18px;font-family:var(--mincho);font-size:14.5px;line-height:2.05;letter-spacing:.05em;color:var(--navy); }
+
+  /* 方位盤 */
+  .houiban{ margin-top:52px; }
+  .hb-wrap{ max-width:330px;margin:18px auto 0; }
+  .hb-wrap svg{ width:100%;height:auto;display:block; }
+  .hb-wrap svg text{ font-family:var(--gothic); }
+  .hb-legend{ margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center; }
+  .hb-legend .lg{ font-size:12.5px;letter-spacing:.04em;color:#5f5546;display:flex;align-items:center;gap:6px; }
+  .hb-legend .dot{ width:13px;height:13px;border-radius:50%;border:1px solid var(--gold-line);display:inline-block; }
+  .hb-note{ margin-top:12px;font-size:12.5px;line-height:1.9;letter-spacing:.04em;color:#6f6357;text-align:center; }
+  .hb-note b{ color:var(--gold-deep); }
+  .hb-dev{ margin-top:10px;text-align:center; }
+  .hb-dev a{ font-size:10px;letter-spacing:.08em;color:#c2bcab;text-decoration:none;border-bottom:1px dashed #d8d2c6; }
+
+  /* 行動ナビ（TODAY'S Compass・2026-09-01） */
+  .compass{ margin-top:52px; }
+  .nav-lead{ margin-top:14px;font-family:var(--mincho);font-size:18px;letter-spacing:.1em;color:var(--navy);font-weight:600;text-wrap:balance; }
+  .nav-rows{ margin:18px auto 0;max-width:300px;text-align:left; }
+  .nav-row{ display:flex;align-items:center;gap:12px;padding:9px 6px;border-bottom:1px solid rgba(200,181,138,.25);font-size:14.5px;letter-spacing:.06em;color:#5f5546; }
+  .nav-row:last-child{ border-bottom:none; }
+  .nav-scene{ min-width:6em; }
+  .nav-dot{ flex:1;height:1px;background:var(--gold-line); }
+  .nav-dir{ font-family:var(--mincho);color:var(--navy);font-weight:600;letter-spacing:.1em; }
+  .nav-row.now .nav-scene{ color:var(--gold-deep);font-weight:700; }
+  .nav-note{ margin-top:10px;font-size:11.5px;letter-spacing:.05em;color:#a39d8d;line-height:1.9; }
+  .nav-row.now .nav-scene::before{ content:"◆";font-size:8px;color:var(--gold);margin-right:6px;vertical-align:2px; }
+
+  /* 根拠の方位盤（折りたたみ＋3盤タブ） */
+  .hb-details{ margin-top:26px;text-align:center; }
+  .hb-details summary{ list-style:none;cursor:pointer;display:inline-block;font-size:13px;letter-spacing:.12em;color:#6f6357;border-bottom:1px solid var(--gold-line);padding-bottom:3px; }
+  .hb-details summary::-webkit-details-marker{ display:none; }
+  .hb-details[open] summary{ color:var(--gold-deep); }
+  .hb-tabs{ margin-top:18px;display:flex;justify-content:center;gap:8px; }
+  .hb-tab{ font-family:inherit;font-size:12.5px;letter-spacing:.14em;padding:7px 18px;border:1px solid var(--gold-line);border-radius:99px;background:#fffefb;color:#6f6357;cursor:pointer; }
+  .hb-tab.on{ background:var(--navy);color:#fbf8f2;border-color:var(--navy); }
+
+  /* 明日のひとこと予告 */
+  .tmw{ margin-top:38px;text-align:center;padding:18px 16px;border-top:1px solid var(--gold-line);border-bottom:1px solid var(--gold-line);font-family:var(--mincho);font-size:14.5px;letter-spacing:.06em;color:var(--navy);line-height:2; }
+  .tmw-lab{ display:block;font-family:"Cormorant Garamond",serif;font-size:11px;font-weight:600;letter-spacing:.3em;color:var(--gold-deep);margin-bottom:6px; }
+
+  /* 時流 */
+  .jiryu{ margin-top:48px;text-align:center;padding:22px 18px;border:1px solid var(--gold-line);border-radius:14px;background:#fffdf8; }
+  .jiryu .t{ font-size:14px;letter-spacing:.05em;line-height:2; }
+  .jiryu .k{ margin-top:6px;font-size:10px;letter-spacing:.18em;color:#b0a98f; }
+
+  /* ボタン・リンク */
+  .btn{
+    display:block;width:100%;text-align:center;
+    font-family:inherit;font-size:13.5px;letter-spacing:.2em;
+    color:#fbf8f2;background:var(--navy);
+    border:none;padding:16px 20px;margin-top:36px;cursor:pointer;
+  }
+  .btn.ghost{ background:transparent;color:var(--navy);border:1px solid var(--navy); }
+  .linkline{ margin-top:26px;text-align:center; }
+  .linkline a{ font-size:13.5px;letter-spacing:.12em;color:#6f6357;text-decoration:none;border-bottom:1px solid var(--gold-line);padding-bottom:3px; }
+  .sub{ margin-top:12px;font-size:10.5px;letter-spacing:.12em;color:#a39d8d;text-align:center; }
+  .foot{ margin-top:34px;text-align:center;font-family:"Cormorant Garamond",serif;font-size:10px;letter-spacing:.3em;color:var(--greige); }
+
+  /* ようこそ */
+  .welcome-hero{ height:250px; }
+  .welcome-hero .service{
+    position:absolute;bottom:70px;left:0;right:0;text-align:center;
+    font-family:var(--mincho);font-size:22px;letter-spacing:.3em;color:var(--navy);font-weight:600;
+  }
+  .welcome-hero .service-en{
+    position:absolute;bottom:40px;left:0;right:0;text-align:center;
+    font-family:"Pinyon Script",cursive;font-size:24px;color:#a98f4f;
+  }
+  .copy1{ margin-top:34px;text-align:center;font-family:var(--mincho);font-size:14.5px;line-height:2.3;letter-spacing:.07em; }
+  .deco{ text-align:center;color:var(--gold);font-size:13px;margin:20px 0;letter-spacing:.5em; }
+  .copy2{ text-align:center;font-size:12.5px;line-height:2.2;letter-spacing:.05em;color:#8a7d6a; }
+
+  /* 入力 */
+  .form-title{ text-align:center;font-size:15px;letter-spacing:.18em;color:var(--navy);margin-top:34px; }
+  .form-note{ text-align:center;font-size:11px;letter-spacing:.06em;color:#a39d8d;line-height:1.9;margin:8px 0 16px; }
+  .selrow{ display:flex;gap:8px;justify-content:center; }
+  select{
+    font-family:inherit;font-size:14.5px;color:var(--ink);
+    background:#fffefb;border:1px solid var(--gold-line);border-radius:4px;
+    padding:11px 8px;flex:1;letter-spacing:.04em;
+  }
+  .timebox{ display:none;margin-top:14px; }
+  .timebox.show{ display:block; }
+  .choice-btns{ margin-top:12px;display:flex;flex-direction:column;gap:10px; }
+  .choice-btns button{
+    font-family:inherit;font-size:13.5px;letter-spacing:.06em;line-height:1.8;
+    padding:12px 14px;border:1px solid var(--gold-line);border-radius:10px;
+    background:#fffefb;color:var(--navy);cursor:pointer;text-align:left;
+  }
+  .choice-btns button b{ font-family:var(--mincho);letter-spacing:.1em; }
+  .notice{
+    margin-top:14px;padding:14px;border:1px solid var(--gold-line);border-radius:10px;
+    font-size:12px;line-height:2;letter-spacing:.04em;color:#6f6357;background:#fffdf8;
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- ようこそ -->
+    <div class="view" id="view-welcome">
+      <div class="hero welcome-hero">
+        <div class="service">運命リズム診断</div>
+        <div class="service-en">Unmei Rhythm</div>
+      </div>
+      <div class="inner">
+        <div class="copy1">これからの人生を、もっと素敵に。<br>あなたの本質と今の流れを知って、<br>次の一歩を見つけよう。</div>
+        <div class="deco">✦ ✦ ✦</div>
+        <div class="copy2">生年月日から、あなたの本質と<br>いまめぐっている季節をお届けします。<br>朝の1分で、今日をいい日に。</div>
+        <div class="sec" style="margin-top:38px;">
+          <div class="lab"><span class="num">9</span><span class="blk">TYPES</span></div>
+          <div class="lab-jp">あなたは、どのタイプ？</div>
+          <div class="types-grid">
+            <img src="assets/type-cards-final/web/type_1.jpg" alt="THE FLOW">
+            <img src="assets/type-cards-final/web/type_2.jpg" alt="THE NURTURE">
+            <img src="assets/type-cards-final/web/type_3.jpg" alt="THE SPARK">
+            <img src="assets/type-cards-final/web/type_4.jpg" alt="THE BREEZE">
+            <img src="assets/type-cards-final/web/type_5.jpg" alt="THE CORE">
+            <img src="assets/type-cards-final/web/type_6.jpg" alt="THE DIGNITY">
+            <img src="assets/type-cards-final/web/type_7.jpg" alt="THE DELIGHT">
+            <img src="assets/type-cards-final/web/type_8.jpg" alt="THE SUMMIT">
+            <img src="assets/type-cards-final/web/type_9.jpg" alt="THE RADIANCE">
+          </div>
+        </div>
+        <button class="btn" id="btn-start">診断をはじめる</button>
+      </div>
+    </div>
+
+    <!-- 生年月日入力 -->
+    <div class="view" id="view-input">
+      <div class="inner">
+        <div class="form-title">あなたの生年月日</div>
+        <div class="form-note">本質のタイプと、いまの季節の判定に使います</div>
+        <div class="selrow">
+          <select id="sel-year"></select>
+          <select id="sel-month"></select>
+          <select id="sel-day"></select>
+        </div>
+        <div class="form-title" style="margin-top:22px;">生まれた時刻</div>
+        <div class="form-note">わかる方だけで大丈夫です。より深い読み解きに使います</div>
+        <div class="selrow">
+          <select id="sel-hh"></select>
+          <select id="sel-mm"></select>
+        </div>
+        <div class="timebox" id="timebox">
+          <div class="notice" id="boundary-note"></div>
+        </div>
+        <div class="notice" id="input-error" style="display:none;"></div>
+        <button class="btn" id="btn-diagnose">結果を見る</button>
+      </div>
+    </div>
+
+    <!-- 診断結果 -->
+    <div class="view" id="view-result">
+      <div class="inner">
+        <div id="result-body"></div>
+        <button class="btn" id="btn-to-morning">今日のリズムを毎朝みる</button>
+        <div class="sub">毎朝のリズムを、14日間無料で体験できます</div>
+        <div class="linkline"><a href="#" id="link-redo">生年月日を入れ直す</a></div>
+        <div class="foot">UNMEI RHYTHM</div>
+      </div>
+    </div>
+
+    <!-- 毎朝ホーム -->
+    <div class="view" id="view-morning">
+      <div class="hero">
+        <div class="greet">Good Morning</div>
+        <div class="date" id="m-date"></div>
+      </div>
+      <div class="inner">
+        <div class="persona">
+          <div class="en" id="m-en"></div>
+          <div class="jp" id="m-jp"></div>
+          <div class="season" id="m-season"></div>
+        </div>
+        <div class="rule"></div>
+        <div id="morning-body"></div>
+        <div class="linkline" style="margin-top:30px;"><a href="#" id="link-to-result">あなたのカードを見返す</a></div>
+        <div class="linkline"><a href="#" id="link-redo2">生年月日を入れ直す</a></div>
+        <div class="foot">UNMEI RHYTHM</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/vendor/budoux-ja.min.js"></script>
+  <script src="data/terms.js"></script>
+  <script src="data/setsu.js"></script>
+  <script src="content/types.js"></script>
+  <script src="content/types_deep.js"></script>
+  <script src="js/premium.js"></script>
+  <script src="js/track.js"></script>
+  <script src="content/seasons_year.js"></script>
+  <script src="content/seasons_month.js"></script>
+  <script src="content/daily/day_base.js"></script>
+  <script src="content/daily/themes.js"></script>
+  <script src="content/daily/actions.js"></script>
+  <script src="content/daily/words.js"></script>
+  <script src="content/daily/ukekata.js"></script>
+  <script src="content/daily/tomorrow_hints.js"></script>
+  <script src="content/jiryu.js"></script>
+  <script src="js/calc.js"></script>
+  <script src="js/select.js"></script>
+  <script src="js/houiban.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
