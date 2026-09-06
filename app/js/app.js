@@ -22,6 +22,10 @@
   var CONTACT_URL = '#CONTACT_URL';
   var CHECKOUT_URL = '#CHECKOUT_URL';  // PayPal決済ページ（フェーズ3で差し込み）
 
+  // BASIC案内カード（月額・くわしく見る）。第一弾（2026-09-07）は無料版のみで公開するため非表示。
+  // BASIC／決済を実装する第二弾で true に戻す（せいこさん決裁 2026-09-06）
+  var SHOW_BASIC_CTA = false;
+
   var PENDING_TEXT = 'この部分の言葉は、ただいま丁寧に準備中です。正式公開までにお届けします。';
   var STORE_KEY = 'ur_profile';
   var EN_MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
@@ -327,8 +331,8 @@
         '<div class="k">' + esc(kanshi) + '</div></div>';
     }
 
-    // BASIC案内カード（無料版のみ・文言はbrand-check前の下書き）
-    if (locked) {
+    // BASIC案内カード（無料版のみ・文言はbrand-check前の下書き）。第一弾は SHOW_BASIC_CTA=false で出さない
+    if (locked && SHOW_BASIC_CTA) {
       html += '<div class="premium-cta">' +
         '<div class="pc-lab">BASIC</div>' +
         '<div class="pc-title"><budoux-ja>その流れを、今日どう使うかまで。</budoux-ja></div>' +
@@ -339,9 +343,6 @@
         '</div>';
       UR_TRACK.daily('premium_notice_view', 'ur_evt_notice', (today && today.dateKey) || '');
     }
-
-    // 表示プレビュー切替（テスト用・公開GO時に除去）
-    html += '<div class="hb-dev"><a href="#" id="premium-toggle">表示プレビュー切替（テスト用・現在: ' + esc(UR_PREMIUM.devTierLabel()) + '）</a></div>';
 
     // モチーフ図鑑への導線
     html += '<div class="linkline" style="margin-top:26px;"><a href="motifs.html">今日の絵柄にこめた意味を知る →</a></div>';
@@ -546,20 +547,6 @@
       window._boardOpen = e.target.open;
     }
   }, true);
-
-  // 表示プレビュー切替（テスト用: 体験中→無料版→BASICを巡回。公開GO時に除去）
-  document.addEventListener('click', function (e) {
-    if (e.target && e.target.id === 'premium-toggle') {
-      e.preventDefault();
-      UR_PREMIUM.devCycle();
-      var prof = loadProfile();
-      if (prof) {
-        var d = diagnoseProfile(prof);
-        if ($('view-morning').classList.contains('active')) renderMorning(d);
-        else renderResult(d);
-      }
-    }
-  });
 
   // 決済ページへのクリック計測（案内カードのボタン）
   document.addEventListener('click', function (e) {
