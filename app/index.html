@@ -101,6 +101,8 @@
   .month-sub{ margin-top:16px;margin-bottom:5px;font-size:12px;letter-spacing:.16em;color:var(--gold-deep);text-align:center; }
   .month-sub::before{ content:"― "; }
   .subcopy{ margin-top:8px;font-size:12.5px;line-height:1.9;letter-spacing:.06em;color:#8a7d6a;text-align:center; }
+  /* 今月のリズムのキャッチ（「やってみたい」「楽しそう」が、…）だけ大きく・2行固定（2026-09-06） */
+  .subcopy-month{ font-size:15px;line-height:2.1;color:#7d7160; }
   .imagine{
     margin-top:22px;padding:20px 18px 18px;text-align:left;
     background:linear-gradient(180deg,#fffdf8 0%,#faf5ea 100%);
@@ -271,6 +273,25 @@
   .hb-note b{ color:var(--gold-deep); }
   .hb-dev{ margin-top:10px;text-align:center; }
   .hb-dev a{ font-size:10px;letter-spacing:.08em;color:#c2bcab;text-decoration:none;border-bottom:1px dashed #d8d2c6; }
+
+  /* 診断結果画面: ブロック同士の縦の間隔だけを広げる（内容ごとにひと呼吸・2026-09-06）。
+     文字サイズ・ブロック内の組版・左右余白は触らない。毎朝ホームは対象外 */
+  #view-result .sec{ margin-top:36px; }
+  #view-result .sep{ margin-top:72px; }
+  #view-result .month-sub{ margin-top:30px; }
+  #view-result .imagine{ margin-top:32px; }
+  #view-result .sec > .action p{ margin-top:20px; }
+  #view-result .compass{ margin-top:64px; }
+  #view-result .hb-details{ margin-top:32px; }
+  #view-result .word{ margin-top:64px; }
+  #view-result .jiryu{ margin-top:60px; }
+
+  /* 今日のひと皿（2026-09-06・BASIC） */
+  .dish{ margin-top:52px; }
+  #view-result .dish{ margin-top:64px; }
+  .dish-sub{ margin-top:14px;font-size:12px;letter-spacing:.2em;color:var(--gold-deep); }
+  .dish-key{ margin-top:10px;font-family:var(--mincho);font-size:22px;font-weight:600;letter-spacing:.16em;color:var(--navy);line-height:1.6; }
+  .dish-text{ margin-top:10px;font-size:15px;line-height:2;letter-spacing:.03em;color:#5f5546;text-wrap:pretty; }
 
   /* 行動ナビ（TODAY'S Compass・2026-09-01） */
   .compass{ margin-top:52px; }

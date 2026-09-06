@@ -50,6 +50,17 @@
   function opposite(dir) { return (dir + 4) % 8; }
 
   /**
+   * その星が盤のどこに入っているかを返す（今日のひと皿の切り替えに使う）。
+   * 中宮のときは teii=5。dir は 0-7（DIR_NAMES の並び）、teii はその場所の定位星。
+   */
+  function seatOf(center, star) {
+    if (center === star) return { dir: null, teii: 5 };
+    var d = boardOf(center).indexOf(star);
+    if (d < 0) return null;
+    return { dir: d, teii: TEII[d] };
+  }
+
+  /**
    * 盤と吉凶を計算する。
    * center: 日盤中宮星 / ha: 日破の方角(0-7, nullあり) / honmei: 本命星
    * 戻り値: { board: [8]星, dirs: [8]{star, state} } state: 'kichi'|'kyou'|'neutral'
@@ -212,6 +223,7 @@
     DIR_NAMES: DIR_NAMES,
     boardOf: boardOf,
     goodStarsFor: goodStarsFor,
+    seatOf: seatOf,
     analyze: analyze,
     analyzeFull: analyzeFull,
     renderSVG: renderSVG,

@@ -172,6 +172,34 @@
     return html;
   }
 
+  // --- 今日のひと皿（2026-09-06 せいこさん指示・BASICのみ・おすすめ方位の直前）---
+  // 本命星が今日の盤のどの場所に入っているか（＝その場所の定位星）で9パターンを切り替える。
+  // 文言はせいこさん指定（2026-09-06）。星名は切り替えのキーで、画面には出さない。
+  var DISH = {
+    1: { star: '一白', key: '潤す', text: '魚介や豆腐、温かいスープなど、\nからだにやさしいものを。' },
+    2: { star: '二黒', key: '整える', text: '玄米、豆、季節野菜。\n素朴で丁寧なごはんを選んで。' },
+    3: { star: '三碧', key: 'フレッシュに', text: '生野菜や柑橘、ハーブなど、\nみずみずしい一皿を。' },
+    4: { star: '四緑', key: '軽やかに', text: '蕎麦やフォーなど、\nつるりと食べられる麺料理を。' },
+    5: { star: '五黄', key: '育てる', text: '味噌や麹、ヨーグルトなど、\n発酵の力を味方に。' },
+    6: { star: '六白', key: '上質に', text: '素材のいいもの、\nいつもより少し上等な一皿を。' },
+    7: { star: '七赤', key: '楽しむ', text: 'カフェやイタリアンなど、\n見た目も会話も弾むランチを。' },
+    8: { star: '八白', key: '温める', text: '根菜、きのこ、穀物など、\n大地の恵みをたっぷりと。' },
+    9: { star: '九紫', key: '美しく', text: 'アボカド、トマト、海老や蟹など、\n色まで美しい一皿を。' }
+  };
+  function dishHTML(r, today) {
+    if (!today.dayCenter) return '';
+    var seat = window.URHouiban.seatOf(today.dayCenter, r.honmeisei);
+    var d = seat && DISH[seat.teii];
+    if (!d) return '';
+    // 英字は筆記体ではなく大文字ブロック（TODAY'S PLATE・2026-09-06 せいこさん指定）
+    return '<div class="sec dish">' +
+      '<div class="lab"><span class="pre">TODAY\'S</span><span class="blk">PLATE</span></div>' +
+      '<div class="lab-jp">今日のひと皿</div>' +
+      '<div class="dish-sub">今日、選びたいもの</div>' +
+      '<div class="dish-key">' + esc(d.key) + '</div>' +
+      '<div class="dish-text">' + nl2br(d.text) + '</div></div>';  // 改行は意味の切れ目で固定（自動改行に任せない）
+  }
+
   // --- 根拠の方位盤（折りたたみ・日盤/月盤/年盤タブ）---
   var _boardTab = 'day';
   function boardDefs(r, today) {
@@ -280,7 +308,10 @@
         (picks.action.pending ? pendingHTML() : '<p>' + esc(picks.action.text) + '</p>') +
         '</div>';
 
-      // 4. おすすめ方位＋行動ナビ ＋ 5. 根拠の方位盤（折りたたみ・3盤タブ）
+      // 4. 今日のひと皿（おすすめ方位の直前・BASICのみ）
+      html += dishHTML(r, today);
+
+      // 5. おすすめ方位＋行動ナビ ＋ 6. 根拠の方位盤（折りたたみ・3盤タブ）
       html += compassBlockHTML(r, today);
     }
 
@@ -391,7 +422,7 @@
       var mLocked = UR_PREMIUM.tier() === 'free';
       html += '<div class="sec">' + labHTML2('THIS MONTH\'S', 'Rhythm', '今月のリズム', '（今月の運勢）', true) +
         '<div class="theme" style="font-size:24px;">' + bx(m.season) + '</div>' +
-        (m.subcopy ? '<div class="subcopy">― ' + bx(m.subcopy) + '</div>' : '') +
+        (m.subcopy ? '<div class="subcopy subcopy-month">― ' + bxbr(m.subcopy) + '</div>' : '') +
         '<div class="month-sub">今月の流れ</div>' +
         '<div class="prose"><p style="margin-top:4px;">' + esc(m.flow) + '</p></div>';
       if (mLocked) {
