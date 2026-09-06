@@ -191,10 +191,8 @@
     var seat = window.URHouiban.seatOf(today.dayCenter, r.honmeisei);
     var d = seat && DISH[seat.teii];
     if (!d) return '';
-    // 英字は筆記体ではなく大文字ブロック（TODAY'S PLATE・2026-09-06 せいこさん指定）
-    return '<div class="sec dish">' +
-      '<div class="lab"><span class="pre">TODAY\'S</span><span class="blk">PLATE</span></div>' +
-      '<div class="lab-jp">今日のひと皿</div>' +
+    // 英字見出しは他（Compass/Word）と同じ筆記体（2026-09-06 せいこさん指定）
+    return '<div class="sec dish">' + labHTML('Plate', '今日のひと皿') +
       '<div class="dish-sub">今日、選びたいもの</div>' +
       '<div class="dish-key">' + esc(d.key) + '</div>' +
       '<div class="dish-text">' + nl2br(d.text) + '</div></div>';  // 改行は意味の切れ目で固定（自動改行に任せない）
