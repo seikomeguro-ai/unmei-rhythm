@@ -99,13 +99,15 @@
   }
 
   // --- 表示部品 ---
-  function labHTML(word, jp) {
+  // big=true で見出しを一段大きく（いまの大きな季節／今月のリズム／今日のテーマ）。note は「（今年の運勢）」などの補足
+  function labHTML(word, jp, big) {
     return '<div class="lab"><span class="pre">TODAY\'S</span><span class="script">' + esc(word) + '</span></div>' +
-      '<div class="lab-jp">' + esc(jp) + '</div>';
+      '<div class="lab-jp' + (big ? ' lab-jp-lg' : '') + '">' + esc(jp) + '</div>';
   }
-  function labHTML2(pre, word, jp) {
+  function labHTML2(pre, word, jp, note, big) {
     return '<div class="lab"><span class="pre">' + esc(pre) + '</span><span class="script">' + esc(word) + '</span></div>' +
-      '<div class="lab-jp">' + esc(jp) + '</div>';
+      '<div class="lab-jp' + (big ? ' lab-jp-lg' : '') + '">' + esc(jp) +
+      (note ? '<span class="lab-note">' + esc(note) + '</span>' : '') + '</div>';
   }
   function sepHTML() { return '<div class="sep"><span class="dia"></span></div>'; }
   function pendingHTML() { return '<p class="pending">' + PENDING_TEXT + '</p>'; }
@@ -252,7 +254,7 @@
     var locked = UR_PREMIUM.tier() === 'free';  // 無料版だけロック（体験中・BASICは全部見える）
 
     // 1. THEME（線画つき）
-    html += '<div class="sec">' + labHTML('Theme', '今日のテーマ');
+    html += '<div class="sec">' + labHTML('Theme', '今日のテーマ', true);
     if (picks.theme.pending) {
       html += pendingHTML();
     } else {
@@ -375,7 +377,7 @@
     html += sepHTML();
 
     // いまの大きな季節
-    html += '<div class="sec">' + labHTML2('YOUR', 'Season', 'いまの大きな季節') +
+    html += '<div class="sec">' + labHTML2('YOUR', 'Season', 'いまの大きな季節', '（今年の運勢）', true) +
       '<div class="theme" style="font-size:24px;">' + bx(y.season) + '</div>' +
       '<div class="subcopy">' + bx(y.meaning) + '</div>' +
       '<div class="prose"><p>' + esc(y.message) + '</p></div>' +
@@ -387,7 +389,7 @@
     var m = r.monthZone ? SM[r.monthZone] : null;
     if (m && m.season && m.flow) {
       var mLocked = UR_PREMIUM.tier() === 'free';
-      html += '<div class="sec">' + labHTML2('THIS MONTH\'S', 'Rhythm', '今月のリズム') +
+      html += '<div class="sec">' + labHTML2('THIS MONTH\'S', 'Rhythm', '今月のリズム', '（今月の運勢）', true) +
         '<div class="theme" style="font-size:24px;">' + bx(m.season) + '</div>' +
         (m.subcopy ? '<div class="subcopy">― ' + bx(m.subcopy) + '</div>' : '') +
         '<div class="month-sub">今月の流れ</div>' +
