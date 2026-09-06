@@ -59,6 +59,13 @@
     font-family:"Cormorant Garamond",serif;font-size:14.5px;font-weight:700;letter-spacing:.28em;color:#332609;
   }
 
+  /* 日付下の吉日（毎朝ホーム・2026-09-06）: 小さく上品に。該当なしの日は日本語の日付だけ */
+  .kichi{ text-align:center;margin-top:2px;padding:0 30px; }
+  .kichi-date{ font-size:12.5px;letter-spacing:.18em;color:#6f6357; }
+  .kichi-items{ margin-top:7px;display:flex;flex-wrap:wrap;justify-content:center;row-gap:4px; }
+  .kichi-items span{ font-family:var(--mincho);font-size:13.5px;font-weight:500;letter-spacing:.14em;color:var(--gold-deep);white-space:nowrap; }
+  .kichi-items span + span::before{ content:"｜";color:var(--gold);margin:0 7px;letter-spacing:0;font-weight:400; }
+
   /* 名乗り */
   .persona{ text-align:center;margin-top:20px; }
   .persona .en{ font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:600;letter-spacing:.24em;color:var(--navy); }
@@ -304,6 +311,7 @@
   .nav-dir{ font-family:var(--mincho);color:var(--navy);font-weight:600;letter-spacing:.1em; }
   .nav-row.now .nav-scene{ color:var(--gold-deep);font-weight:700; }
   .nav-note{ margin-top:10px;font-size:11.5px;letter-spacing:.05em;color:#a39d8d;line-height:1.9; }
+  .nav-copy{ margin-top:16px;font-size:14.5px;line-height:2;letter-spacing:.03em;color:#5f5546; }
   .nav-row.now .nav-scene::before{ content:"◆";font-size:8px;color:var(--gold);margin-right:6px;vertical-align:2px; }
 
   /* 根拠の方位盤（折りたたみ＋3盤タブ） */
@@ -448,6 +456,7 @@
         <div class="greet">Bonjour</div>
         <div class="date" id="m-date"></div>
       </div>
+      <div class="kichi" id="m-kichi"></div>
       <div class="inner">
         <div class="persona">
           <div class="en" id="m-en"></div>

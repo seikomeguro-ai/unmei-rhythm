@@ -121,15 +121,9 @@
       '<div class="tease-line"><budoux-ja>この先の読み解きは、BASICでご覧いただけます</budoux-ja></div></div>';
   }
 
-  // --- 行動ナビ（TODAY'S Compass）2026-09-01 BASIC_DESIGN §1-1 ---
-  // シーンは5つ固定・方角は「東へ」のみ（凝った言い回しはしない）。いまの時間帯をそっと強調。
-  var NAV_SCENES = [
-    { label: 'モーニング', from: 4, to: 10 },
-    { label: 'ランチ', from: 10, to: 14 },
-    { label: 'カフェ', from: 14, to: 17 },
-    { label: 'ディナー', from: 17, to: 23 },
-    { label: 'お買い物', from: null, to: null }
-  ];
+  // --- おすすめ方位（TODAY'S Compass）---
+  // 2026-09-06 せいこさん指示: シーン別5行（モーニング/ランチ/…に同じ方角）は冗長なので、
+  // 「今日は、◯◯が味方。」＋ひとこと文にまとめる。方位はその日の吉方位で自動で変わる。
 
   function joinDirs(names) {
     if (names.length === 1) return names[0];
@@ -155,20 +149,9 @@
       return html + '</div>';
     }
     var names = good.slice(0, 3).map(function (i) { return C.DIR_NAMES[i]; });
-    html += '<div class="nav-lead"><budoux-ja>今日は、' + esc(joinDirs(names)) + 'が味方。</budoux-ja></div>';
-
-    var hour = new Date().getHours();
-    var seed = S.seedOf(today.dateKey, r.honmeisei);
-    html += '<div class="nav-rows">';
-    NAV_SCENES.forEach(function (sc, i) {
-      var dir = good[(seed + i) % good.length];
-      var now = sc.from !== null && hour >= sc.from && hour < sc.to;
-      html += '<div class="nav-row' + (now ? ' now' : '') + '">' +
-        '<span class="nav-scene">' + esc(sc.label) + '</span>' +
-        '<span class="nav-dot"></span>' +
-        '<span class="nav-dir">' + esc(C.DIR_NAMES[dir]) + 'へ</span></div>';
-    });
-    html += '</div></div>';
+    html += '<div class="nav-lead"><budoux-ja>今日は、' + esc(joinDirs(names)) + 'が味方。</budoux-ja></div>' +
+      '<div class="nav-copy">' + bxbr('モーニング、ランチ、カフェ、ディナー、お買い物など、\nぜひこの方角へ出かけてみてね。') + '</div>';
+    html += '</div>';
     return html;
   }
 
@@ -263,6 +246,16 @@
     if (!hint) return '';
     return '<div class="tmw"><span class="tmw-lab">TOMORROW</span>' +
       '<budoux-ja>' + esc(hint) + '</budoux-ja></div>';
+  }
+  // 日本語の日付＋その日の吉日（該当なしなら日付だけ）。判定は calc.js の goodDayItems
+  function kichiHTML(dateKey) {
+    var p = dateKey.split('-').map(Number);
+    var html = '<div class="kichi-date">' + p[0] + '年' + p[1] + '月' + p[2] + '日</div>';
+    var items = C.goodDayItems(dateKey, T);
+    if (items.length) {
+      html += '<div class="kichi-items">' + items.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>';
+    }
+    return html;
   }
   function dateEn(dateKey) {
     var p = dateKey.split('-');
@@ -447,6 +440,7 @@
     var r = diag.results[0];
     var t = TYPES[r.honmeisei];
     $('m-date').textContent = dateEn(diag.today.dateKey);
+    $('m-kichi').innerHTML = kichiHTML(diag.today.dateKey);
     $('m-en').textContent = t.code;
     $('m-jp').textContent = t.title;
     $('m-season').innerHTML = seasonLines(r);

@@ -287,6 +287,39 @@
     };
   }
 
+  // ============================================================
+  // 吉日・六曜・祝日（毎朝ホームの日付下に表示・2026-09-06）
+  //   六曜・一粒万倍日・天赦日・祝日は terms.goodDays（kigaku-calendar 由来・市販暦照合済み）から。
+  //   寅の日・巳の日・己巳の日は日干支から計算（JDN基準・2000-01-01=戊午 で検証）。
+  // ============================================================
+  var ROKUYO = ['大安', '赤口', '先勝', '友引', '先負', '仏滅'];
+  function jdnOf(y, m, d) {
+    var a = Math.floor((14 - m) / 12), yy = y + 4800 - a, mm = m + 12 * a - 3;
+    return d + Math.floor((153 * mm + 2) / 5) + 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
+  }
+  function dayKanshiIndex(y, m, d) { return ((jdnOf(y, m, d) + 49) % 60 + 60) % 60; }  // 0=甲子
+  /**
+   * その日に該当する吉日名の配列（該当なしは []）。順番は表示順。
+   * 例: ['敬老の日', '一粒万倍日', '天赦日', '寅の日', '甲子の日', '大安', '新月 12:27']（新月・満月はJST時刻つき）
+   */
+  function goodDayItems(key, terms) {
+    var p = key.split('-').map(Number), y = p[0], m = p[1], d = p[2];
+    var G = terms && terms.goodDays && terms.goodDays[String(y)];
+    var doy = jdnOf(y, m, d) - jdnOf(y, 1, 1);
+    var items = [];
+    if (G && G.holidays[key]) items.push(G.holidays[key]);
+    if (G && G.ichiryu.charAt(doy) === '1') items.push('一粒万倍日');
+    if (G && G.tensha.charAt(doy) === '1') items.push('天赦日');
+    var k = dayKanshiIndex(y, m, d), stem = k % 10, branch = k % 12;
+    if (branch === 2) items.push('寅の日');
+    if (branch === 5) items.push(stem === 5 ? '己巳の日' : '巳の日');
+    if (k === 0) items.push('甲子の日');
+    if (G && ROKUYO[+G.rokuyo.charAt(doy)] === '大安') items.push('大安');
+    var mo = G && G.moon && G.moon[key];
+    if (mo) items.push((mo[0] === 'new' ? '新月' : '満月') + ' ' + mo[1]);
+    return items;
+  }
+
   return {
     STAR_SHORT: STAR_SHORT,
     STAR_NAMES: STAR_NAMES,
@@ -313,6 +346,9 @@
     yearBranchOf: yearBranchOf,
     yearStemOf: yearStemOf,
     monthBranchOf: monthBranchOf,
-    opposite8: opposite8
+    opposite8: opposite8,
+    jdnOf: jdnOf,
+    dayKanshiIndex: dayKanshiIndex,
+    goodDayItems: goodDayItems
   };
 });
