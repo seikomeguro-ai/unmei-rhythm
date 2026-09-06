@@ -342,7 +342,7 @@
 
     // あなたのカード（せいこさん制作のフルアートカード・2026-08-26採用）
     var cnameColor = r.honmeisei === 6 ? '#a8946a' : t.color.main.hex; // パールホワイトのみ読める色で表示
-    html += '<div class="sec" style="margin-top:34px;">' + labHTML2('YOUR', 'Card', 'あなたのカード') +
+    html += '<div class="sec card" style="margin-top:34px;">' + labHTML2('YOUR', 'Card', 'あなたのカード') +
       '<div class="tcard-photo"><img src="assets/type-cards-final/web/type_' + r.honmeisei + '.jpg" alt="' + esc(t.title) + '"></div>' +
       // 色見本（.sw）は置かない: 幅ゼロで枠線だけが細い縦線に見えていたため（2026-09-06 せいこさん指示）
       '<div class="color-band" style="margin-top:18px;">' +
@@ -356,13 +356,13 @@
     // くわしい診断（9タイプ別読み物・content/types_deep.js。空のタイプは出さない）
     var deep = (typeof UR_TYPES_DEEP !== 'undefined') ? UR_TYPES_DEEP[String(r.honmeisei)] : null;
     if (deep && deep.aruaru && deep.aruaru.length) {
-      html += '<div class="month-sub" style="margin-top:26px;">こんなところ、ない？</div>' +
+      html += '<div class="month-sub" style="margin-top:46px;">こんなところ、ない？</div>' +
         '<ul class="deep-aru">' + deep.aruaru.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>' +
-        '<div class="month-sub" style="margin-top:24px;">あなたの才能が生きる場面</div>' +
+        '<div class="month-sub" style="margin-top:44px;">あなたの才能が生きる場面</div>' +
         '<div class="prose"><p style="margin-top:4px;">' + esc(deep.talent) + '</p></div>' +
-        '<div class="month-sub" style="margin-top:24px;">エネルギーが下がったときは</div>' +
+        '<div class="month-sub" style="margin-top:44px;">エネルギーが下がったときは</div>' +
         '<div class="prose"><p style="margin-top:4px;">' + esc(deep.recharge) + '</p></div>' +
-        '<div class="imagine" style="margin-top:28px;">' +
+        '<div class="imagine" style="margin-top:46px;">' +
         '<div class="imagine-label">FOR YOU｜これからのあなたへ</div>' +
         '<p>' + esc(deep.next) + '</p></div>';
     }
