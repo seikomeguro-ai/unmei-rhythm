@@ -344,12 +344,12 @@
     var cnameColor = r.honmeisei === 6 ? '#a8946a' : t.color.main.hex; // パールホワイトのみ読める色で表示
     html += '<div class="sec" style="margin-top:34px;">' + labHTML2('YOUR', 'Card', 'あなたのカード') +
       '<div class="tcard-photo"><img src="assets/type-cards-final/web/type_' + r.honmeisei + '.jpg" alt="' + esc(t.title) + '"></div>' +
+      // 色見本（.sw）は置かない: 幅ゼロで枠線だけが細い縦線に見えていたため（2026-09-06 せいこさん指示）
       '<div class="color-band" style="margin-top:18px;">' +
-      '<span class="sw" style="background:' + esc(t.color.main.hex) + ';"></span>' +
       '<span class="cname" style="color:' + esc(cnameColor) + ';">' + esc(t.color.name) + '</span>' +
-      '<span class="sw" style="background:' + esc(t.color.sub.hex) + ';border:1px solid #e0dacd;"></span>' +
       '</div>' +
-      '<div class="t-sub" style="margin-top:8px;">' + esc(t.code) + ' ｜ ' + esc(t.name) + '</div>' +
+      '<div class="t-sub" style="margin-top:8px;">' + esc(t.code) + '</div>' +
+      '<div class="t-star">' + esc(t.name) + '</div>' +
       '<div class="catch">' + bx(t.catch) + '</div>' +
       '<div class="prose"><p>' + esc(t.essence) + '</p></div>';
 
