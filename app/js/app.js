@@ -225,7 +225,7 @@
       '<span class="lg"><span class="dot" style="background:#f4e9cd;"></span>吉方位</span>' +
       '<span class="lg"><span class="dot" style="background:#e3e0da;"></span>控えめにしたい方位</span>' +
       '</div>' +
-      '<div class="hb-note">北が上の、地図と同じ向きの盤です。</div>';
+      '<div class="hb-note">南が上・北が下の、本来の方位盤の向きです。</div>';
     return html;
   }
   function compassBlockHTML(r, today) {

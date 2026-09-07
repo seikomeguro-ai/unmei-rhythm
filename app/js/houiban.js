@@ -1,7 +1,7 @@
 /*
  * 運命リズム診断 — 方位盤（日盤）モジュール
  *
- * 表示: 北が上の地図式（2026-08-26せいこさん決定。伝統的な北下ではない）
+ * 表示: 南が上・北が下の伝統的な方位盤（2026-09-07 せいこさん決定「本来の盤の形に慣れてほしい」。東が左・西が右）
  * 無料版: 盤のみ（今日の星の巡り）
  * 有料版: 本人の吉方位に色、控えたい方位（凶）をグレー表示
  *
@@ -96,7 +96,8 @@
     var FILL = { kichi: '#f0e3c0', kyou: '#e3e0da', neutral: '#fffefb' };
     var svg = '<svg viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="今日の方位盤">';
     for (var d = 0; d < 8; d++) {
-      var aC = -90 + d * 45;
+      // 伝統的な方位盤の向き: 南が上・北が下（地図式を180度回した配置）
+      var aC = 90 + d * 45;
       var a1 = (aC - 22.5) * Math.PI / 180, a2 = (aC + 22.5) * Math.PI / 180;
       var x1 = C + R * Math.cos(a1), y1 = C + R * Math.sin(a1);
       var x2 = C + R * Math.cos(a2), y2 = C + R * Math.sin(a2);
@@ -180,7 +181,8 @@
     var svg = '<svg viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' +
       (opts.ariaLabel || '方位盤') + '">';
     for (var d = 0; d < 8; d++) {
-      var aC = -90 + d * 45;
+      // 伝統的な方位盤の向き: 南が上・北が下（地図式を180度回した配置）
+      var aC = 90 + d * 45;
       var a1 = (aC - 22.5) * Math.PI / 180, a2 = (aC + 22.5) * Math.PI / 180;
       var x1 = C + R * Math.cos(a1), y1 = C + R * Math.sin(a1);
       var x2 = C + R * Math.cos(a2), y2 = C + R * Math.sin(a2);
@@ -204,7 +206,7 @@
     }
     // 恵方（年盤のみ・金の破線＋ラベル。24方位の正確な角度で引く）
     if (opts.premium && (opts.ehoDeg || opts.ehoDeg === 0)) {
-      var rad = (opts.ehoDeg - 90) * Math.PI / 180;
+      var rad = (opts.ehoDeg + 90) * Math.PI / 180;  // 北が下なので方位角に+90度
       var ex = C + R * Math.cos(rad), ey = C + R * Math.sin(rad);
       svg += '<line x1="' + C + '" y1="' + C + '" x2="' + ex.toFixed(1) + '" y2="' + ey.toFixed(1) + '"' +
         ' stroke="#a8863c" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.85"/>';
