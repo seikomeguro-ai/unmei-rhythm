@@ -17,8 +17,8 @@
   else { root.UR_TRACK = factory(); }
 })(typeof self !== 'undefined' ? self : this, function () {
 
-  // フェーズ3で 'https://（サイトコード）.goatcounter.com/count' を設定する。空=送信しない
-  var ENDPOINT = '';
+  // 2026-09-07 設定（せいこさんがGoatCounterアカウント unmei を作成）。空にすると送信しない
+  var ENDPOINT = 'https://unmei.goatcounter.com/count';
 
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
