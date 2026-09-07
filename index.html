@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>運命リズム診断｜いまの流れがわかると、次の一歩が見えてくる。</title>
-<meta name="description" content="今年、今月、今日の流れを知って、「では今日どう動く？」まで毎朝1分で。九星気学をもとにした、毎日の選択のための運命リズム。登録も診断も無料。はじめの14日間はすべての読み解きをご覧いただけます。">
+<title>運命リズム診断｜欲しい未来は、待つより選びにいく。</title>
+<meta name="description" content="自分の本質と、いまの流れを知って、今日のベストを自分で選ぶ。九星気学をもとにした、毎朝1分の習慣。登録も診断も無料。はじめの14日間はBASICの内容まで自由にご覧いただけます。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="運命リズム診断｜いまの流れがわかると、次の一歩が見えてくる。">
-<meta property="og:description" content="今年、今月、今日の流れを知って、「では今日どう動く？」まで毎朝1分で。九星気学をもとにした、毎日の選択のための運命リズム。登録も診断も無料。はじめの14日間はすべての読み解きをご覧いただけます。">
+<meta property="og:title" content="運命リズム診断｜欲しい未来は、待つより選びにいく。">
+<meta property="og:description" content="自分の本質と、いまの流れを知って、今日のベストを自分で選ぶ。九星気学をもとにした、毎朝1分の習慣。登録も診断も無料。はじめの14日間はBASICの内容まで自由にご覧いただけます。">
 <meta property="og:image" content="https://unmei.seikomeguro.com/assets/lp-photos/fv.jpg">
 <meta property="og:url" content="https://unmei.seikomeguro.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -153,7 +153,7 @@
   .plan .pl-name{ font-family:var(--mincho); font-size:16.5px; font-weight:600; color:var(--navy); letter-spacing:.1em; }
   .plan .pl-body{ margin-top:10px; font-size:14.5px; line-height:2.05; color:#6f6357; }
   @media (min-width:760px){
-    .plans{ max-width:820px; margin-left:auto; margin-right:auto; flex-direction:row; align-items:stretch; }
+    .plans{ max-width:920px; margin-left:auto; margin-right:auto; flex-direction:row; align-items:stretch; }
     .plan{ flex:1; }
     .plan .pl-body{ font-size:15px; }
   }
@@ -357,14 +357,15 @@
     .profile .nm{ margin-top:0; }
     .profile .kotae{ text-align:left; font-size:17px; }
   }
-  /* ベネフィット（2026-08-28追加・せいこさん文言） */
-  .bene{ max-width:460px; margin:30px auto 0; }
-  .bi + .bi{ margin-top:30px; }
-  .bene .bt{ font-family:var(--mincho); font-size:17px; font-weight:600; color:var(--navy); letter-spacing:.08em; }
-  .bene .bd{ margin-top:6px; font-size:14px; line-height:2.1; color:var(--muted); }
+  /* ベネフィット（2026-08-28追加・せいこさん文言／2026-09-07 文字サイズ引き上げ） */
+  .bene{ max-width:480px; margin:34px auto 0; }
+  .bi + .bi{ margin-top:40px; }
+  .bene .bt{ font-family:var(--mincho); font-size:20px; font-weight:600; color:var(--navy); letter-spacing:.09em; line-height:1.75; }
+  .bene .bd{ margin-top:10px; font-size:15.5px; line-height:2.15; color:var(--muted); }
   @media (min-width:900px){
-    .bene .bt{ font-size:19px; }
-    .bene .bd{ font-size:15px; }
+    .bene{ max-width:520px; }
+    .bene .bt{ font-size:23px; }
+    .bene .bd{ font-size:16.5px; }
   }
   /* アプリ画面のイメージ（実物と同じ組版のミニチュア・2026-08-28） */
   .app-peek{ margin:30px auto 38px; text-align:center; }
@@ -410,6 +411,51 @@
   .trial-band .big, .last .line, .item .tt, .bene .bt, .kotae{ text-wrap:balance; }
   /* ボタン下の説明文: PCでも1行に伸ばさず、読みやすい幅で2行程度に */
   .regform .fine, .fv-under .fine{ max-width:33em; margin-left:auto; margin-right:auto; }
+  /* ===== 2026-09-07 コピー刷新（「欲しい未来は、待つより選びにいく。」）で追加 ===== */
+  /* 本文中の強調行（DAILY CHOICES の着地） */
+  .em-line{
+    display:block; margin-top:16px; font-family:var(--mincho);
+    font-size:clamp(19px, calc(16.2px + .74vw), 24px); font-weight:600;
+    color:var(--navy); letter-spacing:.09em; line-height:1.95; text-wrap:balance;
+  }
+  /* ベネフィット3項目のラベル（仕事 WORK ／ 魅力 BEAUTY ／ 愛・ご縁 LOVE & RELATIONSHIPS） */
+  .bene .lab{ margin-bottom:9px; line-height:1.6; }
+  .bene .lab-ja{
+    font-family:var(--mincho); font-size:16px; font-weight:600; letter-spacing:.16em;
+    color:var(--gold-deep);
+  }
+  .bene .lab-en2{
+    font-family:var(--garamond); font-size:14px; font-weight:700; letter-spacing:.26em;
+    color:var(--gold-deep); margin-left:13px; white-space:nowrap;
+  }
+  /* 小さめの端末では字間だけ詰めて「愛・ご縁 LOVE & RELATIONSHIPS」を1行に収める */
+  @media (max-width:400px){ .bene .lab-en2{ letter-spacing:.18em; margin-left:11px; } }
+  @media (min-width:900px){
+    .bene .lab{ margin-bottom:11px; }
+    .bene .lab-ja{ font-size:17.5px; }
+    .bene .lab-en2{ font-size:15px; }
+  }
+  /* PLANS 本文の強調（「知る」から、「選ぶ」へ。） */
+  .plan .pl-body b{ font-family:var(--mincho); font-weight:600; color:var(--navy); letter-spacing:.06em; }
+  /* MEMBERS: 段落の切れ目 */
+  .plan .pl-gap{ display:block; height:9px; }
+  /* 最終CTA */
+  .last .last-sub{
+    margin-top:18px; font-size:15px; line-height:2.1; color:var(--muted); letter-spacing:.05em;
+    max-width:32em; margin-left:auto; margin-right:auto; text-wrap:pretty;
+  }
+  .last .last-trial{
+    margin-top:22px; font-family:var(--mincho); font-size:15px; font-weight:500;
+    letter-spacing:.1em; color:var(--navy); line-height:2; text-wrap:balance;
+  }
+  .last .note-nocharge{
+    margin-top:12px; font-size:12.5px; letter-spacing:.06em; color:#a39d8d; line-height:1.9;
+  }
+  @media (min-width:760px){
+    .last .last-sub{ font-size:16.5px; }
+    .last .last-trial{ font-size:16.5px; }
+    .last .note-nocharge{ font-size:13px; }
+  }
 </style>
 <script src="js/vendor/budoux-ja.min.js" defer></script>
 </head>
@@ -430,10 +476,9 @@
     <div class="script">Bonjour</div>
     <div class="bl">今日の私に、追い風を。</div>
   </div>
-  <h1>いまの流れがわかると、<br>次の一歩が見えてくる。</h1>
-  <div class="sub"><span class="ku">本質と、いまの流れを知って。</span><br><span class="ku">今日どう動くかまで、</span><span class="ku">自分で選べるように。</span></div>
+  <h1>欲しい未来は、<br>待つより選びにいく。</h1>
+  <div class="sub"><span class="ku">自分の本質と、</span><span class="ku">いまの流れを知って、</span><br><span class="ku">今日のベストを、</span><span class="ku">自分で選ぶ。</span></div>
   <div class="cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a></div>
-  <div class="fine"><span class="ku">ご登録後、</span><span class="ku">運命リズム診断のご案内に加えて、</span><span class="ku">目黒せいこから</span><span class="ku">人生設計・仕事・美容・健康・</span><span class="ku">運の使い方など、</span><span class="ku">日々の選択に役立つメールも</span><span class="ku">お届けします。</span><span class="ku">配信はいつでも停止できます。</span></div>
 </div>
 
 <div class="band alt"><div class="wrap">
@@ -456,11 +501,11 @@
   <div class="sec">
     <span class="em-h"><img src="assets/icons/trimmed/icon_feather.png" alt=""></span>
     <div class="lab-en">DAILY CHOICES</div>
-    <h2>毎日の選択を、少し軽く。</h2>
+    <h2><span class="ku">どうせ選ぶなら、</span><span class="ku">今日のベストを。</span></h2>
     <div class="sep"></div>
-    <p class="body"><span class="ku">私たちの毎日は、</span><span class="ku">小さな選択の連続です。</span><br class="pcbr"><span class="ku">何を意識する？　</span><span class="ku">いつ動く？　</span><span class="ku">今日は、どちらへ向かう？</span></p>
-    <p class="body" style="margin-top:18px;"><span class="ku">先に自分の流れを知っておくと、</span><span class="ku">迷う時間が減り、</span><span class="ku">自分で決めて動けるようになる。</span><br class="pcbr"><span class="ku">すると、毎日に納得感が生まれ、</span><span class="ku">人生が自分のものになっていく。</span></p>
-    <p class="body" style="margin-top:18px;"><span class="ku">運命リズム診断は、</span><span class="ku">答えを渡す占いではなく、</span><br class="pcbr"><b><span class="ku">毎日の選択を少し軽くするための、</span><span class="ku">羅針盤</span></b>です。</p>
+    <p class="body"><span class="ku">私たちの毎日は、</span><span class="ku">小さな選択の連続です。</span><br class="pcbr"><span class="ku">何をする？　</span><span class="ku">誰に会う？　</span><span class="ku">どこへ行く？　</span><span class="ku">何を大切にする？</span></p>
+    <p class="body" style="margin-top:18px;"><span class="ku">そのたびにゼロから迷うのではなく、</span><span class="ku">先に今日の流れを知っておく。</span><br class="pcbr"><span class="ku">すると、迷う時間が減り、</span><span class="ku">自分で決めて動けるようになる。</span><br class="pcbr"><span class="ku">そして、毎日の選択に</span><span class="ku">納得感が生まれ、</span><span class="em-line"><span class="ku">人生が、</span><span class="ku">自分のものになっていく。</span></span></p>
+    <p class="body" style="margin-top:26px;"><span class="ku">運命リズム診断は、</span><span class="ku">答えをもらうための</span><span class="ku">占いではありません。</span><br class="pcbr"><span class="ku">自分を知り、</span><span class="ku">流れを知り、</span><br class="pcbr"><b><span class="ku">今日を自分で選ぶための、</span><span class="ku">羅針盤</span></b><span class="ku">です。</span></p>
   </div>
 </div></div>
 
@@ -471,6 +516,7 @@
     <div class="lab-en">WHAT YOU RECEIVE</div>
     <h2>毎朝、届くもの</h2>
     <div class="sep"></div>
+    <p class="body"><span class="ku">届くのは、</span><span class="ku">情報ではなく、</span><span class="ku">今日の選び方です。</span><br class="pcbr"><span class="ku">本質、季節、今月、今日、</span><span class="ku">そして方位まで。</span><br class="pcbr"><span class="ku">知ったことが、</span><span class="ku">そのまま今日の一手になります。</span></p>
     <div class="app-peek">
       <div class="ap-screen">
         <div class="ap-date">AUGUST 28, FRIDAY</div>
@@ -499,11 +545,11 @@
         </div>
       </div>
       <div class="item"><div class="no"><span class="labnum">02</span></div><div class="tt">いま、人生のどんな季節にいるのか</div>
-        <div class="dd"><span class="ku">大きな流れのなかの、</span><span class="ku">いまの位置がわかります。</span></div></div>
+        <div class="dd"><span class="ku">大きな流れのなかの、</span><span class="ku">いまの位置がわかる。</span><span class="ku">だから、</span><span class="ku">いま何に力を注ぐかを選べます。</span></div></div>
       <div class="item"><div class="no"><span class="labnum">03</span></div><div class="tt">今月のリズム</div>
-        <div class="dd"><span class="ku">暦の節目で切り替わる、</span><span class="ku">今月の流れと過ごし方。</span></div></div>
+        <div class="dd"><span class="ku">暦の節目で切り替わる、</span><span class="ku">今月の流れと過ごし方。</span><span class="ku">予定の組み方が変わります。</span></div></div>
       <div class="item"><div class="no"><span class="labnum">04</span></div><div class="tt">今日の4つのカード</div>
-        <div class="dd"><span class="ku">テーマ・メッセージ・一歩・言葉。</span><span class="ku">毎日変わります。</span></div></div>
+        <div class="dd"><span class="ku">テーマ・メッセージ・一歩・言葉。</span><span class="ku">今日いちばんに選ぶことが、</span><span class="ku">決まります。</span></div></div>
       <div class="item"><div class="no"><span class="labnum">05</span></div><div class="tt">今日のおすすめ方位と、行動ナビ</div>
         <div class="dd"><span class="ku">今日は東が味方。</span><span class="ku">ならモーニングは、東のカフェへ。</span><span class="ku">方位盤が読めなくても、</span><span class="ku">今日の流れを生活で使えます。</span><span class="ku">（BASIC MEMBER）</span></div></div>
     </div>
@@ -514,20 +560,24 @@
   <!-- 3.5 ベネフィット -->
   <div class="sec">
     <span class="em-h"><img src="assets/icons/lp/icon_shine.png" alt=""></span>
-    <h2>つづけていると、未来が変わります</h2>
+    <h2><span class="ku">毎日の選び方が、</span><span class="ku">未来を変えていく。</span></h2>
     <div class="sep"></div>
+    <p class="body"><span class="ku">仕事も、</span><span class="ku">きれいも、</span><span class="ku">愛も。</span><br class="pcbr"><span class="ku">流れを知ると、</span><span class="ku">選び方が変わる。</span></p>
     <div class="bene">
       <div class="bi">
-        <div class="bt">朝、迷わなくなる</div>
-        <div class="bd"><span class="ku">今日なにを大事にするかが、</span><span class="ku">1分で決まる。</span></div>
+        <div class="lab"><span class="lab-ja">仕事</span><span class="lab-en2">WORK</span></div>
+        <div class="bt">仕事のチャンスに気づける</div>
+        <div class="bd"><span class="ku">動く日、</span><span class="ku">会う日、</span><span class="ku">伝える日。</span><br class="pcbr"><span class="ku">タイミングを意識して、</span><span class="ku">チャンスを逃しにくくする。</span></div>
       </div>
       <div class="bi">
-        <div class="bt">選ぶことが、軽くなる</div>
-        <div class="bd"><span class="ku">「いまはこういう流れ」とわかっていると、</span><span class="ku">決断の迷いが減っていく。</span></div>
+        <div class="lab"><span class="lab-ja">魅力</span><span class="lab-en2">BEAUTY</span></div>
+        <div class="bt">魅力を、もっと活かせる</div>
+        <div class="bd"><span class="ku">前に出る日も、</span><span class="ku">整える日も。</span><br class="pcbr"><span class="ku">今の自分に合った選択が、</span><span class="ku">きれいと自信に</span><span class="ku">つながっていく。</span></div>
       </div>
       <div class="bi">
-        <div class="bt">自分に戻る時間ができる</div>
-        <div class="bd"><span class="ku">外の情報より先に、</span><span class="ku">自分と話す1分が、</span><span class="ku">静かな習慣になる。</span></div>
+        <div class="lab"><span class="lab-ja">愛・ご縁</span><span class="lab-en2">LOVE &amp; RELATIONSHIPS</span></div>
+        <div class="bt">ご縁を、もっと心地よく育てられる</div>
+        <div class="bd"><span class="ku">誰と会うか、</span><span class="ku">何を伝えるか。</span><br class="pcbr"><span class="ku">自分の状態を知ることで、</span><span class="ku">人との関係にも</span><span class="ku">余白が生まれる。</span></div>
       </div>
     </div>
   </div>
@@ -538,7 +588,7 @@
   <div class="sec">
     <span class="em-h em-cat" style="left:4%; right:auto;"><img src="assets/icons/lp/icon_manekineko.png" alt=""></span>
     <div class="lab-en"><span class="labnum">14</span> DAYS</div>
-    <h2>14日間、まず使ってみてください。</h2>
+    <h2><span class="ku">14日間、</span><span class="ku">今日のベストを選ぶ習慣を。</span></h2>
     <div class="sep"></div>
     <div class="trial-band">
       <div class="big"><span class="ku">最初の14日間は、</span><br class="pcbr"><span class="ku">BASICの内容まで</span><span class="ku">自由に見られます。</span></div>
@@ -564,7 +614,7 @@
   <div class="sec">
     <span class="em-h"><img src="assets/icons/trimmed/icon_center.png" alt=""></span>
     <div class="lab-en">PLANS</div>
-    <h2>まずは無料で、<br class="pcbr">あなたの本質と今日の流れを知る。</h2>
+    <h2><span class="ku">まずは無料で、</span><br class="pcbr"><span class="ku">今日の自分を知ることから。</span></h2>
     <div class="sep"></div>
     <div class="plans">
       <div class="plan">
@@ -573,11 +623,14 @@
       </div>
       <div class="plan plan-basic">
         <div class="pl-name">BASIC｜月額1,100円</div>
-        <div class="pl-body"><span class="ku">知った流れを、</span><span class="ku">毎日の選択に使えるようになります。</span><br class="pcbr"><span class="ku">今日のメッセージと一歩。</span><span class="ku">今日のおすすめ方位と</span><span class="ku">「どちらへ行く？」のナビ。</span><br class="pcbr"><span class="ku">そして根拠の方位盤（年盤・月盤・日盤）。</span><br class="pcbr"><span class="ku">朝の1分で、</span><span class="ku">今日の動き方が決まります。</span></div>
+        <div class="pl-body"><span class="ku">知った流れを、</span><span class="ku">今日の選択に</span><span class="ku">使えるようになります。</span><br class="pcbr"><span class="ku">今日のメッセージ、</span><span class="ku">今日の一歩、</span><span class="ku">おすすめ方位と行動ナビ、</span><span class="ku">今日のひと皿まで。</span><br class="pcbr"><span class="ku">そして根拠の方位盤</span><span class="ku">（年盤・月盤・日盤）。</span><br class="pcbr"><b><span class="ku">「知る」から、</span><span class="ku">「選ぶ」へ。</span></b></div>
       </div>
       <div class="plan plan-members">
         <div class="pl-name">MEMBERS｜近日ご案内</div>
-        <div class="pl-body"><span class="ku">毎月の流れを、</span><span class="ku">せいこと一緒に整えたい方へ。</span><br class="pcbr"><span class="ku">月1回の解説やQ&amp;A、</span><span class="ku">オフ会・イベントの先行案内などを予定しています。</span><br class="pcbr"><span class="ku">運とAIを、</span><span class="ku">人生や仕事の選択に活かす</span><span class="ku">実践的なヒントも。</span><br class="pcbr"><span class="ku">月に一度立ち止まって、</span><span class="ku">「今の私なら、どう動く？」を</span><span class="ku">一緒に整えていく場所です。</span><br class="pcbr"><span class="ku">ご案内の準備ができましたら、</span><span class="ku">メールでお知らせします。</span></div>
+        <div class="pl-body"><span class="ku">欲しいものは、</span><span class="ku">ひとつじゃない。</span><span class="ku">仕事も、</span><span class="ku">きれいも、</span><span class="ku">愛も、</span><span class="ku">成長も。</span>
+          <span class="pl-gap"></span><span class="ku">毎月の流れを</span><span class="ku">知って、</span><span class="ku">今の自分にとっての</span><span class="ku">ベストを</span><span class="ku">選びにいく。</span>
+          <span class="pl-gap"></span><span class="ku">月1回の</span><span class="ku">流れの解説や</span><span class="ku">Q&amp;A、</span><span class="ku">オフ会・</span><span class="ku">イベントの</span><span class="ku">先行案内など。</span>
+          <span class="pl-gap"></span><span class="ku">知った流れを、</span><span class="ku">現実の行動に</span><span class="ku">変えていく</span><span class="ku">場所です。</span></div>
       </div>
     </div>
   </div>
@@ -611,7 +664,7 @@
         <div class="nm">目黒せいこ</div>
         <div class="ttl">FIRST CLASS LIFE DESIGNER</div>
         <p><span class="ku">JALの客室乗務員として23年。</span><span class="ku">ファーストクラスの機内で、</span><span class="ku">一流と呼ばれる人たちの</span><span class="ku">「動き方」を間近に見てきました。</span><span class="ku">いまは九星気学と人生設計を軸に、</span><span class="ku">運の流れを現実の選択に</span><span class="ku">翻訳する仕事をしています。</span></p>
-        <div class="kotae">運命リズムが渡すのは<br>答えではありません。<br>今日をどう過ごすか<br>自分で選ぶための材料です。</div>
+        <div class="kotae">運命リズムが渡すのは、<br>答えではありません。<br>自分を知り、流れを知り、<br>今日のベストを<br>自分で選ぶための材料です。</div>
       </div>
     </div>
   </div>
@@ -647,9 +700,12 @@
 <div class="last">
   <span class="em-h em-plane"><img src="assets/icons/lp/icon_plane.png" alt=""></span>
   <div class="wrap">
-    <div class="line">明日の朝から、<br>始められます。</div>
+    <div class="line">欲しい未来は、<br>待つより選びにいく。</div>
+    <div class="last-sub"><span class="ku">まずは今日の流れを知って、</span><br class="pcbr"><span class="ku">今日のベストを選ぶことから。</span></div>
+    <div class="last-trial"><span class="ku">運命リズム診断</span><br><span class="ku">14日間、</span><span class="ku">BASICの全機能を</span><span class="ku">無料で体験できます。</span></div>
     <div class="regform">
-      <a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a>
+      <a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">今すぐ始める →</a>
+      <div class="note-nocharge"><span class="ku">15日目から</span><span class="ku">自動で有料になることは</span><span class="ku">ありません。</span></div>
       <div class="fine"><span class="ku">ご登録後、</span><span class="ku">運命リズム診断のご案内に加えて、</span><span class="ku">目黒せいこから</span><span class="ku">人生設計・仕事・美容・健康・</span><span class="ku">運の使い方など、</span><span class="ku">日々の選択に役立つメールも</span><span class="ku">お届けします。</span><span class="ku">配信はいつでも停止できます。</span></div>
     </div>
   </div>
