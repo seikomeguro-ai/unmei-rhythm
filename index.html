@@ -862,5 +862,20 @@
   });
 })();
 </script>
+<script>
+/* ハッシュ付きで開かれたとき、読み込み完了後にもう一度その位置へ寄せる。
+   LPが長く、Webフォント/budouxの整形後に高さが変わるため、初回ジャンプがずれる対策。 */
+(function () {
+  'use strict';
+  if (!window.location.hash) return;
+  function jump() {
+    try {
+      var el = document.querySelector(window.location.hash);
+      if (el) el.scrollIntoView();
+    } catch (e) {}
+  }
+  window.addEventListener('load', function () { jump(); setTimeout(jump, 400); setTimeout(jump, 1200); });
+})();
+</script>
 </body>
 </html>
