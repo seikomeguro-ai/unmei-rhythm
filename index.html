@@ -871,7 +871,12 @@
   function jump() {
     try {
       var el = document.querySelector(window.location.hash);
-      if (el) el.scrollIntoView();
+      if (!el) return;
+      var root = document.documentElement;
+      var prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';   // smoothスクロールだと初回ジャンプが取りこぼされる
+      el.scrollIntoView();
+      root.style.scrollBehavior = prev;
     } catch (e) {}
   }
   window.addEventListener('load', function () { jump(); setTimeout(jump, 400); setTimeout(jump, 1200); });
