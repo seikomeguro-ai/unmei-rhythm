@@ -465,6 +465,71 @@
     .last .last-trial{ font-size:16.5px; }
     .last .note-nocharge{ font-size:13px; }
   }
+  /* ===== 2026-09-08 Webアプリであることの明示・ホーム画面に追加 ===== */
+  /* FV: 見出しとサブの間に置く「これは何か」の一行 */
+  .fv-under .fv-app{
+    margin-top:16px; font-family:var(--mincho); font-size:16px; font-weight:600;
+    letter-spacing:.1em; color:var(--gold-deep); line-height:1.95; text-wrap:balance;
+  }
+  @media (min-width:900px){ .fv-under .fv-app{ font-size:19px; margin-top:20px; } }
+
+  /* MORNING RITUAL: ダウンロード不要の説明カード */
+  .webapp-note{
+    margin:28px auto 0; max-width:37em; padding:20px 22px 22px;
+    background:var(--card); border:1px solid var(--gold-line); border-radius:14px; text-align:center;
+  }
+  .webapp-note .wn-lead{
+    font-family:var(--mincho); font-size:16.5px; font-weight:600; color:var(--navy);
+    letter-spacing:.07em; line-height:1.95; text-wrap:balance;
+  }
+  .webapp-note p{
+    margin-top:12px; font-size:15px; line-height:2.1; color:var(--muted); text-wrap:pretty;
+  }
+  @media (min-width:900px){
+    .webapp-note .wn-lead{ font-size:18px; }
+    .webapp-note p{ font-size:16px; }
+  }
+
+  /* ホーム画面に追加: 端末別カード */
+  .devs{ margin-top:28px; text-align:left; display:flex; flex-direction:column; gap:16px; }
+  .dev{
+    background:var(--card); border:1px solid var(--gold-line); border-radius:14px; padding:22px 20px 24px;
+  }
+  .dev-name{
+    font-family:var(--garamond); font-size:19px; font-weight:700; letter-spacing:.2em;
+    color:var(--gold-deep); text-align:center; padding-bottom:14px; margin-bottom:16px;
+    border-bottom:1px solid var(--gold-line);
+  }
+  .dev-lead{ font-size:15.5px; line-height:2; color:var(--ink); }
+  .dev-body{ margin-top:10px; font-size:15px; line-height:2.1; color:var(--muted); text-wrap:pretty; }
+  .dev-note{ margin-top:14px; font-size:13px; line-height:1.95; color:#a39d8d; text-wrap:pretty; }
+  /* iPhone: Safariで開く注意（このセクションで一番読ませたい） */
+  .dev-alert{
+    background:#fbf5ea; border:1px solid var(--gold); border-radius:10px; padding:14px 16px;
+    font-size:15.5px; line-height:1.95; color:var(--ink); text-align:center; text-wrap:balance;
+  }
+  .dev-alert b{ display:block; margin-top:4px; font-family:var(--mincho); font-size:17px; font-weight:600; color:var(--navy); letter-spacing:.05em; }
+  .dev-alert-sub{ margin-top:10px; font-size:13px; line-height:1.95; color:#a39d8d; text-wrap:pretty; }
+  .dev .dev-steps{ margin-top:14px; }
+  .dev .dev-steps .step{ font-size:15.5px; line-height:1.95; padding:11px 0 11px 44px; }
+  .dev .dev-steps .step::before{ width:26px; height:26px; font-size:17px; top:12px; left:2px; }
+  .dev .dev-steps .step b{ font-family:var(--mincho); font-weight:600; color:var(--navy); }
+  /* 締め: 朝の使い方が目に浮かぶ一行 */
+  .morning-flow{
+    margin-top:30px; font-family:var(--mincho); font-size:16px; font-weight:600;
+    letter-spacing:.1em; color:var(--gold-deep); line-height:2; text-wrap:balance;
+  }
+  @media (min-width:760px){
+    .dev{ padding:24px 24px 26px; }
+    .dev-name{ font-size:20px; }
+    .morning-flow{ font-size:19px; margin-top:38px; }
+  }
+  /* 横並びはカラムが十分に広い1100px以上だけ。iPhoneとAndroidを2列、PCはその下に1列 */
+  @media (min-width:1100px){
+    .devs{ flex-direction:row; flex-wrap:wrap; align-items:stretch; }
+    .dev{ flex:1 1 calc(50% - 8px); }
+    .dev:last-child{ flex-basis:100%; }
+  }
 </style>
 <script src="js/vendor/budoux-ja.min.js" defer></script>
 </head>
@@ -486,6 +551,7 @@
     <div class="bl">今日の私に、追い風を。</div>
   </div>
   <h1>欲しい未来は、<br>待つより選びにいく。</h1>
+  <div class="fv-app"><span class="ku">毎朝スマホで開いて使う、</span><br class="pcbr"><span class="ku">あなた専用の</span><span class="ku">運命リズムWebアプリ。</span></div>
   <div class="sub"><span class="ku">自分の本質と、</span><span class="ku">いまの流れを知って、</span><br><span class="ku">今日のベストを、</span><span class="ku">自分で選ぶ。</span></div>
   <div class="cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a></div>
 </div>
@@ -498,6 +564,10 @@
     <div class="sep"></div>
     <p class="body"><span class="ku">朝、スマホを手に取って、</span><span class="ku">ニュースやSNSをひらく前に。</span><br class="pcbr"><span class="ku">自分の今日の流れを、</span><span class="ku">1分だけ見る。</span><br class="pcbr"><span class="ku">運命リズム診断は、</span><span class="ku">そんな<b>朝の習慣</b>です。</span></p>
     <p class="body" style="margin-top:18px;"><span class="ku">九星気学の暦にもとづいて、</span><span class="ku">あなたの生まれ持った本質と、</span><span class="ku">今日という日の流れを、</span><span class="ku">毎朝読み解いてお届けします。</span></p>
+    <div class="webapp-note">
+      <div class="wn-lead"><span class="ku">ダウンロード不要。</span><br class="pcbr"><span class="ku">スマホやPCのブラウザで使える</span><span class="ku">Webアプリです。</span></div>
+      <p><span class="ku">URLを開くだけで、</span><span class="ku">あなたの本質や今日の流れ、</span><span class="ku">方位・食・ラッキーモチーフなどを</span><span class="ku">確認できます。</span><br class="pcbr"><span class="ku">毎朝の小さな習慣として、</span><span class="ku">その日の自分を知り、</span><span class="ku">今日のベストを選ぶために</span><span class="ku">使ってください。</span></p>
+    </div>
   </div>
 </div></div>
 
@@ -505,7 +575,7 @@
 <div class="quote-line">
   運は、流れを知って、<br class="qbr">使うもの。</div>
 
-<div class="band"><div class="wrap">
+<div class="band alt"><div class="wrap">
   <!-- 2.7 DAILY CHOICES（2026-09-01追加・せいこさん確定文言） -->
   <div class="sec">
     <span class="em-h"><img src="assets/icons/trimmed/icon_feather.png" alt=""></span>
@@ -518,7 +588,7 @@
   </div>
 </div></div>
 
-<div class="band alt"><div class="wrap">
+<div class="band"><div class="wrap">
   <!-- 3. 届くもの -->
   <div class="sec">
     <span class="em-h" style="left:4%; right:auto;"><img src="assets/icons/lp/icon_crown.png" alt=""></span>
@@ -565,7 +635,7 @@
   </div>
 </div></div>
 
-<div class="band"><div class="wrap">
+<div class="band alt"><div class="wrap">
   <!-- 3.5 ベネフィット -->
   <div class="sec">
     <span class="em-h"><img src="assets/icons/lp/icon_shine.png" alt=""></span>
@@ -575,7 +645,7 @@
     <div class="bene">
       <div class="bi">
         <div class="lab"><span class="lab-ja">仕事</span><span class="lab-en2">WORK</span></div>
-        <div class="bt">仕事のチャンスに気づける</div>
+        <div class="bt">チャンスに気づける</div>
         <div class="bd"><span class="ku">動く日、</span><span class="ku">会う日、</span><span class="ku">伝える日。</span><br class="pcbr"><span class="ku">タイミングを意識して、</span><span class="ku">チャンスを逃しにくくする。</span></div>
       </div>
       <div class="bi">
@@ -592,7 +662,7 @@
   </div>
 </div></div>
 
-<div class="band alt"><div class="wrap">
+<div class="band"><div class="wrap">
   <!-- 4. 14日 -->
   <div class="sec">
     <span class="em-h em-cat" style="left:4%; right:auto;"><img src="assets/icons/lp/icon_manekineko.png" alt=""></span>
@@ -618,7 +688,7 @@
   </div>
 </div></div>
 
-<div class="band"><div class="wrap">
+<div class="band alt"><div class="wrap">
   <!-- 4.5 PLANS（2026-09-01追加） -->
   <div class="sec">
     <span class="em-h"><img src="assets/icons/trimmed/icon_center.png" alt=""></span>
@@ -661,9 +731,54 @@
 </div></div>
 
 <div class="band alt"><div class="wrap">
+  <!-- 5.5 ホーム画面に追加（2026-09-08追加） -->
+  <div class="sec">
+    <span class="em-h"><img src="assets/icons/trimmed/icon_start.png" alt=""></span>
+    <div class="lab-en">HOME SCREEN</div>
+    <h2><span class="ku">毎朝使うなら、</span><br class="pcbr"><span class="ku">ホーム画面に追加が</span><span class="ku">おすすめ。</span></h2>
+    <div class="sep"></div>
+    <p class="body"><span class="ku">アプリのように、</span><span class="ku">ワンタップで運命リズム診断を</span><span class="ku">開けます。</span></p>
+    <div class="devs">
+
+      <div class="dev">
+        <div class="dev-name">iPhone</div>
+        <div class="dev-alert"><span class="ku">ホーム画面に追加する前に、</span><br class="pcbr"><b><span class="ku">必ずSafariで開いてください。</span></b></div>
+        <div class="dev-alert-sub"><span class="ku">LINEやInstagramの中のブラウザで</span><span class="ku">開いている場合は、</span><span class="ku">Safariで開き直してください。</span><br class="pcbr"><span class="ku">（このひと手間がないと、</span><span class="ku">「ホーム画面に追加」が</span><span class="ku">出てきません）</span></div>
+        <div class="steps dev-steps">
+          <div class="step">画面下の<b>共有ボタン</b>をタップ<small><span class="ku">「•••」しか見えないときは、</span><span class="ku">「•••」→「共有」の順にタップ</span></small></div>
+          <div class="step"><b>「ホーム画面に追加」</b>を選ぶ</div>
+          <div class="step">右上の<b>「追加」</b>をタップ</div>
+          <div class="step">ホーム画面にアイコンが追加される</div>
+        </div>
+      </div>
+
+      <div class="dev">
+        <div class="dev-name">Android</div>
+        <div class="dev-lead"><span class="ku"><b>Chrome</b>で</span><span class="ku">運命リズム診断を開きます。</span></div>
+        <div class="steps dev-steps">
+          <div class="step">右上の<b>メニューボタン</b>をタップ</div>
+          <div class="step"><b>「ホーム画面に追加」</b>を選ぶ</div>
+          <div class="step">確認画面で<b>「ホーム画面に追加」</b>をタップ</div>
+          <div class="step">ホーム画面から開けるようになる</div>
+        </div>
+        <div class="dev-note"><span class="ku">※端末やChromeのバージョンによって、</span><span class="ku">表示名が少し違うことがあります。</span></div>
+      </div>
+
+      <div class="dev">
+        <div class="dev-name">PC</div>
+        <div class="dev-lead"><span class="ku">PCで使う方は、</span><span class="ku"><b>ブックマーク</b>がおすすめ。</span></div>
+        <div class="dev-body"><span class="ku">ブラウザのお気に入り／ブックマークに</span><span class="ku">登録しておくと、</span><br class="pcbr"><span class="ku">毎朝すぐに</span><span class="ku">運命リズム診断を開けます。</span></div>
+      </div>
+
+    </div>
+    <div class="morning-flow"><span class="ku">朝、</span><span class="ku">ホーム画面をタップ。</span><br class="pcbr"><span class="ku">今日の流れを見て、</span><span class="ku">今日のベストを選ぶ。</span></div>
+  </div>
+</div></div>
+
+<div class="band"><div class="wrap">
   <!-- 6. プロフィール -->
   <div class="sec">
-    <span class="em-h"><img src="assets/icons/lp/icon_rose.png" alt=""></span>
+    <span class="em-h" style="left:4%; right:auto;"><img src="assets/icons/lp/icon_rose.png" alt=""></span>
     <div class="lab-en">PROFILE</div>
     <h2>お届けするのは</h2>
     <div class="sep"></div>
@@ -679,10 +794,10 @@
   </div>
 </div></div>
 
-<div class="band"><div class="wrap">
+<div class="band alt"><div class="wrap">
   <!-- 7. Q&A -->
   <div class="sec">
-    <span class="em-h" style="left:4%; right:auto;"><img src="assets/icons/lp/icon_shell.png" alt=""></span>
+    <span class="em-h"><img src="assets/icons/lp/icon_shell.png" alt=""></span>
     <div class="lab-en">Q &amp; A</div>
     <h2>よくあるご質問</h2>
     <div class="sep"></div>
