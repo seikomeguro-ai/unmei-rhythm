@@ -4,7 +4,7 @@
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
-  "display": "browser",
+  "display": "standalone",
   "background_color": "#FCF8F1",
   "theme_color": "#FCF8F1",
   "icons": [
