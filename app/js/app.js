@@ -131,27 +131,60 @@
       '<div class="tease-line"><budoux-ja>この先の読み解きは、BASICでご覧いただけます</budoux-ja></div></div>';
   }
 
+  // --- 上部の状態通知（体験の残り／体験終了）---
+  // 2026-09-10 せいこさん決裁:
+  //   体験の残り3日以下 → 静かにカウントダウン
+  //   15〜17日目        → 「14日間の無料体験は終了しました」
+  //   18日目以降        → 何も出さない（鍵と下部の申込カードだけにする）
+  function trialNoticeHTML(today) {
+    if (UR_PREMIUM.tier() === 'premium') return '';
+    var start = null;
+    try { start = localStorage.getItem('ur_start'); } catch (e) { }
+    var idx = UR_PREMIUM.trialDayIndex(start, today && today.dateKey);
+    if (idx === null) return '';
+    var D = UR_PREMIUM.TRIAL_DAYS;
+    if (idx <= D) {
+      var left = D - idx + 1;
+      if (left > 3 || left < 1) return '';
+      return '<div class="tnotice">体験でご覧いただけるのは、あと' + left + '日です</div>';
+    }
+    if (idx <= D + 3) {
+      return '<div class="tnotice tnotice-end">14日間の無料体験は終了しました</div>';
+    }
+    return '';
+  }
+
   // --- アカウント（BASICのログイン状態）---
-  // 無料版の人に余計なものを見せない方針なので、文面は静かに。
-  // 「別の端末でも使える」ことだけが伝わればよい。
-  function accountLineHTML() {
+  // 2026-09-10: 画面下部のリンク群（「生年月日を入れ直す」の並び）から開く形にした。
+  // 常時表示だと、体験中の人にも意味のわからない欄が出てしまうため。
+  // ただしリンク自体は常に置く。BASICの方が新しい端末で開くと、その端末では
+  // 「体験中」に見えるので、申込カードの中だけに置くと14日間たどり着けない。
+  function accountPanelHTML() {
     if (UR_ACCOUNT.isLoggedIn()) {
       var until = UR_PREMIUM.basicUntil();
       var addr = UR_ACCOUNT.email() || '';
-      return '<div class="acct">' +
-        '<div class="acct-line">' + esc(addr) + ' でご利用中' +
+      return '<div class="acct-line">' + esc(addr) + ' でご利用中' +
         (until ? '<span class="acct-until">' + esc(until) + ' まで</span>' : '') + '</div>' +
-        '<button type="button" class="acct-link" id="acct-signout">この端末からログアウト</button>' +
-        '</div>';
+        '<button type="button" class="acct-link" id="acct-signout">この端末からログアウト</button>';
     }
-    return '<div class="acct">' +
-      '<button type="button" class="acct-link" id="acct-open">すでにBASICをご利用の方はこちら</button>' +
-      '<div class="acct-form" id="acct-form" hidden>' +
+    return '<div class="acct-form">' +
       '<div class="acct-note"><budoux-ja>お申し込みのときのメールアドレスを入れてください。ログイン用のリンクをお送りします。</budoux-ja></div>' +
       '<input type="email" id="acct-email" inputmode="email" autocomplete="email" placeholder="メールアドレス">' +
       '<button type="button" class="acct-send" id="acct-send">リンクを送る</button>' +
       '<div class="acct-msg" id="acct-msg" hidden></div>' +
-      '</div></div>';
+      '</div>';
+  }
+
+  function toggleAccountPanel() {
+    var panel = $('acct-panel');
+    if (!panel) return;
+    if (panel.hidden) {
+      panel.innerHTML = accountPanelHTML();
+      panel.hidden = false;
+      var i = $('acct-email'); if (i) i.focus();
+    } else {
+      panel.hidden = true;
+    }
   }
 
   // 描画のたびに呼ぶ後処理。innerHTMLを入れ替えた直後に実行する
@@ -338,8 +371,8 @@
       dayZone: r.dayZone, dateKey: today.dateKey
     }, CONTENT);
 
-    var html = '';
     var locked = UR_PREMIUM.tier() === 'free';  // 無料版だけロック（体験中・BASICは全部見える）
+    var html = trialNoticeHTML(today);
 
     // 1. THEME（線画つき）
     html += '<div class="sec">' + labHTML('Theme', '今日のテーマ', true);
@@ -400,9 +433,9 @@
     if (locked && SHOW_BASIC_CTA) {
       html += '<div class="premium-cta">' +
         '<div class="pc-lab">BASIC</div>' +
-        '<div class="pc-title"><budoux-ja>その流れを、今日どう使うかまで。</budoux-ja></div>' +
-        '<div class="pc-copy"><budoux-ja>毎朝の読み解きと今日の一歩、「今日はどちらへ」のおすすめ方位、年盤・月盤・日盤、今月の詳しい読み解きをお届けします。</budoux-ja></div>' +
-        '<div class="pc-price">月額 1,100円</div>' +
+        '<div class="pc-title"><budoux-ja>続きを見るには、BASICへ。</budoux-ja></div>' +
+        '<div class="pc-copy"><budoux-ja>今日のメッセージ、今日の一歩、おすすめの方位、年盤・月盤・日盤、今月の詳しい読み解きをご覧いただけます。</budoux-ja></div>' +
+        '<div class="pc-price">月額 1,100円（税込）<span class="pc-price-sub">いつでも解約できます</span></div>' +
         '<div id="paypal-button" class="pc-paypal"></div>' +
         '<div class="pc-note" id="pc-status">お手続きが済むと、そのままこの画面でご覧いただけます。</div>' +
         '</div>';
@@ -410,8 +443,6 @@
       _needCheckout = true;
     }
 
-    // アカウント行（ログイン中の表示／別の端末から使うための入口）
-    html += accountLineHTML();
 
     // モチーフ図鑑への導線
     html += '<div class="linkline" style="margin-top:26px;"><a href="motifs.html">今日の絵柄にこめた意味を知る →</a></div>';
@@ -601,6 +632,7 @@
   }
   $('link-redo').addEventListener('click', redo);
   $('link-redo2').addEventListener('click', redo);
+  $('link-account').addEventListener('click', function (e) { e.preventDefault(); toggleAccountPanel(); });
 
   // 方位盤タブ（日盤/月盤/年盤）の切り替え
   document.addEventListener('click', function (e) {
@@ -623,10 +655,7 @@
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (!t || !t.id) return;
-    if (t.id === 'acct-open') {
-      var f = $('acct-form'); if (f) f.hidden = false;
-      var i = $('acct-email'); if (i) i.focus();
-    } else if (t.id === 'acct-send') {
+    if (t.id === 'acct-send') {
       var input = $('acct-email');
       var msg = $('acct-msg');
       var addr = input ? String(input.value || '').trim() : '';
