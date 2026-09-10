@@ -62,17 +62,20 @@
   function bx(s) { return '<budoux-ja>' + esc(s) + '</budoux-ja>'; }
   function bxbr(s) { return '<budoux-ja>' + nl2br(s) + '</budoux-ja>'; }
   // 「一歩」用: 読点・句点ごとの句を崩れない塊にして、「、」の位置で優先して折り返す（2026-09-11）。
-  // 1句が1行に収まらないときだけ句の中を文節で折る。かぎかっこの中の「、」では区切らない
+  // 1句が1行に収まらないときだけ句の中を文節で折る。かぎかっこの中の「、」では区切らない。
+  // 文中の \n はせいこさん指定の改行位置として必ず改行する（今日の一歩72本・2026-09-11）
   function bxcl(s) {
-    var out = [], cur = '', depth = 0, str = String(s);
-    for (var i = 0; i < str.length; i++) {
-      var c = str.charAt(i); cur += c;
-      if ('「『“（('.indexOf(c) >= 0) depth++;
-      else if ('」』”）)'.indexOf(c) >= 0 && depth > 0) depth--;
-      else if ((c === '、' || c === '。') && depth === 0 && i < str.length - 1) { out.push(cur); cur = ''; }
-    }
-    if (cur) out.push(cur);
-    return out.map(function (c) { return '<span class="cl">' + bx(c) + '</span>'; }).join('');
+    return String(s).split('\n').map(function (str) {
+      var out = [], cur = '', depth = 0;
+      for (var i = 0; i < str.length; i++) {
+        var c = str.charAt(i); cur += c;
+        if ('「『“（('.indexOf(c) >= 0) depth++;
+        else if ('」』”）)'.indexOf(c) >= 0 && depth > 0) depth--;
+        else if ((c === '、' || c === '。') && depth === 0 && i < str.length - 1) { out.push(cur); cur = ''; }
+      }
+      if (cur) out.push(cur);
+      return out.map(function (c) { return '<span class="cl">' + bx(c) + '</span>'; }).join('');
+    }).join('<br>');
   }
   function show(viewId) {
     document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
@@ -517,7 +520,9 @@
       '<div class="theme" style="font-size:24px;">' + bx(y.season) + '</div>' +
       '<div class="subcopy">' + bx(y.meaning) + '</div>' +
       '<div class="prose"><p>' + esc(y.message) + '</p></div>' +
-      '<div class="action"><p>' + bxcl(y.step) + '</p></div>' +
+      // 今年の言葉（2026-09-11 年の一歩を廃止し、一年を貫く言葉として独立ブロックに）
+      (y.word ? '<div class="yword">' + labHTML2('YEAR\'S', 'Word', '今年の言葉') +
+        '<p class="yword-text">' + bxcl(y.word) + '</p></div>' : '') +
       '</div>' + sepHTML();
 
     // 今月のリズム（5パート＋IMAGINE）。無料版は「今月の流れ」まで＝今どんな流れかはわかる。
