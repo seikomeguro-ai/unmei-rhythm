@@ -844,6 +844,31 @@
   <br>&copy; Seiko Meguro ｜ Le Compas de la Vie
 </footer>
 
+<!-- 流入元タグ（?ref=）の取り込み・2026-09-10
+     ・GoatCounterには流入元として渡す（count.js が window.goatcounter.referrer を読む＝Referrersに出る）
+     ・登録完了ページ（同ドメインの /thanks/）へ引き継ぐため localStorage にも残す
+     ・アドレスバーからは ref だけ外す（読者に計測タグを見せない）。src や #hash はそのまま残す -->
+<script>
+(function () {
+  'use strict';
+  var m = window.location.search.match(/[?&]ref=([A-Za-z0-9_-]{1,32})/);
+  var ref = m ? m[1] : '';
+  if (!ref) return;
+
+  window.goatcounter = window.goatcounter || {};
+  window.goatcounter.referrer = ref;              // count.js が r= として送る
+  try { localStorage.setItem('ur_lp_ref', ref); } catch (e) {}
+
+  try {
+    var kept = window.location.search.replace(/^\?/, '').split('&').filter(function (kv) {
+      return kv && kv.split('=')[0] !== 'ref';
+    });
+    history.replaceState(null, '',
+      window.location.pathname + (kept.length ? '?' + kept.join('&') : '') + window.location.hash);
+  } catch (e) {}
+})();
+</script>
+
 <!-- アクセス計測（GoatCounter・匿名・Cookieなし・2026-09-07） -->
 <script data-goatcounter="https://unmei.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
@@ -882,5 +907,21 @@
   window.addEventListener('load', function () { jump(); setTimeout(jump, 400); setTimeout(jump, 1200); });
 })();
 </script>
+
+<!-- CTAクリックをチャンネル別に記録（GoatCounterイベント /cta_click/流入元）・2026-09-10
+     sendBeaconで送るのでページ遷移しても届く。流入元が分からないときは direct -->
+<script>
+(function () {
+  'use strict';
+  var ref = 'direct';
+  try { ref = localStorage.getItem('ur_lp_ref') || 'direct'; } catch (e) {}
+  document.querySelectorAll('a.reg-link').forEach(function (a) {
+    a.addEventListener('click', function () {
+      try { window.goatcounter.count({ path: '/cta_click/' + ref, event: true }); } catch (e) {}
+    });
+  });
+})();
+</script>
+
 </body>
 </html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登録完了 ｜ 運命リズム診断</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & Tokens ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:       #B8976A;
+      --gold-light: #D4B48A;
+      --gold-pale:  #F5EDD8;
+      --deep-brown: #2C2318;
+      --light-bg:   #FAF6F0;
+      --card-bg:    #FEFCF9;
+      --text:       #3C3328;
+      --text-sub:   #7A7062;
+      --wine:       #7A2A34;
+      --line-green: #06C755;
+    }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: var(--light-bg);
+      color: var(--text);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 50px 20px 60px;
+    }
+
+    /* ── Gold Rule ── */
+    .gold-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 12px auto 0;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header-logo {
+      width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px;
+      opacity: 0.92;
+    }
+    .brand-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 6px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .brand-title {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: var(--deep-brown);
+    }
+
+    /* ── Attention Alert Box ── */
+    .alert-box {
+      background-color: #FFFFFF;
+      border: 1px solid var(--gold-pale);
+      border-radius: 6px;
+      padding: 34px 28px 36px;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 34px rgba(44, 35, 24, 0.09);
+      position: relative;
+      overflow: hidden;
+    }
+    .alert-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-light));
+    }
+
+    /* 注意ラベル：両側にヘアラインを引いて視線を止める */
+    .alert-stay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--wine);
+      letter-spacing: 2px;
+      margin-bottom: 22px;
+    }
+    .alert-stay::before,
+    .alert-stay::after {
+      content: '';
+      flex: 1;
+      max-width: 42px;
+      height: 1px;
+      background: var(--wine);
+      opacity: 0.4;
+    }
+
+    .alert-main {
+      font-size: 21px;
+      font-weight: 500;
+      color: var(--deep-brown);
+      line-height: 1.9;
+      letter-spacing: 0.5px;
+    }
+    /* 一番届けたい一行：金の下地＋太字で浮かび上がらせる */
+    .alert-lead {
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .alert-lead strong {
+      display: inline-block;
+      font-size: 27px;
+      font-weight: 600;
+      color: var(--deep-brown);
+      letter-spacing: 2px;
+      background: linear-gradient(transparent 58%, var(--gold-pale) 58%);
+      padding: 0 8px 2px;
+    }
+
+    /* ── Gift Section ── */
+    .gift-section {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .gift-label {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 15px;
+      letter-spacing: 3px;
+      padding: 6px 20px;
+      margin-bottom: 24px;
+    }
+    .gift-copy {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--deep-brown);
+      line-height: 1.7;
+      letter-spacing: 1.5px;
+    }
+    .gift-copy span {
+      display: block;
+    }
+    .gift-copy .line2 {
+      font-size: 26px;
+    }
+
+    /* ── LINE Button (Primary CTA) ── */
+    .line-btn-wrap {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .line-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--line-green);
+      color: #FFFFFF;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-decoration: none;
+      padding: 18px 44px;
+      border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(6, 199, 85, 0.35);
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 400px;
+    }
+    .line-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(6, 199, 85, 0.45);
+      background-color: #05b04b;
+    }
+    .line-icon {
+      width: 26px;
+      height: 26px;
+      margin-right: 12px;
+      fill: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    /* ── Banner ── */
+    .banner-container {
+      margin: 0 auto 48px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #EAE0D5;
+      box-shadow: 0 12px 40px rgba(44, 35, 24, 0.10);
+    }
+    .banner-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Steps Section ── */
+    .step-section {
+      background-color: var(--card-bg);
+      border: 1px solid #EAE0D5;
+      border-radius: 6px;
+      padding: 44px 32px;
+      margin-bottom: 56px;
+    }
+    .step-section-title {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-align: center;
+      color: var(--deep-brown);
+      margin-bottom: 36px;
+    }
+    .step-section-title .gold-rule { margin-top: 14px; }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .step-card {
+      text-align: center;
+      background-color: var(--light-bg);
+      padding: 28px 16px;
+      border-radius: 6px;
+      border: 1px solid #F0E6DA;
+    }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .step-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-brown);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .step-card-desc {
+      font-size: 15px;
+      color: var(--text-sub);
+      line-height: 1.8;
+    }
+
+    /* ── Testimonials ── */
+    .testimonials-section {
+      margin-bottom: 48px;
+    }
+    .testimonials-title {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-align: center;
+      color: var(--deep-brown);
+      margin-bottom: 36px;
+    }
+    .testimonials-title .gold-rule { margin-top: 14px; }
+
+    .testimonial-card {
+      background-color: var(--card-bg);
+      border: 1px solid #EAE0D5;
+      border-radius: 6px;
+      padding: 28px 28px;
+      margin-bottom: 16px;
+    }
+    .test-role {
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .test-role span {
+      font-family: 'Noto Serif JP', serif;
+      letter-spacing: 1px;
+    }
+    .test-body {
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.95;
+    }
+    /* ── 事例のキーワード強調 ── */
+    .test-key {
+      font-weight: 600;
+      color: var(--deep-brown);
+      background: linear-gradient(transparent 62%, var(--gold-pale) 62%);
+      padding-bottom: 1px;
+    }
+    .test-note {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.8;
+      text-align: center;
+      margin-top: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── 3大特典カード ── */
+    .gifts-section {
+      margin-bottom: 48px;
+    }
+    .gifts-title {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-align: center;
+      color: var(--deep-brown);
+      margin-bottom: 32px;
+    }
+    .gifts-title .gold-rule { margin-top: 14px; }
+
+    .gift-card {
+      background-color: var(--card-bg);
+      border: 1px solid #EAE0D5;
+      border-radius: 6px;
+      padding: 30px 28px;
+      margin-bottom: 18px;
+    }
+    .gift-cover {
+      margin: 0 auto 24px;
+      text-align: center;
+    }
+    .gift-cover img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #EAE0D5;
+      border-radius: 3px;
+      box-shadow: 0 10px 28px rgba(44, 35, 24, 0.13);
+    }
+    .gift-cover--portrait img {
+      max-width: 208px;
+    }
+    .gift-card-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .gift-card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .gift-card-title {
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--deep-brown);
+      letter-spacing: 0.5px;
+      line-height: 1.6;
+    }
+    .gift-card-kicker {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: 400;
+    }
+    .gift-card-desc {
+      font-size: 16px;
+      color: var(--text-sub);
+      line-height: 1.9;
+      border-top: 1px solid var(--gold-pale);
+      padding-top: 14px;
+    }
+    .gift-card-timing {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--gold);
+      border: 1px solid var(--gold-pale);
+      background-color: var(--light-bg);
+      padding: 4px 12px;
+      border-radius: 3px;
+    }
+
+    /* ── メール確認ボックス ── */
+    .confirm-box {
+      background-color: var(--card-bg);
+      border: 1px solid #EAE0D5;
+      border-radius: 6px;
+      padding: 28px 28px;
+      margin-bottom: 48px;
+      font-size: 16px;
+      color: var(--text-sub);
+      line-height: 1.9;
+    }
+    .confirm-box h2 {
+      font-size: 18px;
+      color: var(--deep-brown);
+      font-weight: 500;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .accent-box {
+      background-color: var(--light-bg);
+      border-left: 2px solid var(--gold);
+      padding: 14px 18px;
+      font-size: 15px;
+      color: var(--text);
+      margin-top: 12px;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.9;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding-top: 36px;
+      border-top: 1px solid #EAE0D5;
+      color: var(--text-sub);
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+    .footer-logo {
+      width: 130px;
+      height: auto;
+      display: block;
+      margin: 0 auto 16px;
+      opacity: 0.75;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .wrapper { padding: 32px 15px 50px; }
+      .alert-box { padding: 28px 18px 30px; }
+      .alert-stay { font-size: 12.5px; letter-spacing: 1px; gap: 8px; }
+      .alert-stay::before, .alert-stay::after { max-width: 20px; }
+      .alert-main { font-size: 17px; }
+      .alert-lead strong { font-size: 21px; letter-spacing: 1px; }
+      .gift-copy { font-size: 20px; }
+      .gift-copy .line2 { font-size: 18px; }
+      .step-grid { grid-template-columns: 1fr; gap: 14px; }
+      .gift-card-title { font-size: 17px; }
+      .gift-card-desc { font-size: 15px; }
+      .test-body { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- ② 注目ボックス「閉じないでください」 -->
+    <!-- ★ テキスト編集はここを直接書き換えてください ★ -->
+    <section class="alert-box">
+      <span class="alert-stay">このページは、まだ閉じないでください</span>
+      <p class="alert-main">
+        ご登録ありがとうございます。<br>
+        診断ページのURLは、メールでお送りしました。<br>
+        受け取っていただきたいものが、<br>
+        もうひとつあります。
+      </p>
+      <p class="alert-lead"><strong>公式LINE 3つの特典</strong></p>
+    </section>
+
+    <!-- ③ ギフト見出し -->
+    <!-- ★ テキスト編集はここを直接書き換えてください ★ -->
+    <section class="gift-section">
+      <div class="gift-label">運命リズム診断 ご登録の方へ</div>
+      <h2 class="gift-copy">
+        <span>自分を知り、未来を拓く。</span>
+        <span class="line2">人生設計・はじめの3点セット</span>
+      </h2>
+      <div class="gold-rule"></div>
+    </section>
+
+    <!-- ④ LINEボタン（バナーより上） -->
+    <!-- ★ LINEのURLはここを変更: href="https://lin.ee/..." ★ -->
+    <div class="line-btn-wrap">
+      <a href="https://lin.ee/swNWCnt" class="line-btn" id="line-cta-top" target="_blank" rel="noopener noreferrer">
+        <svg class="line-icon" viewBox="0 0 24 24">
+          <path d="M24 10.304c0-5.228-5.383-9.47-12-9.47S0 5.076 0 10.304c0 4.687 4.263 8.6 10.014 9.355.39.085.922.258 1.057.593.12.3.077.765.038 1.067l-.164 1.02c-.049.304-.238 1.19.167 1.299.399.11 1.072-.26 1.503-.61l6.32-5.22c.38-.309.805-.758 1.047-1.168C22.616 16.035 24 13.315 24 10.304zm-14.887 2.39h-2.18c-.287 0-.52-.232-.52-.52v-3.74c0-.287.233-.52.52-.52h2.18c.287 0 .52.233.52.52v.62c0 .288-.233.52-.52.52h-1.54v.94h1.54c.287 0 .52.232.52.52v.62c0 .287-.233.52-.52.52h-1.54v.94h1.54c.287 0 .52.233.52.52v.62c0 .288-.233.52-.52.52zm3.328 0h-.62c-.288 0-.52-.232-.52-.52v-4.26c0-.287.232-.52.52-.52h.62c.288 0 .52.233.52.52v4.26c0 .288-.232.52-.52.52zm4.722-.52c0 .288-.232.52-.52.52h-.59c-.197 0-.376-.11-.462-.288L14.07 9.176v3.018c0 .288-.232.52-.52.52h-.62c-.288 0-.52-.232-.52-.52v-4.26c0-.287.232-.52.52-.52h.59c.197 0 .376.11.462.288l2.122 3.23V7.914c0-.287.232-.52.52-.52h.62c.288 0 .52.233.52.52v4.26zm3.337-2.61h-1.54v-.94h1.54c.287 0 .52-.232.52-.52v-.62c0-.287-.233-.52-.52-.52h-2.18c-.287 0-.52.233-.52.52v4.26c0 .288.233.52.52.52h2.18c.287 0 .52-.232.52-.52v-.62c0-.288-.233-.52-.52-.52h-1.54v-.94h1.54c.287 0 .52-.232.52-.52v-.62c0-.287-.233-.52-.52-.52z"/>
+        </svg>
+        公式LINEで3つの特典を受け取る
+      </a>
+    </div>
+
+    <!-- ⑤ 3つの特典 -->
+    <!-- ★ 特典の名前・説明はここを直接書き換えてください ★ -->
+    <section class="gifts-section">
+      <h3 class="gifts-title">
+        お受け取りいただける3つの特典
+        <div class="gold-rule"></div>
+      </h3>
+
+      <!-- 特典1 -->
+      <div class="gift-card">
+        <!-- ★ 表紙画像を差し替える時は src= を変えてください ★ -->
+        <div class="gift-cover">
+          <img src="cover_tenchijin.jpg" alt="天地人 人生設計チェックの表紙">
+        </div>
+        <div class="gift-card-head">
+          <div class="gift-card-num">01</div>
+          <h4 class="gift-card-title">
+            <span class="gift-card-kicker">Life Design Check</span>
+            天地人 人生設計チェック
+          </h4>
+        </div>
+        <p class="gift-card-desc">
+          天・地・人という3つの視点から、今の現在地を見立てるチェックシートです。
+          「このまま終わるのかな」という感覚の正体が、どこにあるのかを静かに整理できます。
+          <span class="gift-card-timing">友だち追加後、すぐに届きます</span>
+        </p>
+      </div>
+
+      <!-- 特典2 -->
+      <div class="gift-card">
+        <div class="gift-cover gift-cover--portrait">
+          <img src="cover_9types.jpg" alt="9タイプから導き出す 才能開花診断の表紙">
+        </div>
+        <div class="gift-card-head">
+          <div class="gift-card-num">02</div>
+          <h4 class="gift-card-title">
+            <span class="gift-card-kicker">9 types</span>
+            9タイプから導き出す 才能開花診断
+          </h4>
+        </div>
+        <p class="gift-card-desc">
+          生まれ年から導く9つのタイプ別に、あなたの才能と強み、気をつけたいポイントをまとめました。
+          「自分を知り、相手を知る」——その一点だけでも、強みの活かし方と人との関わり方が変わります。
+          <span class="gift-card-timing">翌日20時にお届け</span>
+        </p>
+      </div>
+
+      <!-- 特典3 -->
+      <div class="gift-card">
+        <div class="gift-cover">
+          <img src="cover_tabi.jpg" alt="旅を、運に変える 保存版の手引き書の表紙">
+        </div>
+        <div class="gift-card-head">
+          <div class="gift-card-num">03</div>
+          <h4 class="gift-card-title">
+            <span class="gift-card-kicker">Bon Voyage</span>
+            旅を、運に変える<br>保存版の手引き書
+          </h4>
+        </div>
+        <p class="gift-card-desc">
+          楽しむだけで人生が変わる旅の整え方と、方位ごとに「受け取れるもの」をまとめた保存版です。
+          次の旅の計画に、そのままお使いいただけます。
+          <span class="gift-card-timing">2日後20時にお届け</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ⑥ 受け取り方 3ステップ -->
+    <section class="step-section">
+      <h3 class="step-section-title">
+        受け取り方（3ステップ）
+        <div class="gold-rule"></div>
+      </h3>
+
+      <div class="step-grid">
+
+        <!-- ★ ステップ1のテキストを編集 ★ -->
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h4 class="step-card-title">公式LINEを追加</h4>
+          <p class="step-card-desc">
+            上のボタンを<br>タップして<br>
+            公式LINEを<br>友だち追加します。
+          </p>
+        </div>
+
+        <!-- ★ ステップ2のテキストを編集 ★ -->
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h4 class="step-card-title">1つ目がすぐ届く</h4>
+          <p class="step-card-desc">
+            追加した直後に<br>
+            【天地人 人生設計<br>チェック】が<br>
+            届きます。
+          </p>
+        </div>
+
+        <!-- ★ ステップ3のテキストを編集 ★ -->
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h4 class="step-card-title">3日間で残り2つ</h4>
+          <p class="step-card-desc">
+            翌日から3日間、<br>
+            天・地・人の視点と<br>
+            残りの2つの特典を<br>
+            順にお届けします。
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ⑥-2 LINEボタン（再掲） -->
+    <div class="line-btn-wrap" style="margin-bottom: 48px;">
+      <a href="https://lin.ee/swNWCnt" class="line-btn" id="line-cta-bottom" target="_blank" rel="noopener noreferrer">
+        <svg class="line-icon" viewBox="0 0 24 24">
+          <path d="M24 10.304c0-5.228-5.383-9.47-12-9.47S0 5.076 0 10.304c0 4.687 4.263 8.6 10.014 9.355.39.085.922.258 1.057.593.12.3.077.765.038 1.067l-.164 1.02c-.049.304-.238 1.19.167 1.299.399.11 1.072-.26 1.503-.61l6.32-5.22c.38-.309.805-.758 1.047-1.168C22.616 16.035 24 13.315 24 10.304zm-14.887 2.39h-2.18c-.287 0-.52-.232-.52-.52v-3.74c0-.287.233-.52.52-.52h2.18c.287 0 .52.233.52.52v.62c0 .288-.233.52-.52.52h-1.54v.94h1.54c.287 0 .52.232.52.52v.62c0 .287-.233.52-.52.52h-1.54v.94h1.54c.287 0 .52.233.52.52v.62c0 .288-.233.52-.52.52zm3.328 0h-.62c-.288 0-.52-.232-.52-.52v-4.26c0-.287.232-.52.52-.52h.62c.288 0 .52.233.52.52v4.26c0 .288-.232.52-.52.52zm4.722-.52c0 .288-.232.52-.52.52h-.59c-.197 0-.376-.11-.462-.288L14.07 9.176v3.018c0 .288-.232.52-.52.52h-.62c-.288 0-.52-.232-.52-.52v-4.26c0-.287.232-.52.52-.52h.59c.197 0 .376.11.462.288l2.122 3.23V7.914c0-.287.232-.52.52-.52h.62c.288 0 .52.233.52.52v4.26zm3.337-2.61h-1.54v-.94h1.54c.287 0 .52-.232.52-.52v-.62c0-.287-.233-.52-.52-.52h-2.18c-.287 0-.52.233-.52.52v4.26c0 .288.233.52.52.52h2.18c.287 0 .52-.232.52-.52v-.62c0-.288-.233-.52-.52-.52h-1.54v-.94h1.54c.287 0 .52-.232.52-.52v-.62c0-.287-.233-.52-.52-.52z"/>
+        </svg>
+        公式LINEで3つの特典を受け取る
+      </a>
+    </div>
+
+    <!-- ⑦ 生徒の声 -->
+    <section class="testimonials-section">
+      <h3 class="testimonials-title">
+        すでに結果を出している方が、<br>次に選んだこと
+        <div class="gold-rule"></div>
+      </h3>
+
+      <!-- ★ 事例はここを直接書き換えてください ★ -->
+
+      <!-- 事例1：経営者 Fさん -->
+      <div class="testimonial-card">
+        <p class="test-role">CASE 01 ｜ <span>経営者 Fさん</span></p>
+        <p class="test-body">
+          日々の浮き沈みの中で、判断の軸をどう保つか。そこが長く課題でした。
+          流れの整え方を身につけ、方位を見立てて向かった先で、<span class="test-key">大きな商機に出会い</span>、
+          それが今、事業のかたちになっています。
+        </p>
+      </div>
+
+      <!-- 事例2：整体師から経営へ Cさん -->
+      <div class="testimonial-card">
+        <p class="test-role">CASE 02 ｜ <span>整体院経営 Cさん</span></p>
+        <p class="test-body">
+          自分を小さく生きることをやめると決めてから、一つの職能にとどまらず、
+          <span class="test-key">不動産会社の設立という次の事業へ</span>。<br>
+          持っていたものを、より大きな器に載せ替える選択でした。
+        </p>
+      </div>
+
+      <!-- 事例3：医師 Aさん -->
+      <div class="testimonial-card">
+        <p class="test-role">CASE 03 ｜ <span>40代・医師 Aさん</span></p>
+        <p class="test-body">
+          専門職として十分な実績を重ねたうえで、動くタイミングを見立て直しました。
+          その先で、<span class="test-key">転職と結婚</span>、そして長く温めていたご自身の<span class="test-key">セミナー開催</span>という、
+          望んでいた次のステージへ進んでいかれました。
+        </p>
+      </div>
+
+      <p class="test-note">
+        ご本人の許可を得て掲載しています。<br>
+        変化の内容や時期は人によって異なります。
+      </p>
+
+    </section>
+
+    <!-- ⑧ メール確認（ページ下部） -->
+    <section class="confirm-box">
+      <h2>📩 メールが届いていますか？</h2>
+      <p>ご入力いただいたメールアドレス宛に、<br>運命リズム診断のページ（URL）をお送りしました。<br>
+      5分以内にメールが届かない場合は、下記をご確認ください。</p>
+      <div class="accent-box">
+        <strong>💡 メールが見当たらない時の確認項目</strong><br>
+        1. 「迷惑メールフォルダ」や「プロモーションフォルダ」に入っていないかご確認ください。<br>
+        2. メールが届いていましたら、<strong>「迷惑メールでない」に設定</strong>いただくと、今後のご案内もスムーズにお受け取りいただけます。
+      </div>
+    </section>
+
+    <!-- ⑨ フッター -->
+    <footer class="footer">
+      <img class="footer-logo" src="logo_firstclass.png" alt="First Class by Seiko Meguro">
+      <p>© SEIKO MEGURO. All Rights Reserved.</p>
+    </footer>
+
+  </div><!-- /wrapper -->
+
+
+<!-- 登録完了の計測（GoatCounter・匿名・Cookieなし）・2026-09-10
+     ・ページビュー（/thanks/）＝登録完了の総数
+     ・イベント（/register/流入元）＝チャンネル別の登録数。LP着地時に localStorage に残した ref を読む
+     ・同じセッションで開き直したときは二重に数えない
+     ・送るのは流入元の名前だけ。メールアドレスや生年月日は一切送らない -->
+<script data-goatcounter="https://unmei.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+(function () {
+  'use strict';
+  try { if (sessionStorage.getItem('ur_reg_counted')) return; } catch (e) {}
+
+  var ref = 'direct';
+  try { ref = localStorage.getItem('ur_lp_ref') || 'direct'; } catch (e) {}
+
+  var tries = 0;
+  (function wait() {
+    if (window.goatcounter && window.goatcounter.count) {
+      try {
+        window.goatcounter.count({ path: '/register/' + ref, event: true });
+        sessionStorage.setItem('ur_reg_counted', '1');
+      } catch (e) {}
+      return;
+    }
+    if (++tries > 40) return;        // count.jsが来なければ約4秒であきらめる
+    setTimeout(wait, 100);
+  })();
+})();
+</script>
+
+</body>
+</html>
