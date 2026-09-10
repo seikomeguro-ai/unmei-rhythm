@@ -24,7 +24,13 @@
 
   // BASIC案内カード（月額・くわしく見る）。第一弾（2026-09-07）は無料版のみで公開するため非表示。
   // BASIC／決済を実装する第二弾で true に戻す（せいこさん決裁 2026-09-06）
-  var SHOW_BASIC_CTA = false;
+  // 申込導線は「自動化が完成してから初めて出す」（2026-09-09 せいこさん決裁）。
+  // 通し確認のあいだだけ、開発者ツールで localStorage.ur_dev_cta='1' を入れると出せる。
+  // 公開GO時は true 固定に書き換え、この仕掛けごと消すこと。
+  var SHOW_BASIC_CTA = (function () {
+    try { return localStorage.getItem('ur_dev_cta') === '1'; } catch (e) { return false; }
+  })();
+  var _needCheckout = false;   // この描画でPayPalボタンを出す必要があるか
 
   var PENDING_TEXT = 'この部分の言葉は、ただいま丁寧に準備中です。正式公開までにお届けします。';
   var STORE_KEY = 'ur_profile';
@@ -123,6 +129,42 @@
     return '<div class="tease">' + KEY_SVG +
       (items ? '<div class="tease-items">' + esc(items) + '</div>' : '') +
       '<div class="tease-line"><budoux-ja>この先の読み解きは、BASICでご覧いただけます</budoux-ja></div></div>';
+  }
+
+  // --- アカウント（BASICのログイン状態）---
+  // 無料版の人に余計なものを見せない方針なので、文面は静かに。
+  // 「別の端末でも使える」ことだけが伝わればよい。
+  function accountLineHTML() {
+    if (UR_ACCOUNT.isLoggedIn()) {
+      var until = UR_PREMIUM.basicUntil();
+      var addr = UR_ACCOUNT.email() || '';
+      return '<div class="acct">' +
+        '<div class="acct-line">' + esc(addr) + ' でご利用中' +
+        (until ? '<span class="acct-until">' + esc(until) + ' まで</span>' : '') + '</div>' +
+        '<button type="button" class="acct-link" id="acct-signout">この端末からログアウト</button>' +
+        '</div>';
+    }
+    return '<div class="acct">' +
+      '<button type="button" class="acct-link" id="acct-open">すでにBASICをご利用の方はこちら</button>' +
+      '<div class="acct-form" id="acct-form" hidden>' +
+      '<div class="acct-note"><budoux-ja>お申し込みのときのメールアドレスを入れてください。ログイン用のリンクをお送りします。</budoux-ja></div>' +
+      '<input type="email" id="acct-email" inputmode="email" autocomplete="email" placeholder="メールアドレス">' +
+      '<button type="button" class="acct-send" id="acct-send">リンクを送る</button>' +
+      '<div class="acct-msg" id="acct-msg" hidden></div>' +
+      '</div></div>';
+  }
+
+  // 描画のたびに呼ぶ後処理。innerHTMLを入れ替えた直後に実行する
+  function afterRender() {
+    if (_needCheckout && document.getElementById('paypal-button')) {
+      _needCheckout = false;
+      UR_ACCOUNT.renderCheckout('paypal-button', function (state) {
+        var el = document.getElementById('pc-status');
+        if (!el) return;
+        if (state === 'processing') el.textContent = 'お手続きを確認しています…';
+        else if (state === 'error') el.textContent = 'うまく進めませんでした。少し時間をおいてお試しください。';
+      });
+    }
   }
 
   // --- おすすめ方位（TODAY'S Compass）---
@@ -361,11 +403,15 @@
         '<div class="pc-title"><budoux-ja>その流れを、今日どう使うかまで。</budoux-ja></div>' +
         '<div class="pc-copy"><budoux-ja>毎朝の読み解きと今日の一歩、「今日はどちらへ」のおすすめ方位、年盤・月盤・日盤、今月の詳しい読み解きをお届けします。</budoux-ja></div>' +
         '<div class="pc-price">月額 1,100円</div>' +
-        '<a class="pc-btn" id="checkout-link" href="' + CHECKOUT_URL + '">くわしく見る</a>' +
-        '<div class="pc-note">決済確認後、通常24時間以内に解錠のご案内メールをお送りします。</div>' +
+        '<div id="paypal-button" class="pc-paypal"></div>' +
+        '<div class="pc-note" id="pc-status">お手続きが済むと、そのままこの画面でご覧いただけます。</div>' +
         '</div>';
       UR_TRACK.daily('premium_notice_view', 'ur_evt_notice', (today && today.dateKey) || '');
+      _needCheckout = true;
     }
+
+    // アカウント行（ログイン中の表示／別の端末から使うための入口）
+    html += accountLineHTML();
 
     // モチーフ図鑑への導線
     html += '<div class="linkline" style="margin-top:26px;"><a href="motifs.html">今日の絵柄にこめた意味を知る →</a></div>';
@@ -457,6 +503,7 @@
     html += dailyCardsHTML(r, diag.today);
     $('result-body').innerHTML = html;
     show('view-result');
+    afterRender();
   }
 
   // --- 毎朝ホーム ---
@@ -470,6 +517,7 @@
     $('m-season').innerHTML = seasonLines(r);
     $('morning-body').innerHTML = dailyCardsHTML(r, diag.today);
     show('view-morning');
+    afterRender();
   }
 
   function diagnoseProfile(profile) {
@@ -571,6 +619,36 @@
     }
   }, true);
 
+  // --- アカウント操作（ログイン／ログアウト）---
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.id) return;
+    if (t.id === 'acct-open') {
+      var f = $('acct-form'); if (f) f.hidden = false;
+      var i = $('acct-email'); if (i) i.focus();
+    } else if (t.id === 'acct-send') {
+      var input = $('acct-email');
+      var msg = $('acct-msg');
+      var addr = input ? String(input.value || '').trim() : '';
+      if (!addr || addr.indexOf('@') < 0) {
+        if (msg) { msg.hidden = false; msg.textContent = 'メールアドレスをご確認ください。'; }
+        return;
+      }
+      t.disabled = true;
+      UR_ACCOUNT.sendMagicLink(addr).then(function () {
+        if (msg) {
+          msg.hidden = false;
+          // 登録の有無は答えない（誰が会員かを外から探れないようにするため）
+          msg.textContent = 'ご登録のアドレスであれば、ログイン用のリンクをお送りしました。メールをご確認ください。';
+        }
+        var input2 = $('acct-email'); if (input2) input2.value = '';
+      });
+    } else if (t.id === 'acct-signout') {
+      UR_ACCOUNT.signOut();
+      window.location.reload();
+    }
+  });
+
   // 決済ページへのクリック計測（案内カードのボタン）
   document.addEventListener('click', function (e) {
     if (e.target && e.target.id === 'checkout-link') {
@@ -580,9 +658,9 @@
 
   // --- 起動 ---
   // URLパラメータ処理（?k=解錠キー ?src=流入元。?tier=はテスト用）
-  var unlocked = UR_PREMIUM.handleUrl(window.location.search);
-  if (unlocked === 'unlocked-first') UR_TRACK.event('premium_unlock_first');
-  else if (unlocked === 'unlocked-renew') UR_TRACK.event('premium_unlock_renew');
+  // メールのログインリンクから戻ってきた場合はここでトークンを受け取る（URLからは消す）
+  var justLoggedIn = UR_ACCOUNT.handleAuthRedirect();
+  UR_PREMIUM.handleUrl(window.location.search);
   // プロフィールがあれば毎朝ホームへ直行
   var prof = loadProfile();
   if (prof) {
@@ -594,8 +672,19 @@
       var dayIdx = UR_PREMIUM.trialDayIndex(localStorage.getItem('ur_start'), diag.today.dateKey);
       if (dayIdx) UR_TRACK.visitCheck(dayIdx);
       window._diag = diag; renderMorning(diag);
+      syncAndRefresh(diag);
     }
   } else {
     show('view-welcome');
+  }
+
+  // サーバーに「いまBASICか」を聞き直し、表示が変わるときだけ描き直す。
+  // 聞けなかった場合は前回の期限のまま＝障害中でも締め出さない。
+  function syncAndRefresh(diag) {
+    if (!UR_ACCOUNT.isLoggedIn()) return;
+    var before = UR_PREMIUM.tier();
+    UR_ACCOUNT.syncFromServer().then(function () {
+      if (UR_PREMIUM.tier() !== before && window._diag) renderMorning(window._diag);
+    });
   }
 })();
