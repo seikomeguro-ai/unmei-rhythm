@@ -39,7 +39,7 @@
      両端揃えの本文に使うと行ごとの字間が不揃いになるため、本文は本の組版と同じ
      「両端揃え＋通常改行」にする（2026-08-26 読みやすさ調整） */
   .theme,.catch,.subcopy,.word p,.persona .season,.persona .jp,
-  .copy1,.copy2,.form-note,.month-sub,.sub,.pending{
+  .copy1,.copy2,.form-note,.month-sub,.sub,.pending,.action p{
     word-break:auto-phrase;
     text-wrap:pretty;
   }
@@ -98,7 +98,8 @@
   .sep::before,.sep::after{ content:"";flex:1;height:1px;background:var(--gold-line); }
   .sep .dia{ width:7px;height:7px;background:var(--gold);transform:rotate(45deg);opacity:.7; }
 
-  .lab{ display:flex;align-items:baseline;justify-content:center;gap:10px;color:var(--gold-deep);line-height:1.2; }
+  /* 見出し（TODAY'S Word など）は本文の金より一段濃く（2026-09-11 せいこさん指示） */
+  .lab{ display:flex;align-items:baseline;justify-content:center;gap:10px;color:#6b5426;line-height:1.2; }
   .lab .pre{ font-family:"Cormorant Garamond",serif;font-size:12.5px;font-weight:600;letter-spacing:.32em;position:relative;top:-4px; }
   .lab .num{ font-family:"Pinyon Script",cursive;font-size:40px;font-weight:400;letter-spacing:.02em; }
   .lab .blk{ font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:600;letter-spacing:.3em;position:relative;top:-5px; }
@@ -113,7 +114,9 @@
   .theme-art img{ width:132px;height:132px;border-radius:50%; }
   .prose p{ margin-top:14px;text-align:justify;font-size:15.5px;line-height:2;letter-spacing:.02em;font-weight:400; }
   .action p{ margin-top:13px;font-size:15.5px;line-height:2;letter-spacing:.02em; }
-  .action p::before{ content:"— ";color:var(--gold); }
+  /* 「、」の位置で優先して折り返す（句ごとに崩れない塊にする・2026-09-11）。句が1行に収まらないときだけ句の中で折る */
+  .action p .cl{ display:inline-block;text-wrap:balance; }
+  .action p .cl:first-child::before{ content:"— ";color:var(--gold); }
 
   .word{
     margin-top:52px;padding:36px 22px;text-align:center;
@@ -557,15 +560,15 @@
   <script src="content/seasons_year.js?v=20260907c"></script>
   <script src="content/seasons_month.js?v=20260907c"></script>
   <script src="content/daily/day_base.js?v=20260907c"></script>
-  <script src="content/daily/themes.js?v=20260907c"></script>
+  <script src="content/daily/themes.js?v=20260911a"></script>
   <script src="content/daily/actions.js?v=20260907c"></script>
-  <script src="content/daily/words.js?v=20260907c"></script>
+  <script src="content/daily/words.js?v=20260911b"></script>
   <script src="content/daily/ukekata.js?v=20260907c"></script>
   <script src="content/daily/tomorrow_hints.js?v=20260907c"></script>
   <script src="content/jiryu.js?v=20260907c"></script>
   <script src="js/calc.js?v=20260907c"></script>
   <script src="js/select.js?v=20260907c"></script>
-  <script src="js/houiban.js?v=20260907c"></script>
-  <script src="js/app.js?v=20260910b"></script>
+  <script src="js/houiban.js?v=20260911b"></script>
+  <script src="js/app.js?v=20260911c"></script>
 </body>
 </html>

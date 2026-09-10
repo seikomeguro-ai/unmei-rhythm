@@ -66,7 +66,7 @@
     {"id":"th-7-06","palace":7,"text":"豊かさに気づく","motion":["receive"],"life_theme":["お金"],"status":"draft"},
     {"id":"th-7-07","palace":7,"text":"愛されていると知る","motion":["receive"],"life_theme":["人間関係"],"status":"draft"},
     {"id":"th-7-08","palace":7,"text":"幸せを受け取る♡","motion":["receive"],"life_theme":["自己信頼"],"status":"draft"},
-    {"id":"th-8-01","palace":8,"text":"もう終わりにする","motion":["release"],"life_theme":["決断"],"status":"draft"},
+    {"id":"th-8-01","palace":8,"text":"一旦終わりにする","motion":["release"],"life_theme":["決断"],"status":"draft"},
     {"id":"th-8-02","palace":8,"text":"気持ちを切り替える","motion":["release","center"],"life_theme":["自己信頼"],"status":"draft"},
     {"id":"th-8-03","palace":8,"text":"手放して軽やかに","motion":["release"],"life_theme":["暮らし"],"status":"draft"},
     {"id":"th-8-04","palace":8,"text":"予定をひとつ減らす","motion":["release"],"life_theme":["休息"],"status":"draft"},

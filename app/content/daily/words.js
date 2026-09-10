@@ -113,7 +113,7 @@
     {"id":"wd-9-05","type":9,"text":"私は、誰かの評価より自分のときめきを選びます。","motion":["center"],"life_theme":[],"status":"draft"},
     {"id":"wd-9-06","type":9,"text":"私に似合う美しさを、遠慮なく選びます。","motion":["elevate"],"life_theme":[],"status":"draft"},
     {"id":"wd-9-07","type":9,"text":"私は、注がれる称賛と愛情を優雅に受け取ります。","motion":["receive"],"life_theme":[],"status":"draft"},
-    {"id":"wd-9-08","type":9,"text":"もう輝きを隠す遠慮は、きれいに手放します。","motion":["release"],"life_theme":[],"status":"draft"},
+    {"id":"wd-9-08","type":9,"text":"輝きを隠す遠慮は\nきれいに手放します","motion":["release"],"life_theme":[],"status":"draft"},
     {"id":"wd-9-09","type":9,"text":"私の感性は、未来を鮮やかに描く力です。","motion":[],"life_theme":[],"status":"draft"},
     {"id":"wd-9-10","type":9,"text":"私は、私だけの美しさを堂々と表します。","motion":[],"life_theme":[],"status":"draft"},
     {"id":"wd-9-11","type":9,"text":"私が心惹かれるものは、新しい世界の合図です。","motion":[],"life_theme":[],"status":"draft"},

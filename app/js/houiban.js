@@ -93,7 +93,7 @@
   function renderSVG(center, ha, honmei, premium) {
     var a = analyze(center, ha, honmei);
     var C = 170, R = 128, LABEL_R = 150, STAR_R = 86, CENTER_R = 42;
-    var FILL = { kichi: '#f0e3c0', kyou: '#e3e0da', neutral: '#fffefb' };
+    var FILL = { kichi: '#fae6ea', kyou: '#f1efeb', neutral: '#fffefb' };
     var svg = '<svg viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="今日の方位盤">';
     for (var d = 0; d < 8; d++) {
       // 伝統的な方位盤の向き: 南が上・北が下（地図式を180度回した配置）
@@ -177,7 +177,9 @@
   function renderBoard(opts) {
     var a = analyzeFull(opts.center, opts);
     var C = 170, R = 128, LABEL_R = 150, STAR_R = 86, CENTER_R = 42;
-    var FILL = { saidai: '#ecd695', kichi: '#f4e9cd', kyou: '#e3e0da', neutral: '#fffefb' };
+    // 吉方位の色（2026-09-11 せいこさん指示: ラッキーモチーフのピンク系。吉＝淡いピンク／最大吉＝少し濃く明るいピンク）
+    // 控えめにしたい方位のグレーは、ピンクが引き立つようかなり淡く（同日指示）
+    var FILL = { saidai: '#f5cdd5', kichi: '#fae6ea', kyou: '#f1efeb', neutral: '#fffefb' };
     var svg = '<svg viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' +
       (opts.ariaLabel || '方位盤') + '">';
     for (var d = 0; d < 8; d++) {

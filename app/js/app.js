@@ -61,6 +61,19 @@
   // 文節単位の自然な改行（BudouX。Safari含む全ブラウザで効く）
   function bx(s) { return '<budoux-ja>' + esc(s) + '</budoux-ja>'; }
   function bxbr(s) { return '<budoux-ja>' + nl2br(s) + '</budoux-ja>'; }
+  // 「一歩」用: 読点・句点ごとの句を崩れない塊にして、「、」の位置で優先して折り返す（2026-09-11）。
+  // 1句が1行に収まらないときだけ句の中を文節で折る。かぎかっこの中の「、」では区切らない
+  function bxcl(s) {
+    var out = [], cur = '', depth = 0, str = String(s);
+    for (var i = 0; i < str.length; i++) {
+      var c = str.charAt(i); cur += c;
+      if ('「『“（('.indexOf(c) >= 0) depth++;
+      else if ('」』”）)'.indexOf(c) >= 0 && depth > 0) depth--;
+      else if ((c === '、' || c === '。') && depth === 0 && i < str.length - 1) { out.push(cur); cur = ''; }
+    }
+    if (cur) out.push(cur);
+    return out.map(function (c) { return '<span class="cl">' + bx(c) + '</span>'; }).join('');
+  }
   function show(viewId) {
     document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
     $(viewId).classList.add('active');
@@ -319,9 +332,9 @@
       taisaiDir: d.taisaiDir, ehoDeg: d.ehoDeg, ariaLabel: d.aria
     }) + '</div>' +
       '<div class="hb-legend">' +
-      '<span class="lg"><span class="dot" style="background:#ecd695;"></span>最大吉方</span>' +
-      '<span class="lg"><span class="dot" style="background:#f4e9cd;"></span>吉方位</span>' +
-      '<span class="lg"><span class="dot" style="background:#e3e0da;"></span>控えめにしたい方位</span>' +
+      '<span class="lg"><span class="dot" style="background:#f5cdd5;"></span>最大吉方</span>' +
+      '<span class="lg"><span class="dot" style="background:#fae6ea;"></span>吉方位</span>' +
+      '<span class="lg"><span class="dot" style="background:#f1efeb;"></span>控えめにしたい方位</span>' +
       '</div>' +
       '<div class="hb-note">南が上・北が下の、本来の方位盤の向きです。</div>';
     return html;
@@ -398,7 +411,7 @@
 
       // 3. ACTION（今日の一歩）
       html += '<div class="sec action">' + labHTML('Action', '今日の一歩') +
-        (picks.action.pending ? pendingHTML() : '<p>' + esc(picks.action.text) + '</p>') +
+        (picks.action.pending ? pendingHTML() : '<p>' + bxcl(picks.action.text) + '</p>') +
         '</div>';
 
       // 4. 今日のひと皿（おすすめ方位の直前・BASICのみ）
@@ -410,7 +423,7 @@
 
     // 6. WORD（ベージュの帯）
     html += '<div class="word">' + labHTML('Word', '今日の言葉') +
-      (picks.word.pending ? pendingHTML() : '<p style="margin-top:12px;">' + bx(picks.word.text) + '</p>') +
+      (picks.word.pending ? pendingHTML() : '<p style="margin-top:12px;">' + bxbr(picks.word.text) + '</p>') +
       '</div>';
 
     // 7. 明日のひとこと予告（BASIC。気配だけ・中身は明日開いてから）
@@ -504,7 +517,7 @@
       '<div class="theme" style="font-size:24px;">' + bx(y.season) + '</div>' +
       '<div class="subcopy">' + bx(y.meaning) + '</div>' +
       '<div class="prose"><p>' + esc(y.message) + '</p></div>' +
-      '<div class="action"><p>' + esc(y.step) + '</p></div>' +
+      '<div class="action"><p>' + bxcl(y.step) + '</p></div>' +
       '</div>' + sepHTML();
 
     // 今月のリズム（5パート＋IMAGINE）。無料版は「今月の流れ」まで＝今どんな流れかはわかる。
