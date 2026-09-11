@@ -150,8 +150,9 @@
   // --- 上部の状態通知（体験の残り／体験終了）---
   // 2026-09-10 せいこさん決裁:
   //   体験の残り3日以下 → 静かにカウントダウン
-  //   15〜17日目        → 「14日間の無料体験は終了しました」
-  //   18日目以降        → 何も出さない（鍵と下部の申込カードだけにする）
+  //   15日目以降        → 何も出さない
+  // 2026-09-11 せいこさん決裁: 「14日間の無料体験は終了しました」（15〜17日目）は廃止。
+  //   案内が出過ぎると、無料のままつながっていたい人の居場所がなくなるため
   function trialNoticeHTML(today) {
     if (UR_PREMIUM.tier() === 'premium') return '';
     var start = null;
@@ -163,9 +164,6 @@
       var left = D - idx + 1;
       if (left > 3 || left < 1) return '';
       return '<div class="tnotice">体験でご覧いただけるのは、あと' + left + '日です</div>';
-    }
-    if (idx <= D + 3) {
-      return '<div class="tnotice tnotice-end">14日間の無料体験は終了しました</div>';
     }
     return '';
   }
@@ -403,10 +401,9 @@
     }
     html += '</div>' + sepHTML();
 
-    if (locked) {
-      // 無料版: 鍵カードは1枚だけにまとめる（BASIC_DESIGN §3。鍵だらけにしない）
-      html += '<div class="sec">' + teaserHTML('今日のメッセージ ・ 今日の一歩 ・ おすすめ方位') + '</div>';
-    } else {
+    // 無料版はこの部分を出さない（鍵カードも置かない）。
+    // 2026-09-11 せいこさん決裁: 鍵＋「この先の読み解きは、BASICで」は出過ぎのため廃止
+    if (!locked) {
       // 2. MESSAGE
       html += '<div class="sec prose">' + labHTML('Message', '今日のメッセージ') +
         (picks.message.pending ? pendingHTML() : '<p>' + esc(picks.message.text) + '</p>') +
@@ -686,7 +683,7 @@
         if (msg) {
           msg.hidden = false;
           // 登録の有無は答えない（誰が会員かを外から探れないようにするため）
-          msg.textContent = 'ご登録のアドレスであれば、ログイン用のリンクをお送りしました。メールをご確認ください。';
+          msg.textContent = 'ご登録のアドレスであれば、ログイン用のリンクをお送りしました。メールをご確認ください。届かない場合は、迷惑メールフォルダもご確認ください。';
         }
         var input2 = $('acct-email'); if (input2) input2.value = '';
       });
