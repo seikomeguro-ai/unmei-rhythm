@@ -375,8 +375,14 @@
   .dish-key{ margin-top:10px;font-family:var(--mincho);font-size:22px;font-weight:600;letter-spacing:.16em;color:var(--navy);line-height:1.6; }
   /* 3層（見出し／食の提案／気分・作用）＋補足（2026-09-07 せいこさん確定案）*/
   .dish-food{ margin-top:12px;font-size:15px;line-height:2;letter-spacing:.03em;color:#5f5546;text-wrap:pretty; }
-  .dish-mood{ margin-top:9px;font-family:var(--mincho);font-size:14.5px;line-height:2.05;letter-spacing:.07em;color:#6f6357;text-wrap:pretty; }
+  /* 本文は上下ともゴシックで揃える（2026-09-11 せいこさん指示。見出しの「上質に」等は明朝のまま） */
+  .dish-mood{ margin-top:9px;font-size:14.5px;line-height:2.05;letter-spacing:.04em;color:#6f6357;text-wrap:pretty; }
   .dish-note{ margin-top:13px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:#a39d8d; }
+  /* ひと皿の図柄（2026-09-11）: 文章を読んだあとに静かに添える補足。白背景の線画をそのまま白地に置く（枠・影なし・切り抜かない） */
+  /* 画像自体の下余白があるため、次の見出しとの間がほかの区切りと揃うよう下だけ少し詰める */
+  .dish-art{ margin:6px auto -30px;width:200px;max-width:60%; }
+  /* 図柄は公開用に軽量化したWebP（assets/icons/plate/）。元画像の地（RGB254）は書き出し時に白へ飛ばし済み */
+  .dish-art img{ display:block;width:100%;height:auto;object-fit:contain;opacity:.9; }
 
   /* 行動ナビ（TODAY'S Compass・2026-09-01） */
   .compass{ margin-top:52px; }
@@ -578,6 +584,6 @@
   <script src="js/calc.js?v=20260907c"></script>
   <script src="js/select.js?v=20260907c"></script>
   <script src="js/houiban.js?v=20260911b"></script>
-  <script src="js/app.js?v=20260911f"></script>
+  <script src="js/app.js?v=20260911g"></script>
 </body>
 </html>

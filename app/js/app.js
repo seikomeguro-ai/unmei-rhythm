@@ -252,32 +252,32 @@
   // 本命星が今日の盤のどの場所に入っているか（＝その場所の定位星）で9パターンを切り替える。
   // 文言はせいこさん確定案（2026-09-07 改訂・3層構成）。星名は切り替えのキーで、画面には出さない。
   var DISH = {
-    1: { star: '一白', key: '潤す',
+    1: { star: '一白', key: '潤す', img: 'plate/plate_1_ichihaku.webp',
          food: '白身魚、豆腐、やさしいスープなど、\nからだにやさしいものを。',
          mood: 'みずみずしく静かな一皿で、\n内側をそっと潤して。',
          note: '温かい飲み物をこまめに。' },
-    2: { star: '二黒', key: '整える',
+    2: { star: '二黒', key: '整える', img: 'plate/plate_2_jikoku.webp',
          food: '玄米、豆、季節野菜など、\n畑のものを丁寧に。',
          mood: '素朴でやさしい滋養が、\n今日の土台を整えます。' },
-    3: { star: '三碧', key: 'フレッシュに',
+    3: { star: '三碧', key: 'フレッシュに', img: 'plate/plate_3_sanpeki.webp',
          food: '柑橘、ハーブ、\nパリッとした生野菜を。',
          mood: '酸味と食感で、\n気分まで目を覚ます一皿を。' },
-    4: { star: '四緑', key: '軽やかに',
+    4: { star: '四緑', key: '軽やかに', img: 'plate/plate_4_shiroku.webp',
          food: '蕎麦やフォーなど、\nつるりとした麺を。',
          mood: '香りのハーブや薬味を\nたっぷり添えて。' },
-    5: { star: '五黄', key: '養う',
+    5: { star: '五黄', key: '養う', img: 'plate/plate_5_goou.webp',
          food: '味噌汁、ぬか漬け、甘酒など。',
          mood: '発酵の力で、\n内側からやさしく養って。' },
-    6: { star: '六白', key: '上質に',
-         food: 'いい出汁、いい素材、上質な食を。',
+    6: { star: '六白', key: '上質に', img: 'plate/plate_6_roppaku.webp',
+         food: '春巻きや点心、\nロール料理などの“包む料理”や',
          mood: 'いつもより少し上等なものを、\n姿勢よくいただいて。' },
-    7: { star: '七赤', key: '楽しむ',
+    7: { star: '七赤', key: '楽しむ', img: 'plate/plate_7_shichiseki.webp',
          food: 'カフェランチやイタリアンを。',
          mood: '見た目も会話も弾む、楽しい一皿を。\nデザートも今日はOK。' },
-    8: { star: '八白', key: '蓄える',
+    8: { star: '八白', key: '蓄える', img: 'plate/plate_8_happaku.webp',
          food: '根菜、きのこ、山菜など、\n大地と山の恵みをしっかりと。',
          mood: '静かな力を、\nじっくり蓄える一皿を。' },
-    9: { star: '九紫', key: '彩る',
+    9: { star: '九紫', key: '彩る', img: 'plate/plate_9_kyushi.webp',
          food: 'アボカド、トマト、海老、貝など、\n色まで美しいものを。',
          mood: '目に入った瞬間に、\n心が華やぐ一皿を。' }
   };
@@ -294,6 +294,9 @@
       '<div class="dish-food">' + nl2br(d.food) + '</div>' +
       '<div class="dish-mood">' + nl2br(d.mood) + '</div>' +
       (d.note ? '<div class="dish-note">※ ' + esc(d.note) + '</div>' : '') +
+      // 図柄は文章を読んだあとに静かに添える（2026-09-11 せいこさん指示）。
+      // 画像は公開用に軽量化したWebP（assets/icons/plate/・560px）。元画像は assets/icons/plate_*_test_v*.png（Codex作・原寸）
+      (d.img ? '<div class="dish-art"><img src="assets/icons/' + esc(d.img) + '" alt="" loading="lazy" decoding="async"></div>' : '') +
       '</div>';
   }
 
