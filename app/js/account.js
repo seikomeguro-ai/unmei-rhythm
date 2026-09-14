@@ -77,17 +77,24 @@
       headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: rt })
     }).then(function (r) {
-      if (!r.ok) throw new Error('refresh failed ' + r.status);
-      return r.json();
-    }).then(function (j) {
-      if (!j.access_token) throw new Error('no access_token');
-      set(K_ACCESS, j.access_token);
-      if (j.refresh_token) set(K_REFRESH, j.refresh_token);
-      return true;
+      if (r.ok) {
+        return r.json().then(function (j) {
+          if (!j.access_token) return false;
+          set(K_ACCESS, j.access_token);
+          if (j.refresh_token) set(K_REFRESH, j.refresh_token);
+          return true;
+        });
+      }
+      // 別のタブが先に更新していた（更新用トークンは使い捨てで入れ替わる）。そちらの新しいトークンを使う
+      var now = get(K_REFRESH);
+      if (now && now !== rt) return true;
+      // 400/401＝このログインそのものが無効（取り消し・期限切れ）。トークンだけ捨てる
+      if (r.status === 400 || r.status === 401) { del(K_ACCESS); del(K_REFRESH); }
+      // それ以外（5xx・429など）はサーバー側の一時的な問題。ログインは残して次回やり直す
+      return false;
     }).catch(function () {
-      // 更新できない＝ログインが切れている。トークンだけ捨てる。
-      // 期限(K_UNTIL)は消さない: サーバー都合で使えなくなるのを避けるため
-      del(K_ACCESS); del(K_REFRESH);
+      // 通信できない（オフライン・スリープ復帰直後など）。ログインは残して次回やり直す
+      // 2026-09-13: 以前は通信失敗や一時的なサーバー障害でもトークンを捨てており、ログインが切れてしまう作りだった
       return false;
     });
   }
