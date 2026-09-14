@@ -138,15 +138,6 @@
   function sepHTML() { return '<div class="sep"><span class="dia"></span></div>'; }
   function pendingHTML() { return '<p class="pending">' + PENDING_TEXT + '</p>'; }
 
-  // 鍵ティザー（無料版・気配カード＝B案採用）。まとまりごとに1枚だけ置く
-  var KEY_SVG = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8b58a" stroke-width="1.1" stroke-linecap="round" aria-hidden="true">' +
-    '<circle cx="9" cy="9" r="4.2"/><path d="M12.2 12.2 L19 19 M16.4 16.4 L18.4 14.4 M18 18 L20 16"/></svg>';
-  function teaserHTML(items) {
-    return '<div class="tease">' + KEY_SVG +
-      (items ? '<div class="tease-items">' + esc(items) + '</div>' : '') +
-      '<div class="tease-line"><budoux-ja>この先の読み解きは、BASICでご覧いただけます</budoux-ja></div></div>';
-  }
-
   // --- 上部の状態通知（体験の残り／体験終了）---
   // 2026-09-10 せいこさん決裁:
   //   体験の残り3日以下 → 静かにカウントダウン
@@ -526,7 +517,8 @@
       '</div>' + sepHTML();
 
     // 今月のリズム（5パート＋IMAGINE）。無料版は「今月の流れ」まで＝今どんな流れかはわかる。
-    // その先（意識したいこと・未来へのつながり・IMAGINE）はティザー1枚にまとめる（鍵だらけにしない）
+    // その先（意識したいこと・未来へのつながり・IMAGINE）は無料版では出さない。
+    // 2026-09-14 せいこさん決裁: 鍵カードは今日の画面と同じく廃止（案内が出過ぎないように）
     var m = r.monthZone ? SM[r.monthZone] : null;
     if (m && m.season && m.flow) {
       var mLocked = UR_PREMIUM.tier() === 'free';
@@ -535,9 +527,7 @@
         (m.subcopy ? '<div class="subcopy subcopy-month">― ' + bxbr(m.subcopy) + '</div>' : '') +
         '<div class="month-sub">今月の流れ</div>' +
         '<div class="prose"><p style="margin-top:4px;">' + esc(m.flow) + '</p></div>';
-      if (mLocked) {
-        html += teaserHTML('意識したいこと ・ 未来へのつながり ・ IMAGINE');
-      } else {
+      if (!mLocked) {
         html += '<div class="month-sub">意識したいこと</div>' +
           '<div class="prose"><p style="margin-top:4px;">' + esc(m.focus) + '</p></div>' +
           '<div class="month-sub">未来へのつながり</div>' +
