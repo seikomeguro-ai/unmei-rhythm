@@ -203,7 +203,9 @@
               sessionStorage.setItem('ur_sub_token', j.token);
               return actions.subscription.create({
                 plan_id: _config.paypal_plan_id,
-                custom_id: j.token
+                custom_id: j.token,
+                // デジタル商品なので配送先は聞かない（住所欄が出るとお客様が戸惑うため・2026-09-16）
+                application_context: { shipping_preference: 'NO_SHIPPING' }
               });
             });
         },
