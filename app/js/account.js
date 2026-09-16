@@ -102,23 +102,38 @@
   // --- いまの権限をサーバーに聞く ---
   // 成否にかかわらず K_UNTIL は「聞けたときだけ」書き換える。
   // 聞けなかった場合は前回の期限がそのまま残る＝サーバーが落ちても締め出さない。
+
+  // アクセストークンの期限（UNIX秒）。読めなければ 0＝期限切れ扱いにして先に更新する
+  function tokenExp(tok) {
+    try {
+      var b = String(tok).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      return Number(JSON.parse(atob(b)).exp) || 0;
+    } catch (e) { return 0; }
+  }
+
   function syncFromServer() {
     if (!isLoggedIn()) return Promise.resolve(null);
     var call = function (tok) {
-      return fetch(FN + '/me', { headers: { 'Authorization': 'Bearer ' + tok } });
+      return fetch(FN + '/me', { headers: { 'Authorization': 'Bearer ' + tok } })
+        .then(function (r) { return r.ok ? r.json() : null; });
     };
+    // サーバーは、切れたトークンでも HTTP 200 で { tier:'free', reason:'invalid token' } を返す。
+    // 2026-09-16: 以前は 401 だけを更新の合図にしていたため、ログインから1時間たつと
+    // 「聞けた」扱いで期限を消してしまい、BASICの方が次にログインし直すまでFREEに落ちていた。
+    var unusable = function (j) { return !j || j.reason === 'invalid token'; };
     var at = get(K_ACCESS);
-    var first = at ? call(at) : Promise.resolve({ status: 401, json: function () { return {}; } });
-    return first.then(function (r) {
-      if (r.status === 401 || !at) {
-        return refreshToken().then(function (ok) {
-          if (!ok) return null;
-          return call(get(K_ACCESS)).then(function (r2) { return r2.ok ? r2.json() : null; });
-        });
-      }
-      return r.ok ? r.json() : null;
+    // 期限切れ（残り60秒未満も含む）なら、聞く前に更新しておく
+    var stale = !at || tokenExp(at) * 1000 < Date.now() + 60000;
+    var first = stale ? Promise.resolve(null) : call(at);
+    return first.then(function (j) {
+      if (!unusable(j)) return j;
+      return refreshToken().then(function (ok) {
+        if (!ok) return null;
+        return call(get(K_ACCESS));
+      });
     }).then(function (j) {
-      if (!j) return null;
+      // 聞けなかった（通信失敗・更新失敗・それでもトークン無効）＝前回の期限を残す
+      if (!j || j.reason) return null;
       if (j.access_until) set(K_UNTIL, j.access_until); else del(K_UNTIL);
       if (j.email) set(K_EMAIL, j.email);
       set(K_CHECKED, new Date().toISOString());
