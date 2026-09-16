@@ -436,12 +436,12 @@
         '<div class="k">' + esc(kanshi) + '</div></div>';
     }
 
-    // BASIC案内カード（無料版のみ・文言はbrand-check前の下書き）。第一弾は SHOW_BASIC_CTA=false で出さない
+    // BASIC案内カード（無料版のみ・文言は2026-09-16 せいこさん決定のA案）。第一弾は SHOW_BASIC_CTA=false で出さない
     if (locked && SHOW_BASIC_CTA) {
       html += '<div class="premium-cta">' +
         '<div class="pc-lab">BASIC</div>' +
-        '<div class="pc-title"><budoux-ja>続きを見るには、BASICへ。</budoux-ja></div>' +
-        '<div class="pc-copy"><budoux-ja>今日のメッセージ、今日の一歩、おすすめの方位、年盤・月盤・日盤、今月の詳しい読み解きをご覧いただけます。</budoux-ja></div>' +
+        '<div class="pc-title"><budoux-ja>毎日の選択に、もう一段の読み解きを。</budoux-ja></div>' +
+        '<div class="pc-copy"><budoux-ja>今日のメッセージと今日の一歩、おすすめの方位、年盤・月盤・日盤、今月の読み解き。BASICでは、リズムの全体をご覧いただけます。</budoux-ja></div>' +
         '<div class="pc-price">月額 1,100円（税込）<span class="pc-price-sub">いつでも解約できます</span></div>' +
         '<div id="paypal-button" class="pc-paypal"></div>' +
         '<div class="pc-note" id="pc-status">お手続きが済むと、そのままこの画面でご覧いただけます。</div>' +
