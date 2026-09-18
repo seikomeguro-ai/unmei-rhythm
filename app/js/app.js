@@ -22,6 +22,9 @@
   var CONTACT_URL = '#CONTACT_URL';
   var CHECKOUT_URL = '#CHECKOUT_URL';  // PayPal決済ページ（フェーズ3で差し込み）
 
+  // 登録ゲート（2026-09-18〜）: 未登録・未ログインの直アクセスを送り返す先
+  var LP_URL = 'https://unmei.seikomeguro.com/';
+
   // BASIC案内カード（月額・くわしく見る）。第一弾（2026-09-07）は無料版のみで公開するため非表示。
   // BASIC／決済を実装する第二弾で true に戻す（せいこさん決裁 2026-09-06）
   // 申込導線は「自動化が完成してから初めて出す」（2026-09-09 せいこさん決裁）。
@@ -698,8 +701,31 @@
   // メールのログインリンクから戻ってきた場合はここでトークンを受け取る（URLからは消す）
   var justLoggedIn = UR_ACCOUNT.handleAuthRedirect();
   UR_PREMIUM.handleUrl(window.location.search);
-  // プロフィールがあれば毎朝ホームへ直行
+
+  // --- 登録ゲート（2026-09-18〜）---
+  // Autobiz登録直後のメールから来た場合（#e=メールアドレス。フラグメントなのでサーバーには
+  // 送られず、アクセスログや計測ツールにも残らない）: 追加入力なしで本人確認メールを送り、
+  // 「お送りしました」画面だけ出して終わる。診断へはまだ進めない
+  var claimEmail = UR_ACCOUNT.handleClaimFragment();
+  if (claimEmail) {
+    UR_ACCOUNT.claim(claimEmail, localStorage.getItem('ur_src'));
+    showClaimSent();
+    return;
+  }
+
+  // 未登録・未ログインの直アクセスだけLPへ送る。
+  // 判定材料は「ログイン中」「ログインリンクから戻った」「この端末に診断済みプロフィールがある
+  // （2026-09-18の登録ゲート導入より前からの既存利用者）」の3つ＝これが全部無ければ弾く。
+  // 既存利用者への遡及的な本人確認は求めない（期限なし）。機種変更・ブラウザデータ消去などで
+  // プロフィールごと失われたときだけ、自然に新しいゲートへ合流する（2026-09-18 せいこさん決定）
   var prof = loadProfile();
+  var isLegacyUser = !!prof;
+  if (!UR_ACCOUNT.isLoggedIn() && !justLoggedIn && !isLegacyUser) {
+    window.location.href = LP_URL;
+    return;
+  }
+
+  // プロフィールがあれば毎朝ホームへ直行
   if (prof) {
     var diag = diagnoseProfile(prof);
     if (diag.error) { show('view-welcome'); }
@@ -713,6 +739,10 @@
     }
   } else {
     show('view-welcome');
+  }
+
+  function showClaimSent() {
+    show('view-claim');
   }
 
   // サーバーに「いまBASICか」を聞き直し、表示が変わるときだけ描き直す。

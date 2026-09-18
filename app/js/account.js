@@ -6,11 +6,16 @@
  *   - Supabaseのログイン（メールに届くリンクを開くだけ・パスワードなし）
  *   - サーバーに「いまBASICか」を聞き、期限を localStorage に控える
  *   - PayPalの申込ボタンを出し、決済直後にその場でログイン状態にする
+ *   - 登録ゲート（2026-09-18〜）: Autobiz登録直後のメールから来た人を、
+ *     追加入力なしで本人確認メール送付につなげる
  *
  * 設計上の約束:
  *   - ここに置く値は「公開前提のもの」だけ。Secretは一切置かない
  *   - サーバーが落ちていても、前回聞いた期限が残っていればBASICのまま使える（フェイルオープン）
  *   - 期限そのものはサーバーが決めた日付なので、放っておけば正しく切れる
+ *   - 登録メールアドレスはURLの「#」以降（フラグメント）にだけ載せる。フラグメントは
+ *     ブラウザがサーバーに送らないため、アクセスログ・GoatCounter・Autobizのクリック測定に
+ *     一切残らない（既存のログインリンク #access_token= と同じ考え方）
  */
 'use strict';
 (function (root, factory) {
@@ -66,6 +71,30 @@
       history.replaceState(null, '', window.location.pathname + window.location.search);
     } catch (e) { window.location.hash = ''; }
     return true;
+  }
+
+  // --- 登録ゲート：Autobizのメールから来た人を拾う ---
+  // URLの #e=（メールアドレス） を読み取り、すぐURLから消す。クエリ文字列(?e=)は使わない
+  // （サーバーのアクセスログや計測ツールに残さないため。フラグメントはブラウザが送信しない）
+  function handleClaimFragment() {
+    var h = String(window.location.hash || '');
+    var m = /(?:^|[#&])e=([^&]+)/.exec(h);
+    if (!m) return null;
+    var email = decodeURIComponent(m[1]);
+    try {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    } catch (e) { window.location.hash = ''; }
+    return email || null;
+  }
+
+  // 登録メールから来た人の本人確認メールを送ってもらう。
+  // 登録の有無にかかわらず同じ返事（true）にする。失敗しても呼び出し側は詰まらせない
+  function claim(email, src) {
+    return fetch(FN + '/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: String(email || '').trim().toLowerCase(), src: src || null })
+    }).then(function () { return true; }).catch(function () { return true; });
   }
 
   // --- トークンの更新 ---
@@ -236,6 +265,8 @@
     isLoggedIn: isLoggedIn,
     email: email,
     handleAuthRedirect: handleAuthRedirect,
+    handleClaimFragment: handleClaimFragment,
+    claim: claim,
     syncFromServer: syncFromServer,
     sendMagicLink: sendMagicLink,
     signOut: signOut,

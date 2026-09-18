@@ -76,6 +76,42 @@
   function usable(item) { return item && !item.pending; }
 
   /**
+   * 重みつきの巡回順を作る（今日のテーマ用・2026-09-14）。
+   * weights[i] 回ずつ i を並べ、重いものは間隔をあけて配置する（smooth weighted round-robin）。
+   * そのうえで、同じ番号が隣り合う箇所（巡回の継ぎ目＝最後→最初も含む）を入れ替えでほどく。
+   * 例: [3,1,1,1,1,1,1,1] → 0 が3回・ほかが1回ずつ、0同士は隣り合わない。
+   */
+  function weightedCycle(weights) {
+    var total = 0, cur = [], out = [], i, n;
+    for (i = 0; i < weights.length; i++) { total += weights[i]; cur.push(0); }
+    for (n = 0; n < total; n++) {
+      var best = 0;
+      for (i = 0; i < weights.length; i++) {
+        cur[i] += weights[i];
+        if (cur[i] > cur[best]) best = i;
+      }
+      cur[best] -= total;
+      out.push(best);
+    }
+    var L = out.length;
+    function clash(k) { return out[k] === out[(k + 1) % L] || out[k] === out[(k + L - 1) % L]; }
+    for (var guard = 0; L >= 3 && guard < L * L; guard++) {
+      var a = -1;
+      for (n = 0; n < L; n++) { if (out[n] === out[(n + 1) % L]) { a = (n + 1) % L; break; } }
+      if (a < 0) break;
+      var fixed = false;
+      for (var j = 0; j < L && !fixed; j++) {
+        if (out[j] === out[a]) continue;
+        var t = out[a]; out[a] = out[j]; out[j] = t;
+        if (!clash(a) && !clash(j)) fixed = true;
+        else { t = out[a]; out[a] = out[j]; out[j] = t; }
+      }
+      if (!fixed) break;
+    }
+    return out;
+  }
+
+  /**
    * 毎朝の4カードを選ぶ。
    * ctx: { typeNo, yearZone, monthZone, dayZone, dateKey }
    * content: { themes, actions, words, dayBase, ukekata }
@@ -104,9 +140,12 @@
         if (t.life_theme && t.life_theme.length && intersects(t.life_theme, typeLifeThemes(typeNo))) s += 1;
         return { t: t, s: s };
       });
-      var max = Math.max.apply(null, scored.map(function (x) { return x.s; }));
-      var top = scored.filter(function (x) { return x.s === max; }).map(function (x) { return x.t; });
-      theme = top[seed % top.length];
+      // 2026-09-14 改訂（CONTENT_RULES「レイヤーの重なり方」2）: 最高点の1本だけに固定しない。
+      // 点数に応じた重み（0点=1・1点=2・2点以上=3）で巡回表を作り、同じ宮の日が来るたび（＝9日ごと）に1つ進める。
+      // 月の動きと合うテーマは多めに回ってくるが、候補すべてが順番に出て、同じテーマは続けて出ない
+      var order = weightedCycle(scored.map(function (x) { return 1 + Math.min(x.s, 2); }));
+      var trot = Math.floor(daysOf(ctx.dateKey) / 9) + typeNo * 5;
+      theme = scored[order[trot % order.length]].t;
     }
 
     // --- MESSAGE: 日の宮ベース文 + 受け取り方 ---
@@ -162,6 +201,7 @@
     TYPE_MOTION: TYPE_MOTION,
     seedOf: seedOf,
     daysOf: daysOf,
+    weightedCycle: weightedCycle,
     selectDaily: selectDaily
   };
 });

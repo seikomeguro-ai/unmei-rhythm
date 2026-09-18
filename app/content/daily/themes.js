@@ -37,7 +37,7 @@
     {"id":"th-4-01","palace":4,"text":"軽さは才能","motion":["connect"],"life_theme":["人間関係"],"status":"draft"},
     {"id":"th-4-02","palace":4,"text":"断る理由を探さない","motion":["connect","start"],"life_theme":["人間関係"],"status":"draft"},
     {"id":"th-4-03","palace":4,"text":"人との時間を楽しむ","motion":["connect","receive"],"life_theme":["人間関係"],"status":"draft"},
-    {"id":"th-4-04","palace":4,"text":"とことん整理整頓を","motion":["connect"],"life_theme":["暮らし"],"status":"draft"},
+    {"id":"th-4-04","palace":4,"text":"とことん整理整頓を","motion":["connect","prepare"],"life_theme":["暮らし"],"status":"draft"},
     {"id":"th-4-05","palace":4,"text":"言葉を交わす","motion":["connect","express"],"life_theme":["人間関係"],"status":"draft"},
     {"id":"th-4-06","palace":4,"text":"会いに行く","motion":["connect","start"],"life_theme":["人間関係"],"status":"draft"},
     {"id":"th-4-07","palace":4,"text":"ご縁を深める","motion":["connect"],"life_theme":["人間関係"],"status":"draft"},
