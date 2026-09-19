@@ -468,6 +468,16 @@
     font-size:12px;line-height:2;letter-spacing:.04em;color:#6f6357;background:var(--tint);
   }
 
+  /* PC・タブレット表示: スマホ幅のまま中央に細く出る印象をなくす（2026-09-19 せいこさん指示）。
+     スマホ表示（767px以下）はここより上のルールのまま変えない */
+  @media (min-width: 768px){
+    .app{ max-width:860px; }
+    .inner{ padding:8px 50px 0; }
+    .prose p,.action p{ font-size:16.5px; }
+    .word p{ font-size:17px; }
+    .imagine p,.dish-food,.dish-mood,.nav-copy,.catch{ font-size:15.5px; }
+  }
+
 </style>
 </head>
 <body>
