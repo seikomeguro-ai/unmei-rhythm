@@ -186,6 +186,42 @@
     }).catch(function () { return true; });
   }
 
+  // --- アプリの中でログインを完了する（2026-09-22）---
+  // iPhoneのホーム画面アプリはSafariと記録が別なので、メールのリンクを押すとSafari側でログインされ、
+  // アプリはログインされないまま残る。そこで、①メールのリンクを「押さずにコピー」して貼り付ける、
+  // または ②メールに書かれた数字のコードを入れる、のどちらでもアプリの中でログインできるようにする。
+  // 成功したら true、失敗（期限切れ・使用済み・形式違い）なら false を返す
+  function verifyInput(addr, input) {
+    var v = String(input || '').trim();
+    var body = null;
+    var code = v.replace(/\s/g, '');
+    if (/^\d{6,10}$/.test(code)) {
+      var em = String(addr || get('ur_pending_email') || '').trim().toLowerCase();
+      if (!em) return Promise.resolve(false);
+      body = { type: 'email', email: em, token: code };
+    } else {
+      var m = /[?&]token=([^&#\s]+)/.exec(v);
+      if (!m) return Promise.resolve(false);
+      var t = /[?&]type=([^&#\s]+)/.exec(v);
+      body = { type: t ? decodeURIComponent(t[1]) : 'magiclink', token_hash: decodeURIComponent(m[1]) };
+    }
+    return fetch(SUPABASE_URL + '/auth/v1/verify', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.j || !res.j.access_token || !res.j.refresh_token) return false;
+        set(K_ACCESS, res.j.access_token);
+        set(K_REFRESH, res.j.refresh_token);
+        if (res.j.user && res.j.user.email) set(K_EMAIL, res.j.user.email);
+        del('ur_pending_email');
+        return true;
+      }).catch(function () { return false; });
+  }
+  // リンクを送った相手のアドレスを、コード入力のために一時的に覚えておく（ログイン成功で消す）
+  function rememberPendingEmail(addr) { set('ur_pending_email', String(addr || '').trim().toLowerCase()); }
+
   function signOut() {
     del(K_ACCESS); del(K_REFRESH); del(K_EMAIL); del(K_UNTIL); del(K_CHECKED);
   }
@@ -269,6 +305,8 @@
     claim: claim,
     syncFromServer: syncFromServer,
     sendMagicLink: sendMagicLink,
+    verifyInput: verifyInput,
+    rememberPendingEmail: rememberPendingEmail,
     signOut: signOut,
     renderCheckout: renderCheckout,
     getConfig: getConfig

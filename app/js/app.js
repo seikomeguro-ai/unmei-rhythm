@@ -307,6 +307,13 @@
     var d = new Date(Date.UTC(p[0], p[1] - 1, p[2]) + days * 86400000);
     return C.dateKey(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
   }
+  // その宮の色を全部（主役の色を先頭に、残りは素材表の順）。2026-09-22 せいこさん指示:
+  // 「緑」だけでなく「緑・ピスタチオグリーン・…」と、その宮にある色をすべて見せる
+  function paletteOf(c) {
+    var out = [c.color];
+    window.UR_COLORS[c.palace].items.forEach(function (it) { if (out.indexOf(it[0]) < 0) out.push(it[0]); });
+    return out;
+  }
   function colorHTML(r, today) {
     if (!today.dayCenter || !window.URColor || !window.UR_COLORS) return '';
     var h = r.honmeisei, k = today.dateKey;
@@ -327,7 +334,7 @@
     var stage = img(c.main, L.main, 'cl-main');
     c.subs.forEach(function (it, i) { if (L.subs[i]) stage += img(it, L.subs[i], 'cl-sub'); });
     return '<div class="sec tcolor">' + labHTML('Color', '今日のカラー') +
-      '<div class="cl-name">' + esc(c.color) + '</div>' +
+      '<div class="cl-name"><budoux-ja>' + esc(paletteOf(c).join('・')) + '</budoux-ja></div>' +
       '<div class="cl-stage">' + stage + '</div>' +
       '<div class="cl-line"><budoux-ja>' + esc(c.line) + '</budoux-ja></div>' +
       '</div>';
@@ -905,11 +912,25 @@
       return;
     }
     btn.disabled = true;
+    UR_ACCOUNT.rememberPendingEmail(addr);
     UR_ACCOUNT.sendMagicLink(addr).then(function () {
       msg.hidden = false;
       msg.textContent = 'ご登録のアドレスであれば、ログイン用のリンクをお送りしました。メールをご確認ください。届かない場合は、迷惑メールフォルダもご確認ください。';
+      $('gate-step2').hidden = false;
       input.value = '';
       setTimeout(function () { btn.disabled = false; }, 30000);
+    });
+  });
+
+  // 貼り付けたリンク（またはコード）で、このアプリの中でログインを完了する
+  $('gate-verify').addEventListener('click', function () {
+    var btn = $('gate-verify'), vmsg = $('gate-vmsg');
+    btn.disabled = true;
+    vmsg.hidden = false; vmsg.textContent = '確認しています…';
+    UR_ACCOUNT.verifyInput(null, $('gate-code').value).then(function (ok) {
+      if (ok) { window.location.reload(); return; }
+      btn.disabled = false;
+      vmsg.textContent = 'うまくログインできませんでした。リンクは一度押すと使えなくなります。お手数ですが、もう一度「リンクを送る」から新しいメールを受け取り、押さずにコピーして貼り付けてください。';
     });
   });
 

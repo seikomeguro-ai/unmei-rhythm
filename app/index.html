@@ -402,8 +402,10 @@
   .gate-form{ margin:26px auto 0;text-align:center;align-items:center; }
   .gate-form .acct-note{ margin:0 auto 4px;text-align:center;font-size:13.5px; }
   .gate-form .acct-msg{ margin:4px auto 0;text-align:center;font-size:13px; }
+  .gate-step2{ margin-top:34px;padding-top:26px;border-top:1px solid var(--gold-line); }
+  .gate-step2 b{ font-weight:500;color:var(--navy); }
   /* 今日のカラー（2026-09-22）: 主役1点を大きく、添えを小さく散らす。余白を多めに残す */
-  .cl-name{ margin-top:14px;font-family:var(--mincho);font-size:22px;font-weight:600;letter-spacing:.16em;color:var(--navy);line-height:1.6; }
+  .cl-name{ margin:14px auto 0;max-width:22em;font-family:var(--mincho);font-size:18px;font-weight:600;letter-spacing:.1em;color:var(--navy);line-height:1.8;text-wrap:balance; }
   .cl-stage{ position:relative;width:100%;max-width:340px;margin:16px auto 0;aspect-ratio:10/8; }
   .cl-stage img{ position:absolute;display:block;height:auto;aspect-ratio:1/1;object-fit:contain; }
   .cl-line{ margin-top:10px;font-family:var(--mincho);font-size:15px;line-height:2;letter-spacing:.06em;color:#5f5546; }
@@ -615,6 +617,12 @@
           <button type="button" class="acct-send" id="gate-send">リンクを送る</button>
           <div class="acct-msg" id="gate-msg" hidden></div>
         </div>
+        <div class="acct-form gate-form gate-step2" id="gate-step2" hidden>
+          <div class="acct-note"><b>ホーム画面のアプリでお使いの方へ</b><br>届いたメールのリンクは押さずに、<br>長押しして「リンクをコピー」し、<br>ここに貼り付けてください。</div>
+          <input type="text" id="gate-code" autocomplete="one-time-code" placeholder="コピーしたリンクを貼り付け">
+          <button type="button" class="acct-send" id="gate-verify">ログインする</button>
+          <div class="acct-msg" id="gate-vmsg" hidden></div>
+        </div>
         <div class="linkline" style="margin-top:40px;"><a href="https://unmei.seikomeguro.com/" id="gate-lp">はじめての方は、こちらから登録 →</a></div>
         <div class="foot" style="margin-top:40px;">UNMEI RHYTHM</div>
       </div>
@@ -662,7 +670,7 @@
   <script src="content/types.js?v=20260907c"></script>
   <script src="content/types_deep.js?v=20260907c"></script>
   <script src="js/premium.js?v=20260922a"></script>
-  <script src="js/account.js?v=20260918a"></script>
+  <script src="js/account.js?v=20260922a"></script>
   <!-- ページビュー計測（GoatCounter・匿名・Cookieなし）。イベント計測は js/track.js -->
   <script data-goatcounter="https://unmei.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="js/track.js?v=20260907c"></script>
@@ -680,6 +688,6 @@
   <script src="js/houiban.js?v=20260911b"></script>
   <script src="content/colors.js?v=20260922a"></script>
   <script src="js/color.js?v=20260922a"></script>
-  <script src="js/app.js?v=20260922f"></script>
+  <script src="js/app.js?v=20260922h"></script>
 </body>
 </html>
