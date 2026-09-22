@@ -397,6 +397,11 @@
   .dish-note{ margin-top:13px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:#a39d8d; }
   /* ひと皿の図柄（2026-09-11）: 文章を読んだあとに静かに添える補足。白背景の線画をそのまま白地に置く（枠・影なし・切り抜かない） */
   /* 画像自体の下余白があるため、次の見出しとの間がほかの区切りと揃うよう下だけ少し詰める */
+  /* ログイン画面（2026-09-22） */
+  .gate-en{ margin-top:64px;text-align:center;font-family:"Pinyon Script",cursive;font-size:34px;color:var(--navy); }
+  .gate-form{ margin:26px auto 0;text-align:center;align-items:center; }
+  .gate-form .acct-note{ margin:0 auto 4px;text-align:center;font-size:13.5px; }
+  .gate-form .acct-msg{ margin:4px auto 0;text-align:center;font-size:13px; }
   /* 今日のカラー（2026-09-22）: 主役1点を大きく、添えを小さく散らす。余白を多めに残す */
   .cl-name{ margin-top:14px;font-family:var(--mincho);font-size:22px;font-weight:600;letter-spacing:.16em;color:var(--navy);line-height:1.6; }
   .cl-stage{ position:relative;width:100%;max-width:340px;margin:16px auto 0;aspect-ratio:10/8; }
@@ -598,6 +603,23 @@
       </div>
     </div>
 
+    <!-- ログイン画面（2026-09-22）: 未ログインで診断の記録もない端末に出す。以前はLPへ飛ばしていたが、
+         登録済みの人（ホーム画面のアプリ・機種変更など）がLPに戻されて行き場をなくしていたため -->
+    <div class="view" id="view-gate">
+      <div class="inner">
+        <div class="gate-en">Unmei Rhythm</div>
+        <div class="form-title" style="margin-top:10px;">運命リズム診断</div>
+        <div class="acct-form gate-form">
+          <div class="acct-note">ご登録のメールアドレスを入れてください。<br>ログイン用のリンクをお送りします。</div>
+          <input type="email" id="gate-email" inputmode="email" autocomplete="email" placeholder="メールアドレス">
+          <button type="button" class="acct-send" id="gate-send">リンクを送る</button>
+          <div class="acct-msg" id="gate-msg" hidden></div>
+        </div>
+        <div class="linkline" style="margin-top:40px;"><a href="https://unmei.seikomeguro.com/" id="gate-lp">はじめての方は、こちらから登録 →</a></div>
+        <div class="foot" style="margin-top:40px;">UNMEI RHYTHM</div>
+      </div>
+    </div>
+
     <!-- 診断結果 -->
     <div class="view" id="view-result">
       <div class="inner">
@@ -658,6 +680,6 @@
   <script src="js/houiban.js?v=20260911b"></script>
   <script src="content/colors.js?v=20260922a"></script>
   <script src="js/color.js?v=20260922a"></script>
-  <script src="js/app.js?v=20260922e"></script>
+  <script src="js/app.js?v=20260922f"></script>
 </body>
 </html>

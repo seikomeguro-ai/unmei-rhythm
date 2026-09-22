@@ -22,8 +22,6 @@
   var CONTACT_URL = '#CONTACT_URL';
   var CHECKOUT_URL = '#CHECKOUT_URL';  // PayPal決済ページ（フェーズ3で差し込み）
 
-  // 登録ゲート（2026-09-18〜）: 未登録・未ログインの直アクセスを送り返す先
-  var LP_URL = 'https://unmei.seikomeguro.com/';
 
   // BASIC案内カード（月額・くわしく見る）。第一弾（2026-09-07）は無料版のみで公開するため非表示。
   // BASIC／決済を実装する第二弾で true に戻す（せいこさん決裁 2026-09-06）
@@ -898,6 +896,23 @@
     }
   });
 
+  // ログイン画面のリンク送信（登録の有無は答えない。アカウント欄と同じ考え方）
+  $('gate-send').addEventListener('click', function () {
+    var input = $('gate-email'), msg = $('gate-msg'), btn = $('gate-send');
+    var addr = String(input.value || '').trim();
+    if (!addr || addr.indexOf('@') < 0) {
+      msg.hidden = false; msg.textContent = 'メールアドレスをご確認ください。';
+      return;
+    }
+    btn.disabled = true;
+    UR_ACCOUNT.sendMagicLink(addr).then(function () {
+      msg.hidden = false;
+      msg.textContent = 'ご登録のアドレスであれば、ログイン用のリンクをお送りしました。メールをご確認ください。届かない場合は、迷惑メールフォルダもご確認ください。';
+      input.value = '';
+      setTimeout(function () { btn.disabled = false; }, 30000);
+    });
+  });
+
   // 決済ページへのクリック計測（案内カードのボタン）
   document.addEventListener('click', function (e) {
     if (e.target && e.target.id === 'checkout-link') {
@@ -929,8 +944,10 @@
   // プロフィールごと失われたときだけ、自然に新しいゲートへ合流する（2026-09-18 せいこさん決定）
   var prof = loadProfile();
   var isLegacyUser = !!prof;
+  // 2026-09-22: LPへ飛ばすのをやめ、ログイン画面を出す（登録済みの人がホーム画面のアプリや
+  // 機種変更でLPに戻され、行き場をなくしていたため）。はじめての人向けにLPへのリンクは画面に置く
   if (!UR_ACCOUNT.isLoggedIn() && !justLoggedIn && !isLegacyUser) {
-    window.location.href = LP_URL;
+    show('view-gate');
     return;
   }
 
