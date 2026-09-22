@@ -138,6 +138,17 @@
       '<div class="lab-jp' + (big ? ' lab-jp-lg' : '') + '">' + esc(jp) +
       (note ? '<span class="lab-note">' + esc(note) + '</span>' : '') + '</div>';
   }
+  // 無料版の鍵表示（2026-09-22）。細い金線の錠前アイコン
+  var LOCK_SVG = '<svg class="lk-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M5.2 7V5a2.8 2.8 0 0 1 5.6 0v2" fill="none" stroke="currentColor" stroke-width="1.1"/></svg>';
+  function lockedSecHTML(word, jp) {
+    return '<div class="sec locked">' + labHTML(word, jp) +
+      '<div class="lk-blur" aria-hidden="true">今日のあなたに届けたいことを、ここでひとつお伝えしています。小さな選択が、今日の流れを変えていきます。</div>' +
+      '<div class="lk-note">' + LOCK_SVG + 'BASICで開きます</div></div>';
+  }
+  function lockedRowHTML(word, jp, pre) {
+    return '<div class="lk-row"><span class="lk-t"><span class="lk-en"><span class="pre">' + esc(pre || 'TODAY\'S') + '</span><span class="script">' + esc(word) + '</span></span>' +
+      '<span class="lk-jp">' + esc(jp) + '</span></span>' + LOCK_SVG + '</div>';
+  }
   function sepHTML() { return '<div class="sep"><span class="dia"></span></div>'; }
   function pendingHTML() { return '<p class="pending">' + PENDING_TEXT + '</p>'; }
 
@@ -393,30 +404,47 @@
     }
     html += '</div>' + sepHTML();
 
-    // 無料版はこの部分を出さない（鍵カードも置かない）。
-    // 2026-09-11 せいこさん決裁: 鍵＋「この先の読み解きは、BASICで」は出過ぎのため廃止
+    // 2026-09-22 せいこさん指示: 並びを「心の向き」→「今日の過ごし方」の2つにまとめる。
+    //   テーマ → メッセージ → 宣言（旧「今日の言葉」。見出しを変えてメッセージの直後へ）
+    //   ── 今日の過ごし方 ── 一歩 → ひと皿 →（今日のカラー：追加予定）→ おすすめ方位
+    // 無料版は、隠れている項目の見出しだけを鍵つきで残す（9/11に廃止した鍵表示を復活）。
+    // 理由: 見出しごと消すと、BASICで何が見られるのかを無料版の人が忘れていくため。
+    // 鍵の中身はダミー文をぼかしたもの（本物の文章は画面に出さない）
+
+    // 2. MESSAGE
     if (!locked) {
-      // 2. MESSAGE
       html += '<div class="sec prose">' + labHTML('Message', '今日のメッセージ') +
         (picks.message.pending ? pendingHTML() : '<p>' + esc(picks.message.text) + '</p>') +
-        '</div>' + sepHTML();
+        '</div>';
+    } else {
+      html += lockedSecHTML('Message', '今日のメッセージ');
+    }
 
-      // 3. ACTION（今日の一歩）
+    // 3. 宣言（WORD・ベージュの帯）
+    html += '<div class="word">' + labHTML('Word', '今日の宣言') +
+      (picks.word.pending ? pendingHTML() : '<p style="margin-top:12px;">' + bxbr(picks.word.text) + '</p>') +
+      '</div>';
+
+    // ── 今日の過ごし方 ──
+    html += '<div class="group-head"><span>今日の過ごし方</span></div>';
+    if (!locked) {
+      // 4. ACTION（今日の一歩）
       html += '<div class="sec action">' + labHTML('Action', '今日の一歩') +
         (picks.action.pending ? pendingHTML() : '<p>' + bxcl(picks.action.text) + '</p>') +
         '</div>';
-
-      // 4. 今日のひと皿（おすすめ方位の直前・BASICのみ）
+      // 5. 今日のひと皿
       html += dishHTML(r, today);
-
-      // 5. おすすめ方位＋行動ナビ ＋ 6. 根拠の方位盤（折りたたみ・3盤タブ）
+      // （今日のカラーはここに入る予定）
+      // 6. おすすめ方位＋根拠の方位盤（折りたたみ・3盤タブ）
       html += compassBlockHTML(r, today);
+    } else {
+      html += '<div class="locked-list">' +
+        lockedRowHTML('Action', '今日の一歩') +
+        lockedRowHTML('Plate', '今日のひと皿') +
+        lockedRowHTML('Compass', '今日のおすすめ方位') +
+        '<div class="lk-foot"><budoux-ja>今日のメッセージ・一歩・ひと皿・おすすめ方位（方位盤つき）は、BASICでご覧いただけます。</budoux-ja></div>' +
+        '</div>';
     }
-
-    // 6. WORD（ベージュの帯）
-    html += '<div class="word">' + labHTML('Word', '今日の言葉') +
-      (picks.word.pending ? pendingHTML() : '<p style="margin-top:12px;">' + bxbr(picks.word.text) + '</p>') +
-      '</div>';
 
     // 7. 明日のひとこと予告（BASIC。気配だけ・中身は明日開いてから）
     if (!locked) html += tomorrowHTML(r, today);
@@ -533,6 +561,14 @@
           '<div class="imagine">' +
           '<div class="imagine-label">IMAGINE｜未来をひとつ描く</div>' +
           '<p>' + nl2br(m.imagine) + '</p></div>';
+      } else {
+        // 2026-09-22 せいこさん指示: 今月の後半にも鍵を置く（今日の画面と同じ考え方）
+        html += '<div class="locked-list" style="margin-top:22px;">' +
+          lockedRowHTML('Focus', '意識したいこと', 'THIS MONTH\'S') +
+          lockedRowHTML('Future', '未来へのつながり', 'THIS MONTH\'S') +
+          lockedRowHTML('Imagine', '未来をひとつ描く', 'THIS MONTH\'S') +
+          '<div class="lk-foot"><budoux-ja>今月の「意識したいこと・未来へのつながり・IMAGINE」は、BASICでご覧いただけます。</budoux-ja></div>' +
+          '</div>';
       }
       html += '</div>' + sepHTML();
     }
