@@ -397,6 +397,11 @@
   .dish-note{ margin-top:13px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:#a39d8d; }
   /* ひと皿の図柄（2026-09-11）: 文章を読んだあとに静かに添える補足。白背景の線画をそのまま白地に置く（枠・影なし・切り抜かない） */
   /* 画像自体の下余白があるため、次の見出しとの間がほかの区切りと揃うよう下だけ少し詰める */
+  /* 今日のカラー（2026-09-22）: 主役1点を大きく、添えを小さく散らす。余白を多めに残す */
+  .cl-name{ margin-top:14px;font-family:var(--mincho);font-size:22px;font-weight:600;letter-spacing:.16em;color:var(--navy);line-height:1.6; }
+  .cl-stage{ position:relative;width:100%;max-width:340px;margin:16px auto 0;aspect-ratio:10/8; }
+  .cl-stage img{ position:absolute;display:block;height:auto;aspect-ratio:1/1;object-fit:contain; }
+  .cl-line{ margin-top:10px;font-family:var(--mincho);font-size:15px;line-height:2;letter-spacing:.06em;color:#5f5546; }
   .dish-art{ margin:6px auto -30px;width:200px;max-width:60%; }
   /* 図柄は公開用に軽量化したWebP（assets/icons/plate/）。元画像の地（RGB254）は書き出し時に白へ飛ばし済み */
   .dish-art img{ display:block;width:100%;height:auto;object-fit:contain;opacity:.9; }
@@ -423,6 +428,32 @@
   .hb-tabs{ margin-top:18px;display:flex;justify-content:center;gap:8px; }
   .hb-tab{ font-family:inherit;font-size:12.5px;letter-spacing:.14em;padding:7px 18px;border:1px solid var(--gold-line);border-radius:99px;background:var(--card);color:#6f6357;cursor:pointer; }
   .hb-tab.on{ background:var(--navy);color:#ffffff;border-color:var(--navy); }
+  /* 別の日の方位（カレンダー・2026-09-22） */
+  .cal-details{ margin-top:18px; }
+  .cal-head{ margin-top:18px;display:flex;align-items:center;justify-content:center;gap:18px; }
+  .cal-ym{ font-family:var(--mincho);font-size:17px;letter-spacing:.14em;color:var(--navy);min-width:8em; }
+  .cal-nav{ font-family:inherit;font-size:20px;line-height:1;width:38px;height:38px;border:1px solid var(--gold-line);border-radius:50%;background:var(--card);color:var(--gold-deep);cursor:pointer; }
+  .cal-nav:disabled{ opacity:.3;cursor:default; }
+  .cal-dir-lab{ margin-top:18px;font-size:12.5px;letter-spacing:.16em;color:var(--gold-deep); }
+  .cal-dirs{ margin:8px auto 0;max-width:340px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px; }
+  .cal-dir{ font-family:inherit;font-size:13px;letter-spacing:.08em;padding:7px 0;border:1px solid var(--gold-line);border-radius:99px;background:var(--card);color:#6f6357;cursor:pointer; }
+  .cal-dir.on{ background:var(--navy);color:#fff;border-color:var(--navy); }
+  .cal-grid{ margin:16px auto 0;max-width:340px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px; }
+  .cal-w{ font-size:11.5px;letter-spacing:.06em;color:#8a7d6a;padding:4px 0; }
+  .cal-w.sun{ color:#b5707e; }
+  .cal-w.sat{ color:#6f84a6; }
+  .cal-d{ font-family:inherit;font-size:14px;color:var(--navy);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+    border:1px solid transparent;border-radius:50%;background:transparent;padding:0;cursor:pointer; }
+  .cal-d.empty{ cursor:default; }
+  .cal-d.off{ color:#cfc9bd;cursor:default; }
+  .cal-d.good{ background:#fae6ea; }
+  .cal-d.best{ background:#f5cdd5; }
+  .cal-d.today{ border-color:var(--gold); }
+  .cal-d.sel{ background:var(--navy);color:#fff;border-color:var(--navy); }
+  .cal-legend{ margin-top:12px; }
+  .cal-hint{ margin-top:14px;font-size:12.5px;letter-spacing:.04em;color:#8a7d6a; }
+  .cal-sel{ margin-top:22px;padding-top:18px;border-top:1px solid var(--gold-line); }
+  .cal-sel-date{ font-family:var(--mincho);font-size:16px;letter-spacing:.14em;color:var(--gold-deep); }
 
   /* 明日のひとこと予告 */
   .tmw{ margin-top:38px;text-align:center;padding:18px 16px;border-top:1px solid var(--gold-line);border-bottom:1px solid var(--gold-line);font-family:var(--mincho);font-size:14.5px;letter-spacing:.06em;color:var(--navy);line-height:2; }
@@ -493,6 +524,8 @@
   @media (min-width: 768px){
     .app{ max-width:750px;zoom:1.15; }
     .inner{ padding:8px 44px 0; }
+    /* 長い文章のブロックだけ横いっぱいに伸びていた（2026-09-22 せいこさん指摘）→ ほかの項目と同じ幅に収める */
+    .prose,.word,.imagine,.deep-aru,.locked .lk-blur,.subcopy{ max-width:470px;margin-left:auto;margin-right:auto; }
   }
 
 </style>
@@ -623,6 +656,8 @@
   <script src="js/calc.js?v=20260907c"></script>
   <script src="js/select.js?v=20260914a"></script>
   <script src="js/houiban.js?v=20260911b"></script>
-  <script src="js/app.js?v=20260922b"></script>
+  <script src="content/colors.js?v=20260922a"></script>
+  <script src="js/color.js?v=20260922a"></script>
+  <script src="js/app.js?v=20260922e"></script>
 </body>
 </html>

@@ -224,7 +224,8 @@
     return names.join('・');
   }
 
-  function navHTML(r, today) {
+  // その日の日盤で「最大吉方」「吉方位」になる方角の番号（0=北…7=北西）
+  function goodDirsOf(r, today) {
     var an = window.URHouiban.analyzeFull(today.dayCenter, {
       honmei: r.honmeisei, getsumei: r.getsumei, haDir: today.dayHa, haName: '日破'
     });
@@ -233,6 +234,12 @@
       if (d.state === 'saidai') saidai.push(i);
       else if (d.state === 'kichi') kichi.push(i);
     });
+    return { saidai: saidai, kichi: kichi };
+  }
+
+  function navHTML(r, today) {
+    var g = goodDirsOf(r, today);
+    var saidai = g.saidai, kichi = g.kichi;
     var good = saidai.length ? saidai : kichi;
     var html = '<div class="sec compass">' + labHTML('Compass', '今日のおすすめ方位');
     if (!good.length) {
@@ -281,6 +288,53 @@
          food: 'アボカド、トマト、海老、貝など、\n色まで美しいものを。',
          mood: '目に入った瞬間に、\n心が華やぐ一皿を。' }
   };
+  // --- 今日のカラー（2026-09-22 せいこさん指示・BASICのみ・ひと皿とおすすめ方位のあいだ）---
+  // 本命星が今日の日盤で入っている宮の色。選び方は js/color.js、素材表は content/colors.js
+  // 配置の型5種（主役1点を大きく、添えを小さく散らす）。数値は [左, 上, 幅, 傾き]（枠に対する％。枠は横10:縦8なので、画像の高さは幅の1.25倍）。重ならない位置に置いてある
+  var COLOR_LAYOUTS = [
+    { main: [6, 4, 52],  subs: [[66, 14, 27, -8], [62, 62, 25, 7]] },
+    { main: [42, 3, 52], subs: [[6, 8, 27, 7], [12, 60, 25, -6]] },
+    { main: [24, 0, 50], subs: [[2, 64, 25, -7], [72, 64, 25, 8]] },
+    { main: [4, 32, 52], subs: [[62, 4, 28, 6], [68, 62, 24, -7]] },
+    { main: [40, 30, 52], subs: [[6, 4, 27, -6], [4, 64, 24, 7]] }
+  ];
+  function palaceOn(dateKey, honmei) {
+    var info = T.dayStars && T.dayStars[dateKey];
+    var center = info ? (typeof info === 'number' ? info : info.s) : null;
+    var seat = center ? window.URHouiban.seatOf(center, honmei) : null;
+    return seat ? seat.teii : null;
+  }
+  function shiftKey(dateKey, days) {
+    var p = dateKey.split('-').map(Number);
+    var d = new Date(Date.UTC(p[0], p[1] - 1, p[2]) + days * 86400000);
+    return C.dateKey(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
+  }
+  function colorHTML(r, today) {
+    if (!today.dayCenter || !window.URColor || !window.UR_COLORS) return '';
+    var h = r.honmeisei, k = today.dateKey;
+    var y1 = shiftKey(k, -1), y2 = shiftKey(k, -2);
+    var c = window.URColor.pick(h,
+      { palace: palaceOn(k, h), dateKey: k },
+      { palace: palaceOn(y1, h), dateKey: y1 },
+      window.UR_COLORS,
+      { palace: palaceOn(y2, h), dateKey: y2 });
+    if (!c) return '';
+    var L = COLOR_LAYOUTS[c.layout] || COLOR_LAYOUTS[0];
+    function img(it, pos, cls) {
+      var st = 'left:' + pos[0] + '%;top:' + pos[1] + '%;width:' + pos[2] + '%;' +
+        (pos[3] ? 'transform:rotate(' + pos[3] + 'deg);' : '');
+      return '<img class="' + cls + '" src="assets/icons/color/' + esc(it[2]) + '.webp" alt="' + esc(it[0] + 'の' + it[1]) +
+        '" style="' + st + '" loading="lazy" decoding="async">';
+    }
+    var stage = img(c.main, L.main, 'cl-main');
+    c.subs.forEach(function (it, i) { if (L.subs[i]) stage += img(it, L.subs[i], 'cl-sub'); });
+    return '<div class="sec tcolor">' + labHTML('Color', '今日のカラー') +
+      '<div class="cl-name">' + esc(c.color) + '</div>' +
+      '<div class="cl-stage">' + stage + '</div>' +
+      '<div class="cl-line"><budoux-ja>' + esc(c.line) + '</budoux-ja></div>' +
+      '</div>';
+  }
+
   function dishHTML(r, today) {
     if (!today.dayCenter) return '';
     var seat = window.URHouiban.seatOf(today.dayCenter, r.honmeisei);
@@ -318,18 +372,22 @@
     }
     return defs;
   }
-  function boardPanelHTML(r, today) {
+  // tab/tabAttr を渡すと、カレンダーで選んだ日の方位盤（別のタブ状態）として描く（2026-09-22）
+  function boardPanelHTML(r, today, tab, tabAttr) {
     var defs = boardDefs(r, today);
     var order = ['day', 'month', 'year'];
-    if (!defs[_boardTab]) _boardTab = 'day';
+    tabAttr = tabAttr || 'data-board';
+    var cur = tab || _boardTab;
+    if (!defs[cur]) cur = 'day';
+    if (!tab) _boardTab = cur;
     var html = '<div class="hb-tabs">';
     order.forEach(function (k) {
       if (!defs[k]) return;
-      html += '<button type="button" class="hb-tab' + (k === _boardTab ? ' on' : '') + '" data-board="' + k + '">' +
+      html += '<button type="button" class="hb-tab' + (k === cur ? ' on' : '') + '" ' + tabAttr + '="' + k + '">' +
         esc(defs[k].label) + '</button>';
     });
     html += '</div>';
-    var d = defs[_boardTab];
+    var d = defs[cur];
     html += '<div class="hb-wrap">' + window.URHouiban.renderBoard({
       center: d.center, honmei: r.honmeisei, getsumei: r.getsumei,
       haDir: d.haDir, haName: d.haName, premium: true,
@@ -349,7 +407,107 @@
     html += '<details class="hb-details"' + (window._boardOpen ? ' open' : '') + '>' +
       '<summary>根拠の方位盤を見る</summary>' +
       '<div id="board-panel">' + boardPanelHTML(r, today) + '</div></details>';
+    html += '<details class="hb-details cal-details"' + (window._calOpen ? ' open' : '') + '>' +
+      '<summary>別の日の方位を見る</summary>' +
+      '<div id="cal-panel">' + calPanelHTML(r, today) + '</div></details>';
     return html;
+  }
+
+  // --- 別の日の方位（カレンダー・2026-09-22 せいこさん指示）---
+  // 月のカレンダーから日付を選ぶと、その日のおすすめ方位と方位盤（日盤/月盤/年盤）を出す。
+  // 「行きたい方角」を選ぶと、その方角が最大吉方・吉方位になる日をカレンダー上で色づけする
+  // （吉方位がある日は大半なので、「吉方位がある日に印」では区別にならないため）。
+  // 選べる範囲は今月〜暦データの最終月。今日より前の日は選べない
+  var _cal = { ym: null, sel: null, dir: null, tab: 'day' };
+  var WEEK_JP = ['日', '月', '火', '水', '木', '金', '土'];
+  function keyParts(k) { return k.split('-').map(Number); }
+  function ymOf(k) { var p = keyParts(k); return p[0] * 12 + (p[1] - 1); }
+  function lastDataYM() {
+    var ks = Object.keys(T.dayStars || {}).sort();
+    return ks.length ? ymOf(ks[ks.length - 1]) : null;
+  }
+  function todayOfDate(y, m, d) {
+    var prof = loadProfile();
+    if (!prof) return null;
+    var dg = C.diagnose(prof, T, { y: y, m: m, d: d, hh: 12, mm: 0 });
+    return (dg && !dg.error && dg.today && dg.today.dayCenter) ? dg.today : null;
+  }
+  function jpDate(k) {
+    var p = keyParts(k);
+    return p[1] + '月' + p[2] + '日（' + WEEK_JP[new Date(p[0], p[1] - 1, p[2]).getDay()] + '）';
+  }
+  function calPanelHTML(r, today) {
+    var minYM = ymOf(today.dateKey), maxYM = lastDataYM();
+    if (_cal.ym === null || _cal.ym < minYM) _cal.ym = minYM;
+    if (maxYM !== null && _cal.ym > maxYM) _cal.ym = maxYM;
+    var y = Math.floor(_cal.ym / 12), m = _cal.ym % 12 + 1;
+    var html = '<div class="cal-head">' +
+      '<button type="button" class="cal-nav" data-cal-nav="-1"' + (_cal.ym <= minYM ? ' disabled' : '') + ' aria-label="前の月">‹</button>' +
+      '<span class="cal-ym">' + y + '年' + m + '月</span>' +
+      '<button type="button" class="cal-nav" data-cal-nav="1"' + (maxYM !== null && _cal.ym >= maxYM ? ' disabled' : '') + ' aria-label="次の月">›</button>' +
+      '</div>';
+    // 行きたい方角で探す（もう一度押すと解除）
+    html += '<div class="cal-dir-lab">行きたい方角で探す</div><div class="cal-dirs">';
+    C.DIR_NAMES.forEach(function (nm, i) {
+      html += '<button type="button" class="cal-dir' + (_cal.dir === i ? ' on' : '') + '" data-cal-dir="' + i + '">' + esc(nm) + '</button>';
+    });
+    html += '</div>';
+    // カレンダー本体
+    html += '<div class="cal-grid">';
+    WEEK_JP.forEach(function (w, i) {
+      html += '<div class="cal-w' + (i === 0 ? ' sun' : i === 6 ? ' sat' : '') + '">' + w + '</div>';
+    });
+    var first = new Date(y, m - 1, 1).getDay();
+    var days = new Date(y, m, 0).getDate();
+    for (var b = 0; b < first; b++) html += '<div class="cal-d empty"></div>';
+    for (var d = 1; d <= days; d++) {
+      var k = C.dateKey(y, m, d);
+      var cls = 'cal-d';
+      var td = k >= today.dateKey ? todayOfDate(y, m, d) : null;
+      if (!td) cls += ' off';
+      else if (_cal.dir !== null) {
+        var g = goodDirsOf(r, td);
+        if (g.saidai.indexOf(_cal.dir) >= 0) cls += ' best';
+        else if (g.kichi.indexOf(_cal.dir) >= 0) cls += ' good';
+      }
+      if (k === today.dateKey) cls += ' today';
+      if (k === _cal.sel) cls += ' sel';
+      html += td
+        ? '<button type="button" class="' + cls + '" data-cal-day="' + k + '">' + d + '</button>'
+        : '<div class="' + cls + '">' + d + '</div>';
+    }
+    html += '</div>';
+    if (_cal.dir !== null) {
+      var dn = esc(C.DIR_NAMES[_cal.dir]);
+      html += '<div class="hb-legend cal-legend">' +
+        '<span class="lg"><span class="dot" style="background:#f5cdd5;"></span>' + dn + 'が最大吉方の日</span>' +
+        '<span class="lg"><span class="dot" style="background:#fae6ea;"></span>' + dn + 'が吉方位の日</span>' +
+        '</div>';
+    }
+    // 選んだ日
+    var st = null;
+    if (_cal.sel) { var sp = keyParts(_cal.sel); st = todayOfDate(sp[0], sp[1], sp[2]); }
+    if (st) {
+      var sg = goodDirsOf(r, st);
+      var good = sg.saidai.length ? sg.saidai : sg.kichi;
+      html += '<div class="cal-sel">' +
+        '<div class="cal-sel-date">' + esc(jpDate(_cal.sel)) + '</div>' +
+        '<div class="nav-lead"><budoux-ja>' +
+        (good.length ? 'この日は、' + esc(joinDirs(good.slice(0, 3).map(function (i) { return C.DIR_NAMES[i]; }))) + 'が味方。'
+          : 'この日は、方位はお休み。') +
+        '</budoux-ja></div>' +
+        boardPanelHTML(r, st, _cal.tab, 'data-cal-board') +
+        '</div>';
+    } else {
+      html += '<div class="cal-hint">日付をタップすると、その日の方位が見られます。</div>';
+    }
+    return html;
+  }
+  function refreshCal() {
+    // 診断結果と毎朝ホームの両方に同じ部品があるので、両方とも描き直す
+    var dd = window._diag;
+    if (!dd || !dd.results) return;
+    document.querySelectorAll('[id="cal-panel"]').forEach(function (panel) { panel.innerHTML = calPanelHTML(dd.results[0], dd.today); });
   }
 
   // --- 明日のひとこと予告 ---
@@ -434,15 +592,17 @@
         '</div>';
       // 5. 今日のひと皿
       html += dishHTML(r, today);
-      // （今日のカラーはここに入る予定）
-      // 6. おすすめ方位＋根拠の方位盤（折りたたみ・3盤タブ）
+      // 6. 今日のカラー
+      html += colorHTML(r, today);
+      // 7. おすすめ方位＋根拠の方位盤（折りたたみ・3盤タブ）
       html += compassBlockHTML(r, today);
     } else {
       html += '<div class="locked-list">' +
         lockedRowHTML('Action', '今日の一歩') +
         lockedRowHTML('Plate', '今日のひと皿') +
+        lockedRowHTML('Color', '今日のカラー') +
         lockedRowHTML('Compass', '今日のおすすめ方位') +
-        '<div class="lk-foot"><budoux-ja>今日のメッセージ・一歩・ひと皿・おすすめ方位（方位盤つき）は、BASICでご覧いただけます。</budoux-ja></div>' +
+        '<div class="lk-foot"><budoux-ja>今日のメッセージ・一歩・ひと皿・カラー・おすすめ方位（方位盤つき）は、BASICでご覧いただけます。</budoux-ja></div>' +
         '</div>';
     }
 
@@ -679,17 +839,35 @@
   // 方位盤タブ（日盤/月盤/年盤）の切り替え
   document.addEventListener('click', function (e) {
     var t = e.target;
-    if (t && t.classList && t.classList.contains('hb-tab')) {
+    if (t && t.classList && t.classList.contains('hb-tab') && t.hasAttribute('data-board')) {
       _boardTab = t.getAttribute('data-board');
-      var panel = $('board-panel');
       var d = window._diag;
-      if (panel && d && d.results) panel.innerHTML = boardPanelHTML(d.results[0], d.today);
+      if (d && d.results) document.querySelectorAll('[id="board-panel"]').forEach(function (panel) { panel.innerHTML = boardPanelHTML(d.results[0], d.today); });
+    }
+  });
+  // 別の日の方位（カレンダー）の操作
+  document.addEventListener('click', function (e) {
+    var t = e.target && e.target.closest ? e.target.closest('[data-cal-nav],[data-cal-dir],[data-cal-day],[data-cal-board]') : null;
+    if (!t || t.disabled) return;
+    var pickedDay = t.hasAttribute('data-cal-day');
+    if (t.hasAttribute('data-cal-nav')) { _cal.ym += +t.getAttribute('data-cal-nav'); }
+    else if (t.hasAttribute('data-cal-dir')) {
+      var di = +t.getAttribute('data-cal-dir');
+      _cal.dir = (_cal.dir === di) ? null : di;
+    }
+    else if (pickedDay) { _cal.sel = t.getAttribute('data-cal-day'); }
+    else { _cal.tab = t.getAttribute('data-cal-board'); }
+    refreshCal();
+    if (pickedDay) {
+      var box = document.querySelector('#cal-panel .cal-sel');
+      if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   });
   // 折りたたみの開閉状態を再描画後も保つ
   document.addEventListener('toggle', function (e) {
     if (e.target && e.target.classList && e.target.classList.contains('hb-details')) {
-      window._boardOpen = e.target.open;
+      if (e.target.classList.contains('cal-details')) window._calOpen = e.target.open;
+      else window._boardOpen = e.target.open;
     }
   }, true);
 
