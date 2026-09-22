@@ -918,8 +918,9 @@
     UR_ACCOUNT.rememberPendingEmail(addr);
     UR_ACCOUNT.sendMagicLink(addr).then(function () {
       msg.hidden = false;
-      msg.textContent = 'ご登録のアドレスであれば、ログイン用のリンクをお送りしました。メールをご確認ください。届かない場合は、迷惑メールフォルダもご確認ください。';
+      msg.textContent = 'ご登録のアドレスであれば、ログイン用の番号をお送りしました。届かない場合は、迷惑メールフォルダもご確認ください。';
       $('gate-step2').hidden = false;
+      try { $('gate-code').focus(); } catch (e) { }
       input.value = '';
       setTimeout(function () { btn.disabled = false; }, 30000);
     });
@@ -933,7 +934,7 @@
     UR_ACCOUNT.verifyInput(null, $('gate-code').value).then(function (ok) {
       if (ok) { window.location.reload(); return; }
       btn.disabled = false;
-      vmsg.textContent = 'うまくログインできませんでした。リンクは一度押すと使えなくなります。お手数ですが、もう一度「リンクを送る」から新しいメールを受け取り、押さずにコピーして貼り付けてください。';
+      vmsg.textContent = '番号が違うか、有効期限（1時間）が切れているようです。お手数ですが、もう一度「番号を送る」を押して、新しいメールの番号を入れてください。';
     });
   });
 

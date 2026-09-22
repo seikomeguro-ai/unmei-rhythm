@@ -404,6 +404,7 @@
   .gate-form .acct-msg{ margin:4px auto 0;text-align:center;font-size:13px; }
   .gate-step2{ margin-top:34px;padding-top:26px;border-top:1px solid var(--gold-line); }
   .gate-step2 b{ font-weight:500;color:var(--navy); }
+  .gate-code{ text-align:center;font-size:24px !important;letter-spacing:.3em;max-width:12em !important; }
   /* 今日のカラー（2026-09-22）: 主役1点を大きく、添えを小さく散らす。余白を多めに残す */
   .cl-name{ margin:14px auto 0;max-width:22em;font-family:var(--mincho);font-size:18px;font-weight:600;letter-spacing:.1em;color:var(--navy);line-height:1.8;text-wrap:balance; }
   .cl-stage{ position:relative;width:100%;max-width:340px;margin:16px auto 0;aspect-ratio:10/8; }
@@ -613,14 +614,14 @@
         <div class="gate-en">Unmei Rhythm</div>
         <div class="form-title" style="margin-top:10px;">運命リズム診断</div>
         <div class="acct-form gate-form">
-          <div class="acct-note">ご登録のメールアドレスを入れてください。<br>ログイン用のリンクをお送りします。</div>
+          <div class="acct-note">ご登録のメールアドレスを入れてください。<br>ログイン用の番号をお送りします。</div>
           <input type="email" id="gate-email" inputmode="email" autocomplete="email" placeholder="メールアドレス">
-          <button type="button" class="acct-send" id="gate-send">リンクを送る</button>
+          <button type="button" class="acct-send" id="gate-send">番号を送る</button>
           <div class="acct-msg" id="gate-msg" hidden></div>
         </div>
         <div class="acct-form gate-form gate-step2" id="gate-step2" hidden>
-          <div class="acct-note"><b>ホーム画面のアプリでお使いの方へ</b><br>届いたメールのリンクは押さずに、<br>長押しして「リンクをコピー」し、<br>ここに貼り付けてください。</div>
-          <input type="text" id="gate-code" autocomplete="one-time-code" placeholder="コピーしたリンクを貼り付け">
+          <div class="acct-note">メールに届いた<b>6桁の番号</b>を入れてください。</div>
+          <input type="text" id="gate-code" inputmode="numeric" autocomplete="one-time-code" maxlength="200" placeholder="000000" class="gate-code">
           <button type="button" class="acct-send" id="gate-verify">ログインする</button>
           <div class="acct-msg" id="gate-vmsg" hidden></div>
         </div>
@@ -689,6 +690,6 @@
   <script src="js/houiban.js?v=20260911b"></script>
   <script src="content/colors.js?v=20260922a"></script>
   <script src="js/color.js?v=20260922a"></script>
-  <script src="js/app.js?v=20260922i"></script>
+  <script src="js/app.js?v=20260922j"></script>
 </body>
 </html>
