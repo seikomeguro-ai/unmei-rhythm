@@ -646,7 +646,7 @@
 
 
     // モチーフ図鑑への導線
-    html += '<div class="linkline" style="margin-top:26px;"><a href="motifs.html">今日の絵柄にこめた意味を知る →</a></div>';
+    html += '<div class="linkline" style="margin-top:26px;"><a href="motifs.html">モチーフに込めた意味を見る →</a></div>';
 
     return html;
   }

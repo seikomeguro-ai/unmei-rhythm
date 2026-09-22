@@ -406,11 +406,13 @@
   .gate-step2 b{ font-weight:500;color:var(--navy); }
   .gate-code{ text-align:center;font-size:24px !important;letter-spacing:.3em;max-width:12em !important; }
   /* 今日のカラー（2026-09-22）: 主役1点を大きく、添えを小さく散らす。余白を多めに残す */
+  .tcolor{ margin-top:52px; }
   .cl-name{ margin:14px auto 0;max-width:22em;font-family:var(--mincho);font-size:18px;font-weight:600;letter-spacing:.1em;color:var(--navy);line-height:1.8;text-wrap:balance; }
   .cl-stage{ position:relative;width:100%;max-width:340px;margin:16px auto 0;aspect-ratio:10/8; }
   .cl-stage img{ position:absolute;display:block;height:auto;aspect-ratio:1/1;object-fit:contain; }
   .cl-line{ margin-top:10px;font-family:var(--mincho);font-size:15px;line-height:2;letter-spacing:.06em;color:#5f5546; }
-  .dish-art{ margin:6px auto -30px;width:200px;max-width:60%; }
+  /* 2026-09-22 水彩の新しい絵に差し替え（下の余白が少ないので、以前の -30px の詰めをやめた） */
+  .dish-art{ margin:14px auto 0;width:200px;max-width:60%; }
   /* 図柄は公開用に軽量化したWebP（assets/icons/plate/）。元画像の地（RGB254）は書き出し時に白へ飛ばし済み */
   .dish-art img{ display:block;width:100%;height:auto;object-fit:contain;opacity:.9; }
 
@@ -690,6 +692,6 @@
   <script src="js/houiban.js?v=20260911b"></script>
   <script src="content/colors.js?v=20260922a"></script>
   <script src="js/color.js?v=20260922a"></script>
-  <script src="js/app.js?v=20260922j"></script>
+  <script src="js/app.js?v=20260923a"></script>
 </body>
 </html>
