@@ -147,19 +147,14 @@
   //   15日目以降        → 何も出さない
   // 2026-09-11 せいこさん決裁: 「14日間の無料体験は終了しました」（15〜17日目）は廃止。
   //   案内が出過ぎると、無料のままつながっていたい人の居場所がなくなるため
+  // 2026-09-20: 残り日数は UR_PREMIUM 側で数える（個別延長を反映させるため）
   function trialNoticeHTML(today) {
     if (UR_PREMIUM.tier() === 'premium') return '';
     var start = null;
     try { start = localStorage.getItem('ur_start'); } catch (e) { }
-    var idx = UR_PREMIUM.trialDayIndex(start, today && today.dateKey);
-    if (idx === null) return '';
-    var D = UR_PREMIUM.TRIAL_DAYS;
-    if (idx <= D) {
-      var left = D - idx + 1;
-      if (left > 3 || left < 1) return '';
-      return '<div class="tnotice">体験でご覧いただけるのは、あと' + left + '日です</div>';
-    }
-    return '';
+    var left = UR_PREMIUM.trialDaysLeftOn(start, today && today.dateKey);
+    if (left === null || left > 3 || left < 1) return '';
+    return '<div class="tnotice">体験でご覧いただけるのは、あと' + left + '日です</div>';
   }
 
   // --- アカウント（BASICのログイン状態）---

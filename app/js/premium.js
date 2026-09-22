@@ -19,6 +19,19 @@
 
   var TRIAL_DAYS = 14;   // 初回診断日を1日目として14日間
 
+  /*
+   * 体験終了日の個別延長（2026-09-20 せいこさん指示）
+   *
+   * キー   = その端末の「本来の体験最終日」（ur_start から14日目）
+   * 値     = その人だけの延長後の最終日
+   *
+   * 「本来2026-09-21に体験が終わる人だけ、2026-09-25まで」。
+   * 一律の延長ではなく、自分の ur_start から計算した最終日が一致した人にだけ効く。
+   * ur_start（初回診断日）は書き換えない。2026-09-26からは表に該当しなくなり、
+   * 何も足さない通常の判定に自動で戻る（BASIC契約者は従来どおり ur_basic_until が優先）。
+   */
+  var TRIAL_EXTENSIONS = { '2026-09-21': '2026-09-25' };
+
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
   function keyOfDate(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
   function parseKeyDate(k) {
@@ -28,20 +41,41 @@
 
   // --- 純粋ロジック（テストから直接呼ぶ） ---
 
+  // 本来の体験最終日（初回診断日を1日目として14日目）
+  function trialEndKey(startKey) {
+    if (!startKey) return null;
+    var d = parseKeyDate(startKey);
+    d.setDate(d.getDate() + TRIAL_DAYS - 1);
+    return keyOfDate(d);
+  }
+
+  // 延長を反映した体験最終日。表にない人は本来の最終日のまま
+  function effectiveTrialEnd(startKey) {
+    var end = trialEndKey(startKey);
+    if (!end) return null;
+    return TRIAL_EXTENSIONS[end] || end;
+  }
+
   // start/until/today はすべて 'YYYY-MM-DD'。until が今日以降ならBASIC、
-  // 体験開始から14日以内なら体験中、どちらでもなければ無料版
+  // 体験最終日（延長があればその日）までなら体験中、どちらでもなければ無料版
   function computeTier(startKey, untilKey, todayKey) {
     if (untilKey && untilKey >= todayKey) return 'premium';
-    if (startKey) {
-      var days = Math.floor((parseKeyDate(todayKey) - parseKeyDate(startKey)) / 86400000) + 1;
-      if (days >= 1 && days <= TRIAL_DAYS) return 'trial';
-    }
+    var end = effectiveTrialEnd(startKey);
+    if (end && todayKey >= startKey && todayKey <= end) return 'trial';
     return 'free';
   }
 
   function trialDayIndex(startKey, todayKey) {
     if (!startKey) return null;
     return Math.floor((parseKeyDate(todayKey) - parseKeyDate(startKey)) / 86400000) + 1;
+  }
+
+  // 体験の残り日数（今日を1日と数える）。延長を反映する。体験外・起点なしは null / 0
+  function trialDaysLeftOn(startKey, todayKey) {
+    var end = effectiveTrialEnd(startKey);
+    if (!end || !todayKey || todayKey < startKey) return null;
+    var left = Math.floor((parseKeyDate(end) - parseKeyDate(todayKey)) / 86400000) + 1;
+    return left > 0 ? left : 0;
   }
 
   // --- localStorageを使う実運用API ---
@@ -70,10 +104,7 @@
   function basicUntil() { return get('ur_basic_until'); }
 
   function trialDaysLeft(now) {
-    var idx = trialDayIndex(get('ur_start'), keyOfDate(now || new Date()));
-    if (idx === null) return null;
-    var left = TRIAL_DAYS - idx + 1;
-    return left > 0 ? left : 0;
+    return trialDaysLeftOn(get('ur_start'), keyOfDate(now || new Date()));
   }
 
   /**
@@ -111,7 +142,10 @@
 
   return {
     TRIAL_DAYS: TRIAL_DAYS,
+    TRIAL_EXTENSIONS: TRIAL_EXTENSIONS,
     computeTier: computeTier, trialDayIndex: trialDayIndex,
+    trialEndKey: trialEndKey, effectiveTrialEnd: effectiveTrialEnd,
+    trialDaysLeftOn: trialDaysLeftOn,
     markStart: markStart, tier: tier, trialDaysLeft: trialDaysLeft,
     basicUntil: basicUntil,
     handleUrl: handleUrl,
