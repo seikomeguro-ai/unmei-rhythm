@@ -246,7 +246,8 @@
         '<div class="nav-note"><budoux-ja>吉方位がない＝悪い日、という意味ではありません。</budoux-ja></div>';
       return html + '</div>';
     }
-    var names = good.slice(0, 3).map(function (i) { return C.DIR_NAMES[i]; });
+    // 2026-09-22 せいこさん指示: 盤でピンクの方角は文章にも全部書く（以前は先頭3つで切っていた）
+    var names = good.map(function (i) { return C.DIR_NAMES[i]; });
     html += '<div class="nav-lead"><budoux-ja>今日は、' + esc(joinDirs(names)) + 'が味方。</budoux-ja></div>' +
       '<div class="nav-copy">' + bxbr('モーニング、ランチ、カフェ、ディナー、お買い物など、\nぜひこの方角へ出かけてみてね。') + '</div>';
     html += '</div>';
@@ -415,6 +416,8 @@
     html += '<details class="hb-details cal-details"' + (window._calOpen ? ' open' : '') + '>' +
       '<summary>別の日の方位を見る</summary>' +
       '<div id="cal-panel">' + calPanelHTML(r, today) + '</div></details>';
+    // 2026-09-22 せいこさん指示: 方位を自己流で取らないよう、ひとこと添える（🟡文言は味見待ち）
+    html += '<div class="nav-caution"><budoux-ja>方位の取り方には決まりがあります。旅行や引っ越しなど大きく動くときは、自己流で決めずに、プロに見てもらってね。</budoux-ja></div>';
     return html;
   }
 
@@ -498,7 +501,7 @@
       html += '<div class="cal-sel">' +
         '<div class="cal-sel-date">' + esc(jpDate(_cal.sel)) + '</div>' +
         '<div class="nav-lead"><budoux-ja>' +
-        (good.length ? 'この日は、' + esc(joinDirs(good.slice(0, 3).map(function (i) { return C.DIR_NAMES[i]; }))) + 'が味方。'
+        (good.length ? 'この日は、' + esc(joinDirs(good.map(function (i) { return C.DIR_NAMES[i]; }))) + 'が味方。'
           : 'この日は、方位はお休み。') +
         '</budoux-ja></div>' +
         boardPanelHTML(r, st, _cal.tab, 'data-cal-board') +
