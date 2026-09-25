@@ -32,6 +32,14 @@
    */
   var TRIAL_EXTENSIONS = { '2026-09-21': '2026-09-25' };
 
+  /*
+   * 本番の申込が始まるまでの一律延長（2026-09-26 せいこさん指示）。
+   * 課金サーバーがまだSandboxで申込ボタンも出ていないため、体験が終わった人にも鍵をかけない。
+   * 体験最終日がこの日より前の人は全員、この日まで体験扱い（すでに終わった人も体験に戻る）。
+   * 日付は仮。せいこさんが決めたらこの1行を書き換える。本番切替で不要になったら null にする。
+   */
+  var TRIAL_HOLD_UNTIL = '2026-10-31';
+
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
   function keyOfDate(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
   function parseKeyDate(k) {
@@ -53,7 +61,9 @@
   function effectiveTrialEnd(startKey) {
     var end = trialEndKey(startKey);
     if (!end) return null;
-    return TRIAL_EXTENSIONS[end] || end;
+    end = TRIAL_EXTENSIONS[end] || end;
+    if (TRIAL_HOLD_UNTIL && end < TRIAL_HOLD_UNTIL) end = TRIAL_HOLD_UNTIL;
+    return end;
   }
 
   // start/until/today はすべて 'YYYY-MM-DD'。until が今日以降ならBASIC、
@@ -142,7 +152,7 @@
 
   return {
     TRIAL_DAYS: TRIAL_DAYS,
-    TRIAL_EXTENSIONS: TRIAL_EXTENSIONS,
+    TRIAL_EXTENSIONS: TRIAL_EXTENSIONS, TRIAL_HOLD_UNTIL: TRIAL_HOLD_UNTIL,
     computeTier: computeTier, trialDayIndex: trialDayIndex,
     trialEndKey: trialEndKey, effectiveTrialEnd: effectiveTrialEnd,
     trialDaysLeftOn: trialDaysLeftOn,
