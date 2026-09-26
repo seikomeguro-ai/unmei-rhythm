@@ -425,7 +425,8 @@
   // 月のカレンダーから日付を選ぶと、その日のおすすめ方位と方位盤（日盤/月盤/年盤）を出す。
   // 「行きたい方角」を選ぶと、その方角が最大吉方・吉方位になる日をカレンダー上で色づけする
   // （吉方位がある日は大半なので、「吉方位がある日に印」では区別にならないため）。
-  // 選べる範囲は今月〜暦データの最終月。今日より前の日は選べない
+  // 選べる範囲は暦データの最初の月〜最終月。2026-09-26 せいこさん指示で過去の日も見られるようにした
+  // （開いたときは今月を表示。過去の日は「〜が味方でした」と過去形で出す）
   var _cal = { ym: null, sel: null, dir: null, tab: 'day' };
   var WEEK_JP = ['日', '月', '火', '水', '木', '金', '土'];
   function keyParts(k) { return k.split('-').map(Number); }
@@ -433,6 +434,10 @@
   function lastDataYM() {
     var ks = Object.keys(T.dayStars || {}).sort();
     return ks.length ? ymOf(ks[ks.length - 1]) : null;
+  }
+  function firstDataYM() {
+    var ks = Object.keys(T.dayStars || {}).sort();
+    return ks.length ? ymOf(ks[0]) : null;
   }
   function todayOfDate(y, m, d) {
     var prof = loadProfile();
@@ -445,8 +450,10 @@
     return p[1] + '月' + p[2] + '日（' + WEEK_JP[new Date(p[0], p[1] - 1, p[2]).getDay()] + '）';
   }
   function calPanelHTML(r, today) {
-    var minYM = ymOf(today.dateKey), maxYM = lastDataYM();
-    if (_cal.ym === null || _cal.ym < minYM) _cal.ym = minYM;
+    var minYM = firstDataYM(), maxYM = lastDataYM();
+    if (minYM === null) minYM = ymOf(today.dateKey);
+    if (_cal.ym === null) _cal.ym = ymOf(today.dateKey);
+    if (_cal.ym < minYM) _cal.ym = minYM;
     if (maxYM !== null && _cal.ym > maxYM) _cal.ym = maxYM;
     var y = Math.floor(_cal.ym / 12), m = _cal.ym % 12 + 1;
     var html = '<div class="cal-head">' +
@@ -471,8 +478,9 @@
     for (var d = 1; d <= days; d++) {
       var k = C.dateKey(y, m, d);
       var cls = 'cal-d';
-      var td = k >= today.dateKey ? todayOfDate(y, m, d) : null;
+      var td = todayOfDate(y, m, d);
       if (!td) cls += ' off';
+      else if (k < today.dateKey) cls += ' past';
       else if (_cal.dir !== null) {
         var g = goodDirsOf(r, td);
         if (g.saidai.indexOf(_cal.dir) >= 0) cls += ' best';
@@ -498,11 +506,12 @@
     if (st) {
       var sg = goodDirsOf(r, st);
       var good = sg.saidai.length ? sg.saidai : sg.kichi;
+      var isPast = _cal.sel < today.dateKey;
       html += '<div class="cal-sel">' +
         '<div class="cal-sel-date">' + esc(jpDate(_cal.sel)) + '</div>' +
         '<div class="nav-lead"><budoux-ja>' +
-        (good.length ? 'この日は、' + esc(joinDirs(good.map(function (i) { return C.DIR_NAMES[i]; }))) + 'が味方。'
-          : 'この日は、方位はお休み。') +
+        (good.length ? 'この日は、' + esc(joinDirs(good.map(function (i) { return C.DIR_NAMES[i]; }))) + (isPast ? 'が味方でした。' : 'が味方。')
+          : (isPast ? 'この日は、方位はお休みでした。' : 'この日は、方位はお休み。')) +
         '</budoux-ja></div>' +
         boardPanelHTML(r, st, _cal.tab, 'data-cal-board') +
         '</div>';
