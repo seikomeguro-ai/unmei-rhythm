@@ -499,6 +499,30 @@
   .hs-more[open]>summary{margin-bottom:8px}
   .hs-more .devs{text-align:left}
   .fv-fine{margin-top:12px;font-size:13px;color:#6f6357;letter-spacing:.06em;line-height:1.8}
+  /* 2026-10-28 本質カードの見本（七赤金星・登録前に中身を見せる） */
+  .sample-card{ margin:34px auto 0; max-width:420px; padding:30px 22px 26px; background:var(--card); border:1px solid var(--gold-line); border-radius:14px; text-align:center; }
+  .sample-card .sc-tag{ font-family:var(--mincho); font-size:12px; letter-spacing:.24em; color:var(--gold-deep); }
+  .sample-card .sc-photo img{ display:block; width:100%; max-width:300px; margin:16px auto 0; border-radius:12px; }
+  .sample-card .sc-color{ margin-top:16px; font-family:var(--mincho); font-size:14px; letter-spacing:.2em; color:#ef8a76; }
+  .sample-card .sc-code{ margin-top:6px; font-size:11px; letter-spacing:.3em; color:var(--muted); }
+  .sample-card .sc-star{ margin-top:4px; font-family:var(--mincho); font-size:22px; font-weight:600; letter-spacing:.14em; color:var(--navy); }
+  .sample-card .sc-title{ margin-top:2px; font-family:var(--mincho); font-size:14px; color:var(--ink); letter-spacing:.08em; }
+  .sample-card .sc-ms{ display:grid; grid-template-columns:1fr 1fr; max-width:340px; margin:22px auto 0; border-top:1px solid var(--gold-line); }
+  .sample-card .sc-ms div{ padding:9px 4px 8px; border-bottom:1px solid var(--gold-line); font-size:10.5px; letter-spacing:.16em; color:#9a8a6a; }
+  .sample-card .sc-ms div:nth-child(odd):not(.w){ border-right:1px solid var(--gold-line); }
+  .sample-card .sc-ms div.w{ grid-column:1 / -1; }
+  .sample-card .sc-ms b{ display:block; margin-top:3px; font-family:var(--mincho); font-size:14px; letter-spacing:.1em; color:var(--navy); }
+  .sample-card .sc-ms-note{ margin-top:8px; font-size:11.5px; color:var(--muted); }
+  .sample-card .sc-catch{ margin-top:24px; font-family:var(--mincho); font-size:17px; font-weight:600; line-height:1.9; color:var(--navy); }
+  .sample-card .sc-h{ margin-top:26px; font-family:var(--mincho); font-size:13.5px; letter-spacing:.16em; color:var(--gold-deep); }
+  .sample-card p, .sample-card li{ font-size:14px; line-height:2; color:var(--ink); text-align:left; }
+  .sample-card p{ margin-top:10px; }
+  .sample-card ul{ margin:10px 0 0; padding:0; list-style:none; }
+  .sample-card li{ position:relative; padding-left:1.1em; }
+  .sample-card li::before{ content:"・"; position:absolute; left:0; color:var(--gold-deep); }
+  .sample-card .sc-next{ margin-top:26px; padding:16px 16px 14px; background:#fbf6ee; border-radius:10px; }
+  .sample-card .sc-next .sc-h{ margin-top:0; }
+  .sample-lead{ margin-top:30px; }
   /* ホーム画面に追加: 端末別カード */
   .devs{ margin-top:28px; text-align:left; display:flex; flex-direction:column; gap:16px; }
   .dev{
@@ -641,6 +665,44 @@
       <div class="item"><div class="no"><span class="labnum">05</span></div><div class="tt">今日のおすすめ方位と、行動ナビ</div>
         <div class="dd"><span class="ku">今日は東が味方。</span><span class="ku">ならモーニングは、東のカフェへ。</span><span class="ku">方位盤が読めなくても、</span><span class="ku">今日の流れを生活で使えます。</span><span class="ku">（BASIC MEMBER）</span></div></div>
     </div>
+  </div>
+  <!-- 3.2 本質カードの見本（2026-10-28 MUSE案・せいこさん指示で七赤金星を全部見せる） -->
+  <div class="sec">
+    <div class="lab-en">SAMPLE</div>
+    <h2><span class="ku">たとえば、</span><span class="ku">七赤金星の</span><span class="ku">本質カード。</span></h2>
+    <div class="sep"></div>
+    <p class="body sample-lead"><span class="ku">生年月日を入れると、</span><span class="ku">あなたの星のカードが、</span><span class="ku">この形で届きます。</span></p>
+    <div class="sample-card">
+      <div class="sc-tag">YOUR CARD｜あなたのカード</div>
+      <div class="sc-photo"><img src="assets/type-cards-final/web/type_7.jpg" alt="七赤金星の本質カード" loading="lazy"></div>
+      <div class="sc-color">コーラルピンク</div>
+      <div class="sc-code">THE DELIGHT</div>
+      <div class="sc-star">七赤金星</div>
+      <div class="sc-title">喜びを分かち合う人</div>
+      <div class="sc-ms">
+        <div>本命星<b>七赤金星</b></div><div>月命星<b>六白金星</b></div>
+        <div>同会星<b>八白土星</b></div><div>傾斜星<b>六白金星</b></div>
+        <div class="w">最大吉方<b>一白・二黒・八白</b></div>
+      </div>
+      <div class="sc-ms-note">生まれ持った命式（1975年5月5日生まれの例）</div>
+      <div class="sc-catch"><span class="ku">あなたが楽しむことは、</span><br><span class="ku">まわりの世界まで</span><span class="ku">明るくする。</span></div>
+      <p>あなたは、人生の楽しさや豊かさを人に思い出させる人。言葉、笑顔、華やかさ、会話のセンスなど、人の心を自然に開く魅力を持っています。頑張ることだけが前進ではありません。あなた自身が人生を楽しみ、喜びを受け取るほど、その明るさは周りにも広がっていきます。</p>
+      <div class="sc-h">こんなところ、ない？</div>
+      <ul>
+        <li>初対面の人が多い集まりでは、ついみんなが話しやすくなるひと言を入れている。</li>
+        <li>おいしいものや楽しい場所を見つけると、誰かの顔が浮かんですぐ教えたくなる。</li>
+        <li>お気に入りの服や器を選んだ日は、それだけで機嫌よく過ごせる。</li>
+        <li>「悩みなさそう」とよく言われるけれど、実はひとりの夜にぐるぐる考えている。</li>
+        <li>セールで得したはずなのに、カード明細を見て急に無口になる。</li>
+      </ul>
+      <div class="sc-h">あなたの才能が生きる場面</div>
+      <p>あなたの才能は、人と人の間にある緊張をふっとほどくこと。打ち合わせで本音を引き出したり、初対面の人同士を自然につないだり。接客、企画、発信など、相手の反応が見える場所では、会話のセンスと明るさがそのまま仕事になります。</p>
+      <div class="sc-h">エネルギーが下がったときは</div>
+      <p>元気が出ないときは、無理に盛り上げ役をしなくていい。好きな飲み物を選ぶ、きれいなものを見る、気を使わず話せる人と笑う。まず自分の機嫌を取り戻そう。</p>
+      <div class="sc-next"><div class="sc-h">FOR YOU｜これからのあなたへ</div>
+      <p>これからは、みんなが喜ぶかより「私、ほんとうにこれ好き？」を先にしていい。あなたが夢中になれるものの中に、次に育てたい仕事や出会いが隠れているかも。</p></div>
+    </div>
+    <p class="body" style="margin-top:22px;"><span class="ku">あなたの星のカードは、</span><span class="ku">登録してすぐ、</span><span class="ku">無料で見られます。</span></p>
   </div>
   <div class="cta mid-cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a><p class="mid-fine"><span class="ku">登録も診断も無料。</span><span class="ku">自動で有料になることはありません。</span></p></div>
 </div></div>
