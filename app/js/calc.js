@@ -141,6 +141,52 @@
     return n === 0 ? 9 : n;
   }
 
+  // --- 生まれ持った命式（傾斜星・同会星・最大吉方）2026-10-11 村山気学（社会運勢学会式）で統一 ---
+  // 開運道（社会運勢学会式）の計算ツールで架空の12件を照合済み。阿修羅2ツールとは本命=月命のときに異なる。
+  // 本命=月命のときは月命を下表で読み替え、傾斜・同会・最大吉方の3つを通常の式で出す。
+  // 五黄×五黄だけ男女で分かれる。凶方位（月命殺）の判定には読み替えを使わない。
+  var SAME_STAR_GETSUMEI = { 1: 9, 2: 6, 3: 4, 4: 3, 6: 2, 7: 8, 8: 7, 9: 1 };
+  var SAME_STAR_GETSUMEI_5 = { f: 6, m: 7 };
+  // 五行（1水 2土 3木 4木 5土 6金 7金 8土 9火）と相生（生じる先）
+  var STAR_ELEMENT = ['', 'water', 'earth', 'wood', 'wood', 'earth', 'metal', 'metal', 'earth', 'fire'];
+  var ELEMENT_GENERATES = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+  function wrap9(n) { return ((n - 1) % 9 + 9) % 9 + 1; }
+  function isGoodStar(base, s) {
+    var a = STAR_ELEMENT[base], b = STAR_ELEMENT[s];
+    return a === b || ELEMENT_GENERATES[a] === b || ELEMENT_GENERATES[b] === a;
+  }
+
+  /**
+   * 命式（傾斜星・同会星・最大吉方）。
+   * gender: 'f' | 'm'（五黄×五黄のときだけ使う）
+   * 戻り値: { needsGender, getsumeiCalc, keisha, doukai, saidai:[星…] }
+   *   五黄×五黄で gender が未指定なら needsGender=true・他は null
+   */
+  function meishikiOf(honmei, getsumei, gender) {
+    if (!honmei || !getsumei) return null;
+    var g = getsumei;
+    if (honmei === getsumei) {
+      if (honmei === 5) {
+        g = SAME_STAR_GETSUMEI_5[gender];
+        if (!g) return { needsGender: true, getsumeiCalc: null, keisha: null, doukai: null, saidai: null };
+      } else {
+        g = SAME_STAR_GETSUMEI[honmei];
+      }
+    }
+    var saidai = [];
+    for (var s = 1; s <= 9; s++) {
+      if (s === 5 || s === honmei || s === g) continue;
+      if (isGoodStar(honmei, s) && isGoodStar(g, s)) saidai.push(s);
+    }
+    return {
+      needsGender: false,
+      getsumeiCalc: g,
+      keisha: wrap9(honmei - g + 5),   // 読み替え後の月命を中宮にした盤で、本命星がいる宮の定位星
+      doukai: wrap9(2 * honmei - g),   // 本命盤で、読み替え後の月命の対面にいる星
+      saidai: saidai
+    };
+  }
+
   /**
    * 生まれた月の節月番号（小寒=1…大雪=12）を data/setsu.js のテーブルから求める。
    * input: { y, m, d, hh?, mm? } / setsu: UR_SETSU
@@ -234,6 +280,7 @@
       var bm = setsu ? birthMonthNo(input, setsu, sideHint || null, det.risshun) : null;
       var getsumei = bm ? getsumeiFromMonthNo(honmeisei, bm.monthNo) : null;
       return {
+        meishiki: meishikiOf(honmeisei, getsumei, input.gender),
         kigakuYear: kigakuYear,
         honmeisei: honmeisei,
         honmeiseiName: STAR_NAMES[honmeisei],
@@ -342,6 +389,7 @@
     BRANCH_DIR: BRANCH_DIR,
     EHO_DEG: EHO_DEG,
     getsumeiFromMonthNo: getsumeiFromMonthNo,
+    meishikiOf: meishikiOf,
     birthMonthNo: birthMonthNo,
     yearBranchOf: yearBranchOf,
     yearStemOf: yearStemOf,

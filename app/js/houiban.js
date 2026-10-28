@@ -149,13 +149,19 @@
     }
 
     // 吉候補: 本命の吉星（五黄・自星・月命星を除く）。最大吉方＝月命の吉星でもあるもの
+    // 2026-10-11 村山気学（社会運勢学会式）: 本命=月命の人は、最大吉方だけ読み替え後の月命（o.getsumeiCalc）で判定する。
+    // 本質カードの最大吉方（URCalc.meishikiOf）と同じ星になる。月命殺は上のとおり読み替え前の月命で判定する。
+    // 五黄×五黄で性別が未選択（getsumeiCalc なし）のときは、最大吉方を決めず吉方のみ表示する。
     var kichiStars = [], saidaiStars = [];
     var mine = goodStarsFor(honmei);
-    var getsuGood = getsumei ? goodStarsFor(getsumei) : null;
+    var saidaiBase = getsumei;
+    if (getsumei && getsumei === honmei) saidaiBase = o.getsumeiCalc || null;
+    var getsuGood = saidaiBase ? goodStarsFor(saidaiBase) : null;
     for (var i = 0; i < mine.length; i++) {
       var s = mine[i];
       if (s === getsumei) continue;
       kichiStars.push(s);
+      if (s === saidaiBase) continue;
       if (getsuGood && getsuGood.indexOf(s) >= 0) saidaiStars.push(s);
     }
 

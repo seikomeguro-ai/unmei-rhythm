@@ -323,6 +323,31 @@
     font-family:var(--mincho);font-size:20px;font-weight:600;
     letter-spacing:.2em;color:var(--navy);line-height:1.5;
   }
+  /* 生まれ持った命式（本質カード内・2026-10-11 構成案 e-meishiki-card 承認） */
+  .meishiki{ margin-top:34px; }
+  .meishiki .ms-head{ font-family:var(--mincho);font-size:13px;letter-spacing:.24em;color:var(--gold-deep); }
+  .meishiki .ms-head::before,.meishiki .ms-head::after{ content:"";display:inline-block;width:22px;height:1px;background:var(--gold);vertical-align:middle;margin:0 10px; }
+  .ms-grid{ display:grid;grid-template-columns:1fr 1fr;max-width:360px;margin:16px auto 0;border-top:1px solid var(--gold-line); }
+  .ms-cell{ padding:11px 6px 10px;border-bottom:1px solid var(--gold-line); }
+  .ms-cell:nth-child(odd):not(.ms-wide){ border-right:1px solid var(--gold-line); }
+  .ms-cell.ms-wide{ grid-column:1 / -1; }
+  .ms-lab{ font-size:10.5px;letter-spacing:.2em;color:#9a8a6a; }
+  .ms-val{ margin-top:5px;font-family:var(--mincho);font-size:14.5px;font-weight:600;letter-spacing:.1em;color:var(--navy);line-height:1.5;word-break:keep-all; }
+  .ms-one{ margin-top:3px;font-size:11.5px;letter-spacing:.04em;color:#6b5a3e;line-height:1.6;word-break:auto-phrase;text-wrap:pretty; }
+  .ms-gender{ max-width:360px;margin:14px auto 0;font-size:13px;line-height:1.9;color:#4a4136;word-break:auto-phrase;text-wrap:pretty; }
+  .ms-gbtns{ display:flex;gap:10px;justify-content:center;margin-top:12px; }
+  .ms-gbtns button{ font-family:var(--mincho);font-size:15px;letter-spacing:.14em;color:var(--navy);background:#fff;border:1px solid var(--gold);border-radius:99px;padding:9px 26px;cursor:pointer; }
+  .ms-guide{ max-width:360px;margin:14px auto 0;text-align:left; }
+  .ms-guide summary{ list-style:none;cursor:pointer;text-align:center;font-size:11.5px;letter-spacing:.16em;color:var(--gold-deep); }
+  .ms-guide summary::-webkit-details-marker{ display:none; }
+  .ms-guide summary::after{ content:" ＋"; }
+  .ms-guide[open] summary::after{ content:" －"; }
+  .ms-guide dl{ margin-top:8px;font-size:12.5px;line-height:1.85;color:#4a4136; }
+  .ms-guide dt{ margin-top:12px;font-family:var(--mincho);font-size:13px;font-weight:600;color:var(--navy);letter-spacing:.1em; }
+  .ms-guide dd{ margin:0;word-break:auto-phrase;text-wrap:pretty; }
+  .ms-guide .ms-biz{ display:block;margin-top:2px;color:#6b5a3e; }
+  .ms-guide .ms-biz::before{ content:"仕事では";display:inline-block;margin-right:8px;padding:0 7px;font-size:10.5px;letter-spacing:.12em;color:var(--gold-deep);border:1px solid var(--gold-line);border-radius:99px;line-height:1.7;vertical-align:1px; }
+
   .tcard .color-band{
     display:flex;align-items:center;justify-content:center;gap:10px;
     margin-top:16px;
@@ -688,11 +713,11 @@
   <script src="content/daily/ukekata.js?v=20260907c"></script>
   <script src="content/daily/tomorrow_hints.js?v=20260907c"></script>
   <script src="content/jiryu.js?v=20260907c"></script>
-  <script src="js/calc.js?v=20260907c"></script>
+  <script src="js/calc.js?v=20261011a"></script>
   <script src="js/select.js?v=20260914a"></script>
-  <script src="js/houiban.js?v=20260911b"></script>
+  <script src="js/houiban.js?v=20261011a"></script>
   <script src="content/colors.js?v=20260922a"></script>
   <script src="js/color.js?v=20260922a"></script>
-  <script src="js/app.js?v=20260926a"></script>
+  <script src="js/app.js?v=20261028a"></script>
 </body>
 </html>

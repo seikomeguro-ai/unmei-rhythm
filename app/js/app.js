@@ -225,7 +225,8 @@
   // その日の日盤で「最大吉方」「吉方位」になる方角の番号（0=北…7=北西）
   function goodDirsOf(r, today) {
     var an = window.URHouiban.analyzeFull(today.dayCenter, {
-      honmei: r.honmeisei, getsumei: r.getsumei, haDir: today.dayHa, haName: '日破'
+      honmei: r.honmeisei, getsumei: r.getsumei, getsumeiCalc: r.meishiki && r.meishiki.getsumeiCalc,
+      haDir: today.dayHa, haName: '日破'
     });
     var saidai = [], kichi = [];
     an.dirs.forEach(function (d, i) {
@@ -396,6 +397,7 @@
     var d = defs[cur];
     html += '<div class="hb-wrap">' + window.URHouiban.renderBoard({
       center: d.center, honmei: r.honmeisei, getsumei: r.getsumei,
+      getsumeiCalc: r.meishiki && r.meishiki.getsumeiCalc,
       haDir: d.haDir, haName: d.haName, premium: true,
       taisaiDir: d.taisaiDir, ehoDeg: d.ehoDeg, ariaLabel: d.aria
     }) + '</div>' +
@@ -668,6 +670,45 @@
     return '<budoux-ja>' + html + '</budoux-ja>';
   }
 
+  // --- 生まれ持った命式（本質カード内・2026-10-11 せいこさん承認の構成案 e-meishiki-card） ---
+  // 計算は村山気学（社会運勢学会式）。月命星は生まれ月の星をそのまま表示し、読み替えは計算の中だけで使う。
+  // 吉方位（方角）はここに出さない＝BASICの方位盤だけで見られる。
+  var MEISHIKI_GUIDE = [
+    ['本命星', '生まれた年の星。あなたの本質と、人生の土台。', 'あなたらしさが自然に出る働き方。ブランドの軸。'],
+    ['月命星', '生まれた月の星。子どもの頃に表れやすい気質。', '初対面やとっさの判断に出やすい、素の反応。'],
+    ['最大吉方', 'あなたをいちばん後押ししてくれる星。', '出張先や商談の場所、組む相手を選ぶときのものさし。'],
+    ['同会星', '大人になってから活躍する舞台や、縁のある場。', 'あなたの言葉が届きやすい相手（ターゲット層）と、力を発揮しやすい市場。'],
+    ['傾斜星', '内側にある本音や、自分でも気づいていない力。', 'まだ商品にしていない強み。新しいサービスの種。']
+  ];
+  function meishikiHTML(r) {
+    var ms = r.meishiki;
+    if (!ms || !r.getsumei) return '';
+    // one: その星の一言（本質カードのタイプ名を流用・2026-10-28 せいこさん「自分がどうなのか一言でも」）
+    function cell(label, val, cls, one) {
+      return '<div class="ms-cell' + (cls ? ' ' + cls : '') + '"><div class="ms-lab">' + esc(label) + '</div>' +
+        '<div class="ms-val">' + esc(val) + '</div>' + (one ? '<div class="ms-one">' + esc(one) + '</div>' : '') + '</div>';
+    }
+    function oneOf(s) { return TYPES[s] ? TYPES[s].title : ''; }
+    var html = '<div class="meishiki"><div class="ms-head">生まれ持った命式</div><div class="ms-grid">' +
+      cell('本命星', C.STAR_NAMES[r.honmeisei], '', oneOf(r.honmeisei)) + cell('月命星', C.STAR_NAMES[r.getsumei], '', oneOf(r.getsumei));
+    if (ms.needsGender) {
+      // 五黄×五黄だけ、男女で一部の星が変わる（社会運勢学会式）。該当する人にだけ1問聞く
+      html += '</div><div class="ms-gender"><budoux-ja>あなたの命式は、男性と女性で一部の星が変わる、めずらしい組み合わせです。性別を選んでください。</budoux-ja>' +
+        '<div class="ms-gbtns"><button type="button" data-gender="f">女性</button><button type="button" data-gender="m">男性</button></div></div>';
+    } else {
+      var sai = ms.saidai.length === 1 ? C.STAR_NAMES[ms.saidai[0]]
+        : ms.saidai.map(function (s) { return C.STAR_SHORT[s]; }).join('・');
+      html += cell('同会星', C.STAR_NAMES[ms.doukai], '', oneOf(ms.doukai)) + cell('傾斜星', C.STAR_NAMES[ms.keisha], '', oneOf(ms.keisha)) +
+        cell('最大吉方', sai || '—', 'ms-wide') + '</div>';
+    }
+    html += '<details class="ms-guide"><summary>命式の見方</summary><dl>' +
+      MEISHIKI_GUIDE.map(function (g) {
+        return '<dt>' + esc(g[0]) + '</dt><dd><budoux-ja>' + esc(g[1]) + '</budoux-ja>' +
+          '<span class="ms-biz"><budoux-ja>' + esc(g[2]) + '</budoux-ja></span></dd>';
+      }).join('') + '</dl></details></div>';
+    return html;
+  }
+
   // --- 診断結果画面 ---
   function renderResult(diag) {
     var r = diag.results[0];
@@ -685,6 +726,7 @@
       '</div>' +
       '<div class="t-sub" style="margin-top:8px;">' + esc(t.code) + '</div>' +
       '<div class="t-star">' + esc(t.name) + '</div>' +
+      meishikiHTML(r) +
       '<div class="catch">' + bx(t.catch) + '</div>' +
       '<div class="prose"><p>' + esc(t.essence) + '</p></div>';
 
@@ -852,6 +894,19 @@
   $('link-redo').addEventListener('click', redo);
   $('link-redo2').addEventListener('click', redo);
   $('link-account').addEventListener('click', function (e) { e.preventDefault(); toggleAccountPanel(); });
+
+  // 命式の性別選択（五黄×五黄の人だけ）。プロフィールに保存して結果を描き直す
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('button[data-gender]') : null;
+    if (!b) return;
+    var prof = loadProfile();
+    if (!prof) return;
+    prof.gender = b.getAttribute('data-gender');
+    saveProfile(prof);
+    var dd = diagnoseProfile(prof);
+    window._diag = dd;
+    renderResult(dd);
+  });
 
   // 方位盤タブ（日盤/月盤/年盤）の切り替え
   document.addEventListener('click', function (e) {
