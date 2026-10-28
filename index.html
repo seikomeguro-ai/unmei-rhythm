@@ -23,13 +23,13 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"無料で使えますか？","acceptedAnswer":{"@type":"Answer","text":"登録も診断も無料です。はじめの14日間はすべての読み解きをご覧いただけます。15日目からは、無料版と月額1,100円のBASICをお選びいただけます。"}},
+{"@type":"Question","name":"無料で使えますか？","acceptedAnswer":{"@type":"Answer","text":"登録も診断も無料です。はじめの14日間はすべての読み解きをご覧いただけます。15日目からは、無料版としてそのままお使いいただけます。BASICは近日受付開始予定で、始まり次第メールでお知らせします。"}},
 {"@type":"Question","name":"どんなメールが届きますか？","acceptedAnswer":{"@type":"Answer","text":"診断ページのURLと、運命リズムの使い方や、流れを日々の選択に活かすヒントを数通お送りします。いつでも配信解除できます。"}},
 {"@type":"Question","name":"生年月日はどう扱われますか？","acceptedAnswer":{"@type":"Answer","text":"診断の計算は、お使いの端末の中だけで行われます。生年月日がサーバーに送られたり、メールアドレスと結びつくことはありません。"}},
 {"@type":"Question","name":"生まれた時刻がわかりません","acceptedAnswer":{"@type":"Answer","text":"「わからない」のまま進めます。わかると、より深い読み解きに使えます。"}},
 {"@type":"Question","name":"診断はAIが作っているのですか？","acceptedAnswer":{"@type":"Answer","text":"運命リズム診断は、気学の算出ルールと、せいこが積み重ねてきた知見をもとに設計しています。AIは、その知見を毎日の暮らしで使える形にするための、制作・開発のパートナーとして活用しました。毎日の文章は、公開前にせいこ自身が確認しています。"}},
 {"@type":"Question","name":"MEMBERSとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"月に一度、流れを一緒に整える上位プランを準備中です。価格・内容が決まりましたら、メールでお知らせします。"}},
-{"@type":"Question","name":"BASICの解約は？","acceptedAnswer":{"@type":"Answer","text":"PayPalのお手続きでいつでも解約できます。解約後も、無料版として毎朝つづけられます。"}}
+{"@type":"Question","name":"BASICの解約は？","acceptedAnswer":{"@type":"Answer","text":"BASICのお申し込み受付は近日開始予定です。開始後は、PayPalのお手続きでいつでも解約できます。"}}
 ]},
 {"@type":"Person","name":"目黒せいこ","jobTitle":"First Class Life Designer","url":"https://unmei.seikomeguro.com/"}
 ]}
@@ -492,6 +492,13 @@
     .webapp-note p{ font-size:16px; }
   }
 
+  /* 2026-10-28 ホーム画面の追加方法は折りたたみ（登録前に読む量を減らす） */
+  .hs-more{margin-top:18px;text-align:center}
+  .hs-more>summary{display:inline-block;cursor:pointer;list-style:none;padding:10px 22px;border:1px solid currentColor;border-radius:999px;font-size:14px;letter-spacing:.06em;opacity:.85}
+  .hs-more>summary::-webkit-details-marker{display:none}
+  .hs-more[open]>summary{margin-bottom:8px}
+  .hs-more .devs{text-align:left}
+  .fv-fine{margin-top:12px;font-size:13px;color:#6f6357;letter-spacing:.06em;line-height:1.8}
   /* ホーム画面に追加: 端末別カード */
   .devs{ margin-top:28px; text-align:left; display:flex; flex-direction:column; gap:16px; }
   .dev{
@@ -555,7 +562,7 @@
   <h1>欲しい未来は、<br>待つより選びにいく。</h1>
   <div class="fv-app"><span class="ku">毎朝スマホで開いて使う、</span><br class="pcbr"><span class="ku">あなた専用の</span><span class="ku">運命リズムWebアプリ。</span></div>
   <div class="sub"><span class="ku">自分の本質と、</span><span class="ku">いまの流れを知って、</span><br><span class="ku">今日のベストを、</span><span class="ku">自分で選ぶ。</span></div>
-  <div class="cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a></div>
+  <div class="cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a><p class="fv-fine"><span class="ku">登録はメールアドレスだけ／</span><span class="ku">14日間無料／</span><span class="ku">自動で課金されることはありません</span></p></div>
 </div>
 
 <div class="band alt"><div class="wrap">
@@ -687,7 +694,7 @@
     </div>
     <div class="price-note"><span class="ku">14日間は、</span><span class="ku">BASICの内容まで</span><span class="ku">自由にお試しいただけます。</span><br>
     <span class="ku">15日目からは、</span><span class="ku">そのまま無料版に切り替わります。</span><span class="ku">自動で有料になることはありません。</span><br>
-    <span class="ku">毎日の読み解きと「今日の一歩」、</span><span class="ku">おすすめ方位まで使いたい方は、</span><span class="ku"><b>月額1,100円</b>のBASICを</span><span class="ku">ご利用いただけます。</span></div>
+    <span class="ku">BASIC（<b>月額1,100円</b>）は</span><span class="ku">近日受付開始予定です。</span></div>
   </div>
 </div></div>
 
@@ -704,8 +711,8 @@
         <div class="pl-body"><span class="ku">あなたの本質カードと、</span><span class="ku">くわしい診断。</span><span class="ku">いまの大きな季節、</span><span class="ku">今月の流れ、</span><span class="ku">今日のテーマ。</span><br class="pcbr"><span class="ku">——いま、自分がどんな流れにいるかがわかります。</span></div>
       </div>
       <div class="plan plan-basic">
-        <div class="pl-name">BASIC｜月額1,100円</div>
-        <div class="pl-body"><span class="ku">知った流れを、</span><span class="ku">今日の選択に</span><span class="ku">使えるようになります。</span><br class="pcbr"><span class="ku">今日のメッセージ、</span><span class="ku">今日の一歩、</span><span class="ku">おすすめ方位と行動ナビ、</span><span class="ku">今日のひと皿まで。</span><br class="pcbr"><span class="ku">そして根拠の方位盤</span><span class="ku">（年盤・月盤・日盤）。</span><br class="pcbr"><b><span class="ku">「知る」から、</span><span class="ku">「選ぶ」へ。</span></b></div>
+        <div class="pl-name">BASIC｜月額1,100円（近日受付開始）</div>
+        <div class="pl-body"><span class="ku">知った流れを、</span><span class="ku">今日の選択に</span><span class="ku">使えるようになります。</span><br class="pcbr"><span class="ku">今日のメッセージ、</span><span class="ku">今日の一歩、</span><span class="ku">おすすめ方位と行動ナビ、</span><span class="ku">今日のひと皿まで。</span><br class="pcbr"><span class="ku">そして根拠の方位盤</span><span class="ku">（年盤・月盤・日盤）。</span><br class="pcbr"><b><span class="ku">「知る」から、</span><span class="ku">「選ぶ」へ。</span></b><br class="pcbr"><span class="ku">近日、ご利用いただけるようになります。</span><span class="ku">開始時はメールでご案内します。</span></div>
       </div>
       <div class="plan plan-members">
         <div class="pl-name">MEMBERS｜近日ご案内</div>
@@ -742,6 +749,7 @@
     <h2><span class="ku">毎朝使うなら、</span><br class="pcbr"><span class="ku">ホーム画面に追加が</span><span class="ku">おすすめ。</span></h2>
     <div class="sep"></div>
     <p class="body"><span class="ku">アプリのように、</span><span class="ku">ワンタップで運命リズム診断を</span><span class="ku">開けます。</span></p>
+    <details class="hs-more"><summary>iPhone・Android・PCの追加方法を見る</summary>
     <div class="devs">
 
       <div class="dev">
@@ -775,6 +783,7 @@
       </div>
 
     </div>
+    </details>
     <div class="morning-flow"><span class="ku">朝、</span><span class="ku">ホーム画面をタップ。</span><br class="pcbr"><span class="ku">今日の流れを見て、</span><span class="ku">今日のベストを選ぶ。</span></div>
   </div>
 </div></div>
@@ -807,7 +816,7 @@
     <div class="sep"></div>
     <dl class="qa">
       <dt>無料で使えますか？</dt>
-      <dd><budoux-ja>登録も診断も無料です。はじめの14日間はすべての読み解きをご覧いただけます。15日目からは、無料版と月額1,100円のBASICをお選びいただけます。</budoux-ja></dd>
+      <dd><budoux-ja>登録も診断も無料です。はじめの14日間はすべての読み解きをご覧いただけます。15日目からは、無料版としてそのままお使いいただけます。BASICは近日受付開始予定で、始まり次第メールでお知らせします。</budoux-ja></dd>
       <dt>どんなメールが届きますか？</dt>
       <dd><budoux-ja>診断ページのURLと、運命リズムの使い方や、流れを日々の選択に活かすヒントを数通お送りします。いつでも配信解除できます。</budoux-ja></dd>
       <dt>生年月日はどう扱われますか？</dt>
@@ -819,7 +828,7 @@
       <dt>MEMBERSとは何ですか？</dt>
       <dd><budoux-ja>月に一度、流れを一緒に整える上位プランを準備中です。価格・内容が決まりましたら、メールでお知らせします。</budoux-ja></dd>
       <dt>BASICの解約は？</dt>
-      <dd><budoux-ja>PayPalのお手続きでいつでも解約できます。解約後も、無料版として毎朝つづけられます。</budoux-ja></dd>
+      <dd><budoux-ja>BASICのお申し込み受付は近日開始予定です。開始後は、PayPalのお手続きでいつでも解約できます。</budoux-ja></dd>
     </dl>
   </div>
 </div></div>
