@@ -40,6 +40,13 @@
    */
   var TRIAL_HOLD_UNTIL = '2026-10-31';
 
+  /*
+   * 登録メンバーは全機能無料（2026-10-29 せいこさん決定）。
+   * true のあいだは、15日目以降も鍵をかけず、体験の残り日数も数えない（カウントダウンも出ない）。
+   * 有料プランを始めるときは false に戻す。体験・延長のしくみはそのまま残してある。
+   */
+  var ALL_FREE = true;
+
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
   function keyOfDate(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
   function parseKeyDate(k) {
@@ -70,6 +77,7 @@
   // 体験最終日（延長があればその日）までなら体験中、どちらでもなければ無料版
   function computeTier(startKey, untilKey, todayKey) {
     if (untilKey && untilKey >= todayKey) return 'premium';
+    if (ALL_FREE) return 'trial';
     var end = effectiveTrialEnd(startKey);
     if (end && todayKey >= startKey && todayKey <= end) return 'trial';
     return 'free';
@@ -82,6 +90,7 @@
 
   // 体験の残り日数（今日を1日と数える）。延長を反映する。体験外・起点なしは null / 0
   function trialDaysLeftOn(startKey, todayKey) {
+    if (ALL_FREE) return null;
     var end = effectiveTrialEnd(startKey);
     if (!end || !todayKey || todayKey < startKey) return null;
     var left = Math.floor((parseKeyDate(end) - parseKeyDate(todayKey)) / 86400000) + 1;
@@ -152,7 +161,7 @@
 
   return {
     TRIAL_DAYS: TRIAL_DAYS,
-    TRIAL_EXTENSIONS: TRIAL_EXTENSIONS, TRIAL_HOLD_UNTIL: TRIAL_HOLD_UNTIL,
+    TRIAL_EXTENSIONS: TRIAL_EXTENSIONS, TRIAL_HOLD_UNTIL: TRIAL_HOLD_UNTIL, ALL_FREE: ALL_FREE,
     computeTier: computeTier, trialDayIndex: trialDayIndex,
     trialEndKey: trialEndKey, effectiveTrialEnd: effectiveTrialEnd,
     trialDaysLeftOn: trialDaysLeftOn,
