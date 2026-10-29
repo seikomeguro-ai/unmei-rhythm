@@ -13,23 +13,22 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/appicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/appicon/favicon-16.png">
 <meta name="theme-color" content="#FCF8F1">
-<meta name="description" content="自分の本質と、いまの流れを知って、今日のベストを自分で選ぶ。九星気学をもとにした、毎朝1分の習慣。登録も診断も無料。はじめの14日間はBASICの内容まで自由にご覧いただけます。">
+<meta name="description" content="自分の本質と、いまの流れを知って、今日のベストを自分で選ぶ。九星気学をもとにした、毎朝1分の習慣。登録も診断も無料。登録した方は、すべての機能を無料で使えます。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="運命リズム診断｜欲しい未来は、待つより選びにいく。">
-<meta property="og:description" content="自分の本質と、いまの流れを知って、今日のベストを自分で選ぶ。九星気学をもとにした、毎朝1分の習慣。登録も診断も無料。はじめの14日間はBASICの内容まで自由にご覧いただけます。">
+<meta property="og:description" content="自分の本質と、いまの流れを知って、今日のベストを自分で選ぶ。九星気学をもとにした、毎朝1分の習慣。登録も診断も無料。登録した方は、すべての機能を無料で使えます。">
 <meta property="og:image" content="https://unmei.seikomeguro.com/assets/lp-photos/fv.jpg">
 <meta property="og:url" content="https://unmei.seikomeguro.com/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"無料で使えますか？","acceptedAnswer":{"@type":"Answer","text":"登録も診断も無料です。はじめの14日間はすべての読み解きをご覧いただけます。15日目からは、無料版としてそのままお使いいただけます。BASICは近日受付開始予定で、始まり次第メールでお知らせします。"}},
+{"@type":"Question","name":"無料で使えますか？","acceptedAnswer":{"@type":"Answer","text":"登録も診断も無料です。登録した方は、すべての機能を無料で使えます。現在、課金プランはありません。"}},
 {"@type":"Question","name":"どんなメールが届きますか？","acceptedAnswer":{"@type":"Answer","text":"診断ページのURLと、運命リズムの使い方や、流れを日々の選択に活かすヒントを数通お送りします。いつでも配信解除できます。"}},
 {"@type":"Question","name":"生年月日はどう扱われますか？","acceptedAnswer":{"@type":"Answer","text":"診断の計算は、お使いの端末の中だけで行われます。生年月日がサーバーに送られたり、メールアドレスと結びつくことはありません。"}},
 {"@type":"Question","name":"生まれた時刻がわかりません","acceptedAnswer":{"@type":"Answer","text":"「わからない」のまま進めます。わかると、より深い読み解きに使えます。"}},
 {"@type":"Question","name":"診断はAIが作っているのですか？","acceptedAnswer":{"@type":"Answer","text":"運命リズム診断は、気学の算出ルールと、せいこが積み重ねてきた知見をもとに設計しています。AIは、その知見を毎日の暮らしで使える形にするための、制作・開発のパートナーとして活用しました。毎日の文章は、公開前にせいこ自身が確認しています。"}},
-{"@type":"Question","name":"MEMBERSとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"月に一度、流れを一緒に整える上位プランを準備中です。価格・内容が決まりましたら、メールでお知らせします。"}},
-{"@type":"Question","name":"BASICの解約は？","acceptedAnswer":{"@type":"Answer","text":"BASICのお申し込み受付は近日開始予定です。開始後は、PayPalのお手続きでいつでも解約できます。"}}
+{"@type":"Question","name":"MEMBERSとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"月に一度、流れを一緒に整える上位プランを準備中です。価格・内容が決まりましたら、メールでお知らせします。"}}
 ]},
 {"@type":"Person","name":"目黒せいこ","jobTitle":"First Class Life Designer","url":"https://unmei.seikomeguro.com/"}
 ]}
@@ -160,6 +159,10 @@
     padding:22px 22px 24px;
   }
   .plan.plan-basic{ border-color:var(--gold); background:linear-gradient(180deg,#fffefb 0%,#faf5e9 100%); }
+  .plans.plans-one{ max-width:660px; margin-left:auto; margin-right:auto; }
+  .plan .pl-list{ margin:0 0 12px; padding:0; list-style:none; }
+  .plan .pl-list li{ position:relative; padding-left:1.1em; }
+  .plan .pl-list li::before{ content:""; position:absolute; left:.15em; top:.95em; width:5px; height:5px; border-radius:50%; background:var(--gold); }
   .plan.plan-members{ background:transparent; border:1px dashed var(--gold-line); }
   .plan .pl-name{ font-family:var(--mincho); font-size:18.5px; font-weight:600; color:var(--navy); letter-spacing:.1em; }
   .plan .pl-body{ margin-top:10px; font-size:16px; line-height:2.05; color:#6f6357; }
@@ -614,7 +617,7 @@
   <h1>欲しい未来は、<br>待つより選びにいく。</h1>
   <div class="fv-app"><span class="ku">毎朝スマホで開いて使う、</span><br class="pcbr"><span class="ku">あなた専用の</span><span class="ku">運命リズムWebアプリ。</span></div>
   <div class="sub"><span class="ku">自分の本質と、</span><span class="ku">いまの流れを知って、</span><br><span class="ku">今日のベストを、</span><span class="ku">自分で選ぶ。</span></div>
-  <div class="cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a><p class="fv-fine"><span class="ku">登録はメールアドレスだけ／</span><span class="ku">14日間無料／</span><span class="ku">自動で課金されることはありません</span></p></div>
+  <div class="cta"><a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">無料で始める</a><p class="fv-fine"><span class="ku">登録はメールアドレスだけ／</span><span class="ku">自動で課金されることはありません</span></p></div>
 </div>
 
 <div class="band alt"><div class="wrap">
@@ -691,7 +694,7 @@
       <div class="item"><div class="no"><span class="labnum">04</span></div><div class="tt">今日の4つのカード</div>
         <div class="dd"><span class="ku">テーマ・メッセージ・一歩・言葉。</span><span class="ku">今日いちばんに選ぶことが、</span><span class="ku">決まります。</span></div></div>
       <div class="item"><div class="no"><span class="labnum">05</span></div><div class="tt"><span class="ku">今日のおすすめ方位と、</span><span class="ku">行動ナビ</span></div>
-        <div class="dd"><span class="ku">今日は東が味方。</span><span class="ku">ならモーニングは、東のカフェへ。</span><span class="ku">方位盤が読めなくても、</span><span class="ku">今日の流れを生活で使えます。</span><span class="ku">（BASIC MEMBER）</span></div></div>
+        <div class="dd"><span class="ku">今日は東が味方。</span><span class="ku">ならモーニングは、東のカフェへ。</span><span class="ku">方位盤が読めなくても、</span><span class="ku">今日の流れを生活で使えます。</span></div></div>
     </div>
   </div>
   <!-- 3.2 本質カードの見本（2026-10-28 MUSE案・せいこさん指示で七赤金星を全部見せる。背景色を変えてサンプルとわかるように） -->
@@ -769,7 +772,7 @@
     <h2><span class="ku">14日間、</span><span class="ku">今日のベストを</span><span class="ku">選ぶ習慣を。</span></h2>
     <div class="sep"></div>
     <div class="trial-band">
-      <div class="big"><span class="ku">最初の14日間は、</span><br class="pcbr"><span class="ku">BASICの内容まで</span><span class="ku">自由に見られます。</span></div>
+      <div class="big"><span class="ku">最初の14日間は、</span><br class="pcbr"><span class="ku">こんなふうに</span><span class="ku">使ってみてください。</span></div>
     </div>
     <div class="items">
       <div class="item"><div class="no">DAY <span class="labnum">1</span></div><div class="tt">本質カードと出会う</div>
@@ -781,9 +784,8 @@
       <div class="item"><div class="no">GOING OUT</div><div class="tt">お出かけの日は、方位盤で</div>
         <div class="dd"><span class="ku">吉方位を見て、</span><span class="ku">散歩やランチの方向を選んでみる。</span></div></div>
     </div>
-    <div class="price-note"><span class="ku">14日間は、</span><span class="ku">BASICの内容まで</span><span class="ku">自由にお試しいただけます。</span><br>
-    <span class="ku">15日目からは、</span><span class="ku">そのまま無料版に切り替わります。</span><span class="ku">自動で有料に</span><span class="ku">なることはありません。</span><br>
-    <span class="ku">BASIC（<b>月額1,100円</b>）は</span><span class="ku">近日受付開始予定です。</span></div>
+    <div class="price-note"><span class="ku">15日目以降も、</span><span class="ku">すべての機能を</span><span class="ku">そのまま使えます。</span><br>
+    <span class="ku">自動で有料に</span><span class="ku">なることはありません。</span></div>
   </div>
 </div></div>
 
@@ -792,23 +794,22 @@
   <div class="sec">
     <span class="em-h"><img src="assets/icons/trimmed/icon_center.png" alt=""></span>
     <div class="lab-en">PLANS</div>
-    <h2><span class="ku">まずは無料で、</span><br class="pcbr"><span class="ku">今日の自分を</span><span class="ku">知ることから。</span></h2>
+    <h2><span class="ku">登録メンバーは、</span><br class="pcbr"><span class="ku">全機能を</span><span class="ku">無料で使えます</span></h2>
     <div class="sep"></div>
-    <div class="plans">
-      <div class="plan">
-        <div class="pl-name">無料</div>
-        <div class="pl-body"><span class="ku">あなたの本質カードと、</span><span class="ku">くわしい診断。</span><span class="ku">いまの大きな季節、</span><span class="ku">今月の流れ、</span><span class="ku">今日のテーマ。</span><br class="pcbr"><span class="ku">——いま、自分が</span><span class="ku">どんな流れにいるかが</span><span class="ku">わかります。</span></div>
-      </div>
+    <!-- 2026-10-29 全機能無料に合わせて、無料／BASIC／MEMBERSの3枠を1枠にした -->
+    <div class="plans plans-one">
       <div class="plan plan-basic">
-        <div class="pl-name"><span class="ku">BASIC｜月額1,100円</span><span class="ku">（近日受付開始）</span></div>
-        <div class="pl-body"><span class="ku">知った流れを、</span><span class="ku">今日の選択に</span><span class="ku">使えるようになります。</span><br class="pcbr"><span class="ku">今日のメッセージ、</span><span class="ku">今日の一歩、</span><span class="ku">おすすめ方位と行動ナビ、</span><span class="ku">今日のひと皿まで。</span><br class="pcbr"><span class="ku">そして根拠の方位盤</span><span class="ku">（年盤・月盤・日盤）。</span><br class="pcbr"><b><span class="ku">「知る」から、</span><span class="ku">「選ぶ」へ。</span></b><br class="pcbr"><span class="ku">近日、</span><span class="ku">ご利用いただけるように</span><span class="ku">なります。</span><span class="ku">開始時はメールでご案内します。</span></div>
-      </div>
-      <div class="plan plan-members">
-        <div class="pl-name">MEMBERS｜近日ご案内</div>
-        <div class="pl-body"><span class="ku">欲しいものは、</span><span class="ku">ひとつじゃない。</span><span class="ku">仕事も、</span><span class="ku">きれいも、</span><span class="ku">愛も、</span><span class="ku">成長も。</span>
-          <span class="pl-gap"></span><span class="ku">毎月の流れを</span><span class="ku">知って、</span><span class="ku">今の自分にとっての</span><span class="ku">ベストを</span><span class="ku">選びにいく。</span>
-          <span class="pl-gap"></span><span class="ku">月1回の</span><span class="ku">流れの解説や</span><span class="ku">Q&amp;A、</span><span class="ku">オフ会・</span><span class="ku">イベントの</span><span class="ku">先行案内など。</span>
-          <span class="pl-gap"></span><span class="ku">知った流れを、</span><span class="ku">現実の行動に</span><span class="ku">変えていく</span><span class="ku">場所です。</span></div>
+        <div class="pl-name">登録メンバー｜無料</div>
+        <div class="pl-body"><ul class="pl-list">
+          <li><span class="ku">本質カードと</span><span class="ku">くわしい診断</span></li>
+          <li><span class="ku">大きな季節・</span><span class="ku">今月・</span><span class="ku">今日の流れ</span></li>
+          <li><span class="ku">今日のメッセージと</span><span class="ku">今日の一歩</span></li>
+          <li><span class="ku">おすすめ方位と</span><span class="ku">行動ナビ</span></li>
+          <li>今日のひと皿</li>
+          <li>今日のカラー</li>
+          <li><span class="ku">方位盤</span><span class="ku">（年盤・月盤・日盤）</span></li>
+        </ul>
+        <b><span class="ku">「知る」から、</span><span class="ku">「選ぶ」へ。</span></b><br><span class="ku">登録した日から、</span><span class="ku">ぜんぶ使えます。</span></div>
       </div>
     </div>
   </div>
@@ -905,7 +906,7 @@
     <div class="sep"></div>
     <dl class="qa">
       <dt>無料で使えますか？</dt>
-      <dd><budoux-ja>登録も診断も無料です。はじめの14日間はすべての読み解きをご覧いただけます。15日目からは、無料版としてそのままお使いいただけます。BASICは近日受付開始予定で、始まり次第メールでお知らせします。</budoux-ja></dd>
+      <dd><budoux-ja>登録も診断も無料です。登録した方は、すべての機能を無料で使えます。現在、課金プランはありません。</budoux-ja></dd>
       <dt>どんなメールが届きますか？</dt>
       <dd><budoux-ja>診断ページのURLと、運命リズムの使い方や、流れを日々の選択に活かすヒントを数通お送りします。いつでも配信解除できます。</budoux-ja></dd>
       <dt>生年月日はどう扱われますか？</dt>
@@ -916,8 +917,6 @@
       <dd><budoux-ja>運命リズム診断は、気学の算出ルールと、せいこが積み重ねてきた知見をもとに設計しています。AIは、その知見を毎日の暮らしで使える形にするための、制作・開発のパートナーとして活用しました。毎日の文章は、公開前にせいこ自身が確認しています。</budoux-ja></dd>
       <dt>MEMBERSとは何ですか？</dt>
       <dd><budoux-ja>月に一度、流れを一緒に整える上位プランを準備中です。価格・内容が決まりましたら、メールでお知らせします。</budoux-ja></dd>
-      <dt>BASICの解約は？</dt>
-      <dd><budoux-ja>BASICのお申し込み受付は近日開始予定です。開始後は、PayPalのお手続きでいつでも解約できます。</budoux-ja></dd>
     </dl>
   </div>
 </div></div>
@@ -928,7 +927,7 @@
   <div class="wrap">
     <div class="line">欲しい未来は、<br>待つより選びにいく。</div>
     <div class="last-sub"><span class="ku">まずは今日の流れを知って、</span><br class="pcbr"><span class="ku">今日のベストを選ぶことから。</span></div>
-    <div class="last-trial"><span class="ku">運命リズム診断</span><br><span class="ku">14日間、</span><span class="ku">BASICの全機能を</span><span class="ku">無料で体験できます。</span></div>
+    <div class="last-trial"><span class="ku">運命リズム診断</span><br><span class="ku">登録すると、</span><span class="ku">すべての機能を</span><span class="ku">無料で使えます。</span></div>
     <div class="regform">
       <a class="btn reg-link" href="https://76auto.biz/firstclas/registp/unmei.htm">今すぐ始める →</a>
       <div class="note-nocharge"><span class="ku">15日目から</span><span class="ku">自動で有料になることは</span><span class="ku">ありません。</span></div>
