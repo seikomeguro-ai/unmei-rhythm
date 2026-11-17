@@ -808,6 +808,7 @@
     $('m-jp').textContent = t.title;
     $('m-season').innerHTML = seasonLines(r);
     $('morning-body').innerHTML = dailyCardsHTML(r, diag.today);
+    if (typeof UR_NEWS_UI !== 'undefined') UR_NEWS_UI.render($('m-news'), diag.today.dateKey);
     show('view-morning');
     afterRender();
   }
