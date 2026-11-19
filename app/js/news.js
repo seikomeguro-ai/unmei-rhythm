@@ -13,6 +13,15 @@ var UR_NEWS_UI = (function () {
     });
   }
 
+  // 意味のまとまりで折る：「。」ごとに1行、「、」の後ろだけで折り返す（jp-kaigyou の考え方）
+  function phrase(s) {
+    return String(s).replace(/。/g, '。\n').split('\n').filter(Boolean).map(function (line) {
+      return '<span class="news-line">' + line.replace(/、/g, '、\n').split('\n').filter(Boolean).map(function (p) {
+        return '<span class="news-nw">' + esc(p) + '</span>';
+      }).join('') + '</span>';
+    }).join('');
+  }
+
   function active(list, todayKey) {
     return (list || []).filter(function (n) {
       if (n.start && todayKey < n.start) return false;
@@ -27,11 +36,15 @@ var UR_NEWS_UI = (function () {
     if (!items.length) { el.innerHTML = ''; el.hidden = true; return; }
     el.hidden = false;
     el.innerHTML = items.map(function (n) {
-      return '<div class="news-item" data-id="' + esc(n.id) + '">' +
+      return '<div class="news-item' + (n.img ? ' has-img' : '') + '" data-id="' + esc(n.id) + '">' +
         '<a class="news-link" href="' + esc(n.url) + '" target="_blank" rel="noopener">' +
-          (n.label ? '<span class="news-label">' + esc(n.label) + '</span>' : '') +
-          '<span class="news-title">' + esc(n.title) + '<span class="news-arrow">›</span></span>' +
-          (n.sub ? '<span class="news-sub">' + esc(n.sub) + '</span>' : '') +
+          (n.img ? '<span class="news-img"><img src="' + esc(n.img) + '" alt="" loading="lazy"></span>' : '') +
+          '<span class="news-body">' +
+            (n.label ? '<span class="news-label">' + esc(n.label) + '</span>' : '') +
+            '<span class="news-title">' + phrase(n.title) + '</span>' +
+            (n.sub ? '<span class="news-sub">' + phrase(n.sub) + '</span>' : '') +
+            '<span class="news-cta">' + esc(n.cta || '詳しく見る') + '<span class="news-arrow">›</span></span>' +
+          '</span>' +
         '</a>' +
         '<button type="button" class="news-close" aria-label="このお知らせを閉じる">×</button>' +
       '</div>';

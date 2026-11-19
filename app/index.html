@@ -554,15 +554,30 @@
   }
 
   /* お知らせ枠（2026-11-17）: content/news.js の中身を毎朝ホームに出す */
-  .news{ margin:22px 0 4px; }
-  .news-item{ position:relative;border:1px solid var(--gold-line);border-radius:10px;background:var(--tint);margin-top:10px; }
+  .news{ margin:24px 0 4px; }
+  .news-item{ position:relative;margin-top:14px;border-radius:16px;overflow:hidden;
+    background:linear-gradient(160deg,#fff7f3 0%,#fdfaf3 55%,#f8f1e3 100%);
+    border:1px solid #ecd9c6;box-shadow:0 6px 18px rgba(138,111,53,.13); }
+  .news-link{ display:block;text-decoration:none;color:var(--ink); }
+  .news-img{ display:block;line-height:0; }
+  .news-img img{ width:100%;height:auto;display:block; }
+  .news-body{ display:block;padding:16px 18px 18px; }
+  .news-item:not(.has-img) .news-body{ padding-right:44px; }
+  .news-label{ display:inline-block;padding:3px 11px;border-radius:999px;
+    background:linear-gradient(135deg,#d9a7a0,#c8a46a);color:#fff;
+    font-family:var(--gothic);font-size:10.5px;font-weight:700;letter-spacing:.14em; }
+  .news-title{ display:block;margin-top:9px;font-family:var(--gothic);font-size:17px;font-weight:700;line-height:1.55;letter-spacing:.04em;color:var(--navy); }
+  .news-sub{ display:block;margin-top:6px;font-family:var(--gothic);font-size:13px;line-height:1.85;letter-spacing:.03em;color:#5d5249; }
   .news-title,.news-sub{ word-break:keep-all;overflow-wrap:anywhere; }
-  .news-link{ display:block;padding:13px 40px 13px 16px;text-decoration:none;color:var(--ink); }
-  .news-label{ display:block;font-family:"Cormorant Garamond",serif;font-size:10.5px;letter-spacing:.3em;color:var(--gold-deep); }
-  .news-title{ display:block;margin-top:3px;font-family:var(--mincho);font-size:14.5px;font-weight:500;letter-spacing:.08em;color:var(--navy); }
-  .news-arrow{ margin-left:8px;color:var(--gold-deep); }
-  .news-sub{ display:block;margin-top:4px;font-size:11.5px;line-height:1.8;letter-spacing:.04em;color:#6f6357; }
-  .news-close{ position:absolute;top:6px;right:6px;width:30px;height:30px;border:none;background:none;color:#a39d8d;font-size:15px;cursor:pointer; }
+  .news-line{ display:block; }
+  .news-nw{ display:inline-block; }
+  .news-cta{ display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:12px 14px;border-radius:999px;
+    background:linear-gradient(135deg,#1f2d47,#2e4a7a);color:#fff;font-family:var(--gothic);font-size:14.5px;font-weight:700;letter-spacing:.08em;
+    box-shadow:0 4px 12px rgba(31,45,71,.25); }
+  .news-cta::before{ content:"✦";color:#e6cf98;font-size:12px; }
+  .news-arrow{ color:#e6cf98;font-size:17px;line-height:1; }
+  .news-link:active .news-cta{ transform:translateY(1px);box-shadow:0 2px 6px rgba(31,45,71,.25); }
+  .news-close{ position:absolute;top:8px;right:8px;width:30px;height:30px;border:none;border-radius:50%;background:rgba(255,255,255,.85);color:#8f877a;font-size:15px;line-height:30px;cursor:pointer; }
 
   /* PC・タブレット表示: スマホ幅のまま中央に細く出る印象をなくす（2026-09-19 せいこさん指示）。
      スマホ表示（767px以下）はここより上のルールのまま変えない */
@@ -731,8 +746,8 @@
   <script src="js/houiban.js?v=20261011a"></script>
   <script src="content/colors.js?v=20260922a"></script>
   <script src="js/color.js?v=20260922a"></script>
-  <script src="content/news.js?v=20261117b"></script>
-  <script src="js/news.js?v=20261117a"></script>
+  <script src="content/news.js?v=20261118b"></script>
+  <script src="js/news.js?v=20261118b"></script>
   <script src="js/app.js?v=20261117a"></script>
 </body>
 </html>
